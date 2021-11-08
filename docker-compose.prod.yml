@@ -1,0 +1,23 @@
+version: '3.8'
+
+services:
+  backend:
+    deploy:
+      replicas: 8
+      restart_policy:
+        condition: any
+      update_config:
+        parallelism: 2
+        delay: 10s
+    build:
+      context: ./backend
+      args:
+        NODE_ENV: production
+    image: ajithpmohan90/e-commerce-backend
+    env_file: ./backend/.env.production
+  nginx:
+    image: nginx:stable-alpine
+    ports:
+      - '80:80'
+    volumes:
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf:ro
