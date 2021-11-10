@@ -7,6 +7,10 @@ const createJWT = ({ payload }) => {
   return token;
 };
 
+const validateToken = ({ token }) => {
+  return jwt.verify(token, process.env.JWT_SECRET);
+};
+
 const attachCookiesToResponse = ({ res, payload }) => {
   const token = createJWT({ payload });
 
@@ -20,4 +24,4 @@ const attachCookiesToResponse = ({ res, payload }) => {
   });
 };
 
-module.exports = { createJWT, attachCookiesToResponse };
+module.exports = { createJWT, validateToken, attachCookiesToResponse };

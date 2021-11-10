@@ -11,7 +11,7 @@ const register = async (req, res) => {
     throw new CustomError.BadRequestError('Email already exists');
   }
   const user = await User.create(req.body);
-  const payload = { email, id: user._id };
+  const payload = { email, id: user._id, role: user.role };
 
   attachCookiesToResponse({ res, payload });
   res.status(StatusCodes.CREATED).json({ user });
@@ -31,7 +31,7 @@ const login = async (req, res) => {
     throw new CustomError.UnAuthenticatedError('Invalid Credentials');
   }
 
-  const payload = { email, id: user._id };
+  const payload = { email, id: user._id, role: user.role };
   attachCookiesToResponse({ res, payload });
 
   res.status(StatusCodes.OK).json({ user });
