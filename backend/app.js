@@ -8,13 +8,16 @@ const app = express();
 // rest of the packages
 const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
+const fileUpload = require('express-fileupload');
 
 // database
 const connectDB = require('./db/connect');
 
 // routers
 const authRouter = require('./routes/authRoutes');
+const productRouter = require('./routes/productRoutes');
 const userRouter = require('./routes/userRoutes');
+
 // middleware
 const notFound = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
@@ -24,12 +27,15 @@ morgan('tiny');
 // build-in middleware
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
+app.use(express.static('./public'));
+app.use(fileUpload());
 
 app.get('/', (req, res) => {
   res.json({ msg: 'Hello Node Express World' });
 });
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/products', productRouter);
 app.use('/api/v1/users', userRouter);
 
 app.use(notFound);
