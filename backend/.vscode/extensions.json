@@ -1,5 +1,6 @@
 {
   "recommendations": [
+    "ms-azuretools.vscode-docker",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "ahmadawais.shades-of-purple",

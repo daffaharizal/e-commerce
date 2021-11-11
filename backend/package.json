@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
-    "dev": "nodemon app.js",
+    "dev": "nodemon --inspect=0.0.0.0:9229 app.js",
     "format": "prettier --config prettier.config.js './**/*.{js,jsx}' --write"
   },
   "author": "AJITH P MOHAN <ajithpmohan90@gmail.com>",

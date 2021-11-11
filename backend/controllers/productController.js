@@ -6,7 +6,8 @@ const CustomError = require('../errors');
 
 const createProduct = async (req, res) => {
   req.body.user = req.user.id;
-  const product = await Product.create(req.body);
+  const { image, ...rest } = req.body;
+  const product = await Product.create(rest);
   res.status(StatusCodes.CREATED).json({ product });
 };
 
@@ -24,14 +25,11 @@ const getProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  const product = await Product.findOneAndUpdate(
-    { _id: req.params.id },
-    req.body,
-    {
-      new: true,
-      runValidators: true,
-    },
-  ).select('-user');
+  const { image, ...rest } = req.body;
+  const product = await Product.findOneAndUpdate({ _id: req.params.id }, rest, {
+    new: true,
+    runValidators: true,
+  }).select('-user');
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
   }
@@ -56,11 +54,19 @@ const uploadProductImage = async (req, res) => {
     );
   }
 
+  const product = await Product.findById(req.params.id);
+  if (!product) {
+    throw new CustomError.NotFoundError('No Product with given ID found');
+  }
+
   const imagePath = path.join(
     __dirname,
     '../public/uploads/' + `${productImage.name}`,
   );
   await productImage.mv(imagePath);
+
+  product.image = `/uploads/${productImage.name}`;
+  product.save();
 
   res.status(StatusCodes.OK).json({ image: `/uploads/${productImage.name}` });
 };
