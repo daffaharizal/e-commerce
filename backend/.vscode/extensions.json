@@ -3,10 +3,9 @@
     "ms-azuretools.vscode-docker",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
-    "ahmadawais.shades-of-purple",
     "coenraads.bracket-pair-colorizer-2",
     "mikestead.dotenv",
     "pkief.material-icon-theme",
-    "ryanolsonx.solarized"
+    "robbowen.synthwave-vscode"
   ]
 }

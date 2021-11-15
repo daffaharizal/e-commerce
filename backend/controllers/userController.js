@@ -9,7 +9,7 @@ const getAllUsers = async (req, res) => {
   return res.status(StatusCodes.OK).json({ users });
 };
 
-const getUser = async (req, res) => {
+const getSingleUser = async (req, res) => {
   const user = await User.findOne({ _id: req.params.id }).select('-password');
   if (!user) {
     throw new CustomError.BadRequestError('User not found');
@@ -70,7 +70,7 @@ const updatePassword = async (req, res) => {
 
 module.exports = {
   getAllUsers,
-  getUser,
+  getSingleUser,
   getCurrentUser,
   updateUser,
   updatePassword,

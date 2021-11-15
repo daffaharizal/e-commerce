@@ -12,11 +12,14 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({}).select('-user');
+  const products = await Product.find({}).populate({
+    path: 'user',
+    select: 'name',
+  });
   res.status(StatusCodes.OK).json({ products, count: products.length });
 };
 
-const getProduct = async (req, res) => {
+const getSingleProduct = async (req, res) => {
   const product = await Product.findById(req.params.id).select('-user');
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
@@ -74,7 +77,7 @@ const uploadProductImage = async (req, res) => {
 module.exports = {
   createProduct,
   getAllProducts,
-  getProduct,
+  getSingleProduct,
   updateProduct,
   uploadProductImage,
 };

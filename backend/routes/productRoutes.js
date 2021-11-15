@@ -4,10 +4,12 @@ const router = express.Router();
 const {
   createProduct,
   getAllProducts,
-  getProduct,
+  getSingleProduct,
   updateProduct,
   uploadProductImage,
 } = require('../controllers/productController.js');
+
+const { getSingleProductReviews } = require('../controllers/reviewController');
 
 const {
   authenticateUser,
@@ -30,6 +32,8 @@ router.post(
   uploadProductImage,
 );
 
-router.get('/:id', getProduct);
+router.get('/:id', getSingleProduct);
+
+router.get('/:id/reviews', getSingleProductReviews);
 
 module.exports = router;
