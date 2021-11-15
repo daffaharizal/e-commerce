@@ -12,15 +12,12 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({}).populate({
-    path: 'user',
-    select: 'name',
-  });
+  const products = await Product.find({});
   res.status(StatusCodes.OK).json({ products, count: products.length });
 };
 
 const getSingleProduct = async (req, res) => {
-  const product = await Product.findById(req.params.id).select('-user');
+  const product = await Product.findOne({ _id: req.params.id });
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
   }
@@ -32,7 +29,8 @@ const updateProduct = async (req, res) => {
   const product = await Product.findOneAndUpdate({ _id: req.params.id }, rest, {
     new: true,
     runValidators: true,
-  }).select('-user');
+  });
+
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
   }

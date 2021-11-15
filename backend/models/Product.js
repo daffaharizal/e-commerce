@@ -65,7 +65,25 @@ const ProductSchema = new mongoose.Schema(
       required: true,
     },
   },
-  { timestamps: true },
+  {
+    timestamps: true,
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+  },
 );
+
+ProductSchema.virtual('reviews', {
+  ref: 'Review',
+  localField: '_id',
+  foreignField: 'product',
+  justOne: false,
+});
+
+ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
+  this.populate({
+    path: 'user',
+    select: 'name',
+  }).populate('reviews');
+});
 
 module.exports = mongoose.model('Product', ProductSchema);
