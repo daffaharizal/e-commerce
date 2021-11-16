@@ -6,8 +6,7 @@ const CustomError = require('../errors');
 
 const createProduct = async (req, res) => {
   req.body.user = req.user.id;
-  const { image, ...rest } = req.body;
-  const product = await Product.create(rest);
+  const product = await Product.create(req.body);
   res.status(StatusCodes.CREATED).json({ product });
 };
 
@@ -25,11 +24,14 @@ const getSingleProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
-  const { image, ...rest } = req.body;
-  const product = await Product.findOneAndUpdate({ _id: req.params.id }, rest, {
-    new: true,
-    runValidators: true,
-  });
+  const product = await Product.findOneAndUpdate(
+    { _id: req.params.id },
+    req.body,
+    {
+      new: true,
+      runValidators: true,
+    },
+  );
 
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');

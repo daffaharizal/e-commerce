@@ -111,7 +111,7 @@ const deleteReview = async (req, res) => {
   // Admin or created user can delete this Object.
   checkPermission({ requestUser: req.user, resourceUser: review.user });
 
-  await review.delete();
+  await review.remove();
   res.status(StatusCodes.OK).json({ msg: 'Review Deleted' });
 };
 
