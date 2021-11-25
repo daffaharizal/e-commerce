@@ -4,7 +4,6 @@ const CustomError = require('../errors');
 const Product = require('../models/Product');
 const Review = require('../models/Review');
 const User = require('../models/User');
-
 const checkPermission = require('../utils/permissions');
 
 const createReview = async (req, res) => {

@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:lts-slim
 
 WORKDIR /app
 
@@ -7,7 +7,7 @@ COPY package*.json ./
 ARG NODE_ENV
 
 RUN if [ "$NODE_ENV" = "development" ]; \
-    then npm i && npm cache clean --force; \
+    then npm i --loglevel=warn && npm cache clean --force; \
     else npm i --only=production; \
     fi
 

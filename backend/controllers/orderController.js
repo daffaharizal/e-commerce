@@ -1,0 +1,121 @@
+const { StatusCodes } = require('http-status-codes');
+
+const Product = require('../models/Product');
+const Order = require('../models/Order');
+const CustomError = require('../errors');
+const checkPermission = require('../utils/permissions');
+
+const createOrder = async (req, res) => {
+  const { items: cartItems, shippingFee, tax } = req.body;
+
+  if (!cartItems || cartItems.length < 1) {
+    throw new CustomError.NotFoundError(`No Products Found`);
+  }
+
+  if (!tax || !shippingFee) {
+    throw new CustomError.BadRequestError(
+      'Please provide tax and shipping fee',
+    );
+  }
+
+  let orderItems = [];
+  let subTotal = 0;
+
+  for (const item of cartItems) {
+    const { productId, quantity } = item;
+
+    if (!productId || !quantity) {
+      throw new CustomError.BadRequestError('Please add valid products');
+    }
+
+    const product = await Product.findOne({ _id: productId });
+    if (!product) {
+      throw new CustomError.NotFoundError(`No Product with ID - ${productId}`);
+    }
+    // TODO - Check duplicate products in orderItems
+
+    if (isNaN(quantity)) {
+      throw new CustomError.BadRequestError(
+        `Invalid Quantity for item name - ${product.name}`,
+      );
+    }
+
+    // add item to order
+    orderItems = [
+      ...orderItems,
+      {
+        product,
+        name: product.name,
+        price: product.price,
+        quantity: parseInt(quantity),
+        // TODO: Discount
+        subTotal: parseInt(quantity) * product.price,
+      },
+    ];
+
+    // calculate subtotal
+    subTotal += parseInt(quantity) * product.price;
+  }
+
+  if (orderItems.length < 1) {
+    throw new CustomError.BadRequestError('Please add valid products');
+  }
+  // TODO: Fetch Strip paymentId
+  const clientSecret = 'randomValue';
+
+  // TODO: Discount
+  const total = subTotal + tax + shippingFee;
+
+  const order = await Order.create({
+    orderItems,
+    shippingFee,
+    tax,
+    subTotal,
+    total,
+    user: req.user.id,
+    clientSecret,
+  });
+
+  if (!order) {
+    throw new CustomError.BadRequest(`Something went wrong!`);
+  }
+
+  res.status(StatusCodes.CREATED).json({ order });
+};
+
+const getAllOrder = async (req, res) => {
+  const orders = await Order.find().populate('user');
+  res.status(StatusCodes.OK).json({ count: orders.length, orders });
+};
+
+const getSingleOrder = async (req, res) => {
+  const { id: OrderID } = req.params;
+  const order = await Order.findOne({ _id: OrderID }).populate('user');
+  if (!order) {
+    throw new CustomError.NotFoundError(`No Order with ID: ${OrderID}`);
+  }
+
+  // Admin or created user can view this Order.
+  checkPermission({ requestUser: req.user, resourceUser: order.user });
+
+  res.status(StatusCodes.OK).json({ order });
+};
+
+const updateOrder = async (req, res) => {
+  // TODO: req.body: {clientSecret, orderId}
+};
+
+const getCurrentUserOrders = async (req, res) => {
+  const orders = await Order.find({
+    user: req.user.id,
+  }).populate('user');
+  res.status(StatusCodes.OK).json({ count: orders.length, orders });
+};
+
+module.exports = {
+  createOrder,
+  getAllOrder,
+  getSingleOrder,
+  updateOrder,
+  getCurrentUserOrders,
+};
