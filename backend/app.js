@@ -18,6 +18,7 @@ const authRouter = require('./routes/authRoutes');
 const productRouter = require('./routes/productRoutes');
 const orderRouter = require('./routes/orderRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
+const stripeRouter = require('./routes/stripeRoutes');
 const userRouter = require('./routes/userRoutes');
 
 // middleware
@@ -32,14 +33,11 @@ app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static('./public'));
 app.use(fileUpload());
 
-app.get('/', (req, res) => {
-  res.json({ msg: 'Hello Node Express World' });
-});
-
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/reviews', reviewRouter);
+app.use('/api/v1/stripe', stripeRouter);
 app.use('/api/v1/users', userRouter);
 
 app.use(notFound);

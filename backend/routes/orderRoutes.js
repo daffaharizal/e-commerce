@@ -5,7 +5,6 @@ const {
   createOrder,
   getAllOrder,
   getSingleOrder,
-  updateOrder,
   getCurrentUserOrders,
 } = require('../controllers/orderController');
 
@@ -20,8 +19,6 @@ router
   .get([authenticateUser, authorizePermissions('admin')], getAllOrder);
 
 router.route('/me').get(authenticateUser, getCurrentUserOrders);
-
-router.route('/update/:id').patch(authenticateUser, updateOrder);
 
 router.route('/:id').get(authenticateUser, getSingleOrder);
 

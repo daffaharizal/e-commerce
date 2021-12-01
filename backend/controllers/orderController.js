@@ -5,11 +5,16 @@ const Order = require('../models/Order');
 const CustomError = require('../errors');
 const checkPermission = require('../utils/permissions');
 
+const stripe = require('../utils/stripe');
+
+const calculateOrderAmount = ({ subTotal, shippingFee, tax }) =>
+  subTotal + tax + shippingFee;
+
 const createOrder = async (req, res) => {
   const { items: cartItems, shippingFee, tax } = req.body;
 
   if (!cartItems || cartItems.length < 1) {
-    throw new CustomError.NotFoundError(`No Products Found`);
+    throw new CustomError.NotFoundError('No Products Found');
   }
 
   if (!tax || !shippingFee) {
@@ -60,37 +65,51 @@ const createOrder = async (req, res) => {
   if (orderItems.length < 1) {
     throw new CustomError.BadRequestError('Please add valid products');
   }
-  // TODO: Fetch Strip paymentId
-  const clientSecret = 'randomValue';
+  const amount = calculateOrderAmount({ subTotal, shippingFee, tax });
+
+  const { id: paymentIntentId, client_secret: clientSecret } =
+    await stripe.createPaymentIntent({
+      amount,
+      currency: 'usd',
+    });
 
   // TODO: Discount
-  const total = subTotal + tax + shippingFee;
 
   const order = await Order.create({
     orderItems,
     shippingFee,
     tax,
     subTotal,
-    total,
+    total: amount,
     user: req.user.id,
     clientSecret,
+    paymentIntentId,
   });
 
   if (!order) {
     throw new CustomError.BadRequest(`Something went wrong!`);
   }
 
+  // add OrderId to stripe payment intent
+  await stripe.updatePaymentIntent({ paymentIntentId, orderId: order.id });
+
   res.status(StatusCodes.CREATED).json({ order });
 };
 
 const getAllOrder = async (req, res) => {
-  const orders = await Order.find().populate('user');
+  const orders = await Order.find().populate({
+    path: 'user',
+    select: 'name role',
+  });
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
 
 const getSingleOrder = async (req, res) => {
   const { id: OrderID } = req.params;
-  const order = await Order.findOne({ _id: OrderID }).populate('user');
+  const order = await Order.findOne({ _id: OrderID }).populate({
+    path: 'user',
+    select: 'name role',
+  });
   if (!order) {
     throw new CustomError.NotFoundError(`No Order with ID: ${OrderID}`);
   }
@@ -101,14 +120,13 @@ const getSingleOrder = async (req, res) => {
   res.status(StatusCodes.OK).json({ order });
 };
 
-const updateOrder = async (req, res) => {
-  // TODO: req.body: {clientSecret, orderId}
-};
-
 const getCurrentUserOrders = async (req, res) => {
   const orders = await Order.find({
     user: req.user.id,
-  }).populate('user');
+  }).populate({
+    path: 'user',
+    select: 'name role',
+  });
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
 
@@ -116,6 +134,5 @@ module.exports = {
   createOrder,
   getAllOrder,
   getSingleOrder,
-  updateOrder,
   getCurrentUserOrders,
 };
