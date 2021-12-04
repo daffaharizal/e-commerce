@@ -6,6 +6,8 @@
     "coenraads.bracket-pair-colorizer-2",
     "mikestead.dotenv",
     "pkief.material-icon-theme",
+    "wix.vscode-import-cost",
+    "streetsidesoftware.code-spell-checker",
     "robbowen.synthwave-vscode"
   ]
 }

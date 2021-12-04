@@ -52,14 +52,14 @@ const createOrder = async (req, res) => {
         product,
         name: product.name,
         price: product.price,
-        quantity: parseInt(quantity),
+        quantity: +quantity,
         // TODO: Discount
-        subTotal: parseInt(quantity) * product.price,
+        subTotal: +quantity * product.price,
       },
     ];
 
     // calculate subtotal
-    subTotal += parseInt(quantity) * product.price;
+    subTotal += +quantity * product.price;
   }
 
   if (orderItems.length < 1) {
@@ -87,7 +87,7 @@ const createOrder = async (req, res) => {
   });
 
   if (!order) {
-    throw new CustomError.BadRequest(`Something went wrong!`);
+    throw new CustomError.BadRequest('Something went wrong!');
   }
 
   // add OrderId to stripe payment intent
