@@ -13,18 +13,18 @@ const createReview = async (req, res) => {
   const product = await Product.findOne({ _id: productId });
   if (!product) {
     throw new CustomError.NotFoundError(
-      `No Product with given ID: ${productId}`,
+      `No Product with given ID: ${productId}`
     );
   }
 
   const alreadySubmitted = await Review.findOne({
     product: productId,
-    user: userId,
+    user: userId
   });
 
   if (alreadySubmitted) {
     throw new CustomError.NotFoundError(
-      'Already submitted review for this product',
+      'Already submitted review for this product'
     );
   }
 
@@ -37,11 +37,11 @@ const getAllReviews = async (req, res) => {
   const reviews = await Review.find({})
     .populate({
       path: 'product',
-      select: 'name',
+      select: 'name'
     })
     .populate({
       path: 'user',
-      select: 'name role',
+      select: 'name role'
     });
 
   res.status(StatusCodes.OK).json({ reviews });
@@ -53,11 +53,11 @@ const getSingleReview = async (req, res) => {
   const review = await Review.findOne({ _id: reviewId })
     .populate({
       path: 'product',
-      select: 'name',
+      select: 'name'
     })
     .populate({
       path: 'user',
-      select: 'name role',
+      select: 'name role'
     });
 
   if (!review) {
@@ -74,11 +74,11 @@ const updateReview = async (req, res) => {
   const review = await Review.findOne({ _id: reviewId })
     .populate({
       path: 'product',
-      select: 'name',
+      select: 'name'
     })
     .populate({
       path: 'user',
-      select: 'name role',
+      select: 'name role'
     });
   if (!review) {
     throw new CustomError.NotFoundError(`No Review with such id - ${reviewId}`);
@@ -88,7 +88,7 @@ const updateReview = async (req, res) => {
   checkPermission({
     requestUser: req.user,
     resourceUser: review.user,
-    isAdminAuthorized: false,
+    isAdminAuthorized: false
   });
 
   review.rating = rating;
@@ -120,13 +120,13 @@ const getSingleProductReviews = async (req, res) => {
   const product = await Product.findById(productId);
   if (!product) {
     throw new CustomError.NotFoundError(
-      `No Product with such id - ${productId}`,
+      `No Product with such id - ${productId}`
     );
   }
 
   const reviews = await Review.find({ product: productId }).populate({
     path: 'user',
-    select: 'name',
+    select: 'name'
   });
 
   res.status(StatusCodes.OK).json({ reviews });
@@ -145,7 +145,7 @@ const getSingleUserReviews = async (req, res) => {
 
   const reviews = await Review.find({ user: userId }).populate({
     path: 'user',
-    select: 'name',
+    select: 'name'
   });
 
   res.status(StatusCodes.OK).json({ reviews });
@@ -158,5 +158,5 @@ module.exports = {
   updateReview,
   deleteReview,
   getSingleProductReviews,
-  getSingleUserReviews,
+  getSingleUserReviews
 };

@@ -3,7 +3,7 @@ const CustomError = require('../errors');
 const checkPermission = ({
   requestUser,
   resourceUser,
-  isAdminAuthorized = true,
+  isAdminAuthorized = true
 }) => {
   if (requestUser.role === 'admin' && isAdminAuthorized) return;
   if (requestUser.id === resourceUser.id) return;

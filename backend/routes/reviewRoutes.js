@@ -6,12 +6,12 @@ const {
   getAllReviews,
   getSingleReview,
   updateReview,
-  deleteReview,
+  deleteReview
 } = require('../controllers/reviewController');
 
 const {
   authenticateUser,
-  authorizePermissions,
+  authorizePermissions
 } = require('../middleware/authentication');
 
 router

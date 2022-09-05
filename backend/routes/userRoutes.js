@@ -6,14 +6,14 @@ const {
   getSingleUser,
   getCurrentUser,
   updateUser,
-  updatePassword,
+  updatePassword
 } = require('../controllers/userController');
 
 const { getSingleUserReviews } = require('../controllers/reviewController');
 
 const {
   authenticateUser,
-  authorizePermissions,
+  authorizePermissions
 } = require('../middleware/authentication');
 
 router.get('/', [authenticateUser, authorizePermissions('admin')], getAllUsers);
@@ -27,13 +27,13 @@ router.post('/update-password', authenticateUser, updatePassword);
 router.get(
   '/:id',
   [authenticateUser, authorizePermissions('admin')],
-  getSingleUser,
+  getSingleUser
 );
 
 router.get(
   '/:id/product-reviews',
   [authenticateUser, authorizePermissions('admin', 'user')],
-  getSingleUserReviews,
+  getSingleUserReviews
 );
 
 module.exports = router;

@@ -9,11 +9,14 @@
   "editor.codeActionsOnSave": {
     "source.fixAll.eslint": true
   },
-  "[javascript]": {
+  "[typescript]": {
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
+  },
+  "[typescriptreact]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "[json]": {
-    "editor.defaultFormatter": "vscode.json-language-features"
+    "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
   "workbench.iconTheme": "material-icon-theme",
   "workbench.colorTheme": "SynthWave '84"

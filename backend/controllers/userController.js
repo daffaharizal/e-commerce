@@ -26,7 +26,7 @@ const updateUser = async (req, res) => {
   const { email, name } = req.body;
   if (!email || !name) {
     throw new CustomError.BadRequestError(
-      'Please provide email and name values',
+      'Please provide email and name values'
     );
   }
   const user = await User.findOneAndUpdate(
@@ -34,8 +34,8 @@ const updateUser = async (req, res) => {
     { email, name },
     {
       new: true,
-      runValidators: true,
-    },
+      runValidators: true
+    }
   ).select('-password');
 
   const payload = { email, id: user._id, role: user.role };
@@ -51,7 +51,7 @@ const updatePassword = async (req, res) => {
 
   if (!oldPassword || !newPassword) {
     throw new CustomError.BadRequestError(
-      'Please provide oldPassword and newPassword values',
+      'Please provide oldPassword and newPassword values'
     );
   }
 
@@ -73,5 +73,5 @@ module.exports = {
   getSingleUser,
   getCurrentUser,
   updateUser,
-  updatePassword,
+  updatePassword
 };

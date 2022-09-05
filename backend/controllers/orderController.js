@@ -19,7 +19,7 @@ const createOrder = async (req, res) => {
 
   if (!tax || !shippingFee) {
     throw new CustomError.BadRequestError(
-      'Please provide tax and shipping fee',
+      'Please provide tax and shipping fee'
     );
   }
 
@@ -41,7 +41,7 @@ const createOrder = async (req, res) => {
 
     if (isNaN(quantity)) {
       throw new CustomError.BadRequestError(
-        `Invalid Quantity for item name - ${product.name}`,
+        `Invalid Quantity for item name - ${product.name}`
       );
     }
 
@@ -54,8 +54,8 @@ const createOrder = async (req, res) => {
         price: product.price,
         quantity: +quantity,
         // TODO: Discount
-        subTotal: +quantity * product.price,
-      },
+        subTotal: +quantity * product.price
+      }
     ];
 
     // calculate subtotal
@@ -70,7 +70,7 @@ const createOrder = async (req, res) => {
   const { id: paymentIntentId, client_secret: clientSecret } =
     await stripe.createPaymentIntent({
       amount,
-      currency: 'usd',
+      currency: 'usd'
     });
 
   // TODO: Discount
@@ -83,7 +83,7 @@ const createOrder = async (req, res) => {
     total: amount,
     user: req.user.id,
     clientSecret,
-    paymentIntentId,
+    paymentIntentId
   });
 
   if (!order) {
@@ -99,7 +99,7 @@ const createOrder = async (req, res) => {
 const getAllOrder = async (req, res) => {
   const orders = await Order.find().populate({
     path: 'user',
-    select: 'name role',
+    select: 'name role'
   });
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
@@ -108,7 +108,7 @@ const getSingleOrder = async (req, res) => {
   const { id: OrderID } = req.params;
   const order = await Order.findOne({ _id: OrderID }).populate({
     path: 'user',
-    select: 'name role',
+    select: 'name role'
   });
   if (!order) {
     throw new CustomError.NotFoundError(`No Order with ID: ${OrderID}`);
@@ -122,10 +122,10 @@ const getSingleOrder = async (req, res) => {
 
 const getCurrentUserOrders = async (req, res) => {
   const orders = await Order.find({
-    user: req.user.id,
+    user: req.user.id
   }).populate({
     path: 'user',
-    select: 'name role',
+    select: 'name role'
   });
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
@@ -134,5 +134,5 @@ module.exports = {
   createOrder,
   getAllOrder,
   getSingleOrder,
-  getCurrentUserOrders,
+  getCurrentUserOrders
 };

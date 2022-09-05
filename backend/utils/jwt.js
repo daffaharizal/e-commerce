@@ -2,7 +2,7 @@ const jwt = require('jsonwebtoken');
 
 const createJWT = ({ payload }) => {
   const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME,
+    expiresIn: process.env.JWT_LIFETIME
   });
   return token;
 };
@@ -20,7 +20,7 @@ const attachCookiesToResponse = ({ res, payload }) => {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     secure: process.env.NODE_ENV === 'production',
-    signed: true,
+    signed: true
   });
 };
 

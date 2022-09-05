@@ -3,7 +3,7 @@ const router = express.Router();
 
 const {
   getStripeConfig,
-  stripeWebhook,
+  stripeWebhook
 } = require('../controllers/stripeController');
 
 router.get('/config', getStripeConfig);
@@ -12,7 +12,7 @@ router.get('/config', getStripeConfig);
 router.post(
   '/webhook',
   express.raw({ type: 'application/json' }),
-  stripeWebhook,
+  stripeWebhook
 );
 
 module.exports = router;

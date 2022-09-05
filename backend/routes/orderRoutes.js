@@ -5,12 +5,12 @@ const {
   createOrder,
   getAllOrder,
   getSingleOrder,
-  getCurrentUserOrders,
+  getCurrentUserOrders
 } = require('../controllers/orderController');
 
 const {
   authenticateUser,
-  authorizePermissions,
+  authorizePermissions
 } = require('../middleware/authentication');
 
 router

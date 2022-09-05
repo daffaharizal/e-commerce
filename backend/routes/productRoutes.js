@@ -6,14 +6,14 @@ const {
   getAllProducts,
   getSingleProduct,
   updateProduct,
-  uploadProductImage,
+  uploadProductImage
 } = require('../controllers/productController.js');
 
 const { getSingleProductReviews } = require('../controllers/reviewController');
 
 const {
   authenticateUser,
-  authorizePermissions,
+  authorizePermissions
 } = require('../middleware/authentication');
 
 router
@@ -24,12 +24,12 @@ router
 router.patch(
   '/update/:id',
   [authenticateUser, authorizePermissions('admin')],
-  updateProduct,
+  updateProduct
 );
 router.post(
   '/upload-image/:id',
   [authenticateUser, authorizePermissions('admin')],
-  uploadProductImage,
+  uploadProductImage
 );
 
 router.get('/:id', getSingleProduct);

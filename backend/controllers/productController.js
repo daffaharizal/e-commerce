@@ -27,10 +27,7 @@ const updateProduct = async (req, res) => {
   const product = await Product.findOneAndUpdate(
     { _id: req.params.id },
     req.body,
-    {
-      new: true,
-      runValidators: true,
-    },
+    { new: true, runValidators: true }
   );
 
   if (!product) {
@@ -53,7 +50,7 @@ const uploadProductImage = async (req, res) => {
 
   if (productImage.size > maxSize) {
     throw new CustomError.BadRequestError(
-      'Please upload image smaller than 1MB',
+      'Please upload image smaller than 1MB'
     );
   }
 
@@ -64,7 +61,7 @@ const uploadProductImage = async (req, res) => {
 
   const imagePath = path.join(
     __dirname,
-    '../public/uploads/' + `${productImage.name}`,
+    '../public/uploads/' + `${productImage.name}`
   );
   await productImage.mv(imagePath);
 
@@ -79,5 +76,5 @@ module.exports = {
   getAllProducts,
   getSingleProduct,
   updateProduct,
-  uploadProductImage,
+  uploadProductImage
 };

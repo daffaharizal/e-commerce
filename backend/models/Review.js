@@ -5,26 +5,26 @@ const ReviewSchema = new mongoose.Schema({
     type: Number,
     required: [true, 'Please provide rating'],
     min: 1,
-    max: 5,
+    max: 5
   },
   title: {
     type: String,
     trim: true,
-    maxlength: 100,
+    maxlength: 100
   },
   comment: {
-    type: String,
+    type: String
   },
   product: {
     type: mongoose.Types.ObjectId,
     role: 'Product',
-    required: true,
+    required: true
   },
   user: {
     type: mongoose.Types.ObjectId,
     ref: 'User',
-    required: true,
-  },
+    required: true
+  }
 });
 
 // unique together
@@ -37,9 +37,9 @@ ReviewSchema.statics.CalculateAvgRating = async function (productId) {
       $group: {
         _id: null,
         averageRating: { $avg: '$rating' },
-        numOfReviews: { $sum: 1 },
-      },
-    },
+        numOfReviews: { $sum: 1 }
+      }
+    }
   ]);
 
   try {
@@ -47,8 +47,8 @@ ReviewSchema.statics.CalculateAvgRating = async function (productId) {
       { _id: productId },
       {
         averageRating: Math.ceil(result[0]?.averageRating || 0),
-        numOfReviews: result[0]?.numOfReviews || 0,
-      },
+        numOfReviews: result[0]?.numOfReviews || 0
+      }
     );
   } catch (error) {
     console.log(error);

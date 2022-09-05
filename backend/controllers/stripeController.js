@@ -25,7 +25,7 @@ const stripeWebhook = async (req, res) => {
     try {
       event = stripeEventListener({ req, signature, endpointSecret });
     } catch (err) {
-      console.log(`⚠️  Webhook signature verification failed.`, err.message);
+      console.log('⚠️  Webhook signature verification failed.', err.message);
       throw new CustomError.BadRequestError('Invalid Signature');
     }
   }
@@ -34,14 +34,14 @@ const stripeWebhook = async (req, res) => {
     case 'payment_intent.succeeded':
       const paymentIntent = event.data.object;
       const {
-        metadata: { order_id: orderId },
+        metadata: { order_id: orderId }
       } = paymentIntent;
 
       // TODO - if orderId is undefined Send nofitications to admin or staffs
 
       const order = await Order.findOne({
         _id: orderId,
-        paymentIntentId: paymentIntent.id,
+        paymentIntentId: paymentIntent.id
       });
       if (!order) {
         throw new CustomError.NotFoundError('No Order with given Id');
