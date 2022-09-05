@@ -1,7 +1,7 @@
 {
   "name": "e-commerce-api",
   "version": "1.0.0",
-  "description": "",
+  "description": "E-Commerce backend build using Node & Express.js",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",

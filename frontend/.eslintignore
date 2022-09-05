@@ -3,3 +3,4 @@ build
 react-app-env.d.ts
 reportWebVitals.ts
 .eslintrc.js
+prettier.config.js

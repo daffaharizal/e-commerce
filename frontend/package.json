@@ -1,6 +1,9 @@
 {
   "name": "e-commerce-react",
-  "version": "0.1.0",
+  "version": "1.0.0",
+  "description": "E-Commerce frontend build using React.js & Typescript",
+  "author": "AJITH P MOHAN <ajithpmohan90@gmail.com>",
+  "license": "MIT",
   "private": true,
   "dependencies": {
     "@testing-library/jest-dom": "^5.14.1",
