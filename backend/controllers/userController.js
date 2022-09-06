@@ -23,15 +23,26 @@ const getCurrentUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const { email, name } = req.body;
-  if (!email || !name) {
+  const {
+    user: { id: userID }
+  } = req;
+
+  const { email, fullName } = req.body;
+  if (!email || !fullName) {
+    throw new CustomError.BadRequestError('Please provide Email & Full Name');
+  }
+
+  const validateNewEmail = await User.findOne({ email });
+
+  if (!!validateNewEmail && validateNewEmail.id !== userID) {
     throw new CustomError.BadRequestError(
-      'Please provide email and name values'
+      'Another user with same email exist. Please provide another email.'
     );
   }
+
   const user = await User.findOneAndUpdate(
-    { _id: req.user.id },
-    { email, name },
+    { _id: userID },
+    { email, fullName },
     {
       new: true,
       runValidators: true
@@ -51,7 +62,13 @@ const updatePassword = async (req, res) => {
 
   if (!oldPassword || !newPassword) {
     throw new CustomError.BadRequestError(
-      'Please provide oldPassword and newPassword values'
+      'Please provide Old Password & New Password values'
+    );
+  }
+
+  if (newPassword.length < 6) {
+    throw new CustomError.BadRequestError(
+      'Password must contain atleast 6 letters.'
     );
   }
 
@@ -59,7 +76,7 @@ const updatePassword = async (req, res) => {
 
   const isPasswordCorrect = await user.comparePassword(oldPassword);
   if (!isPasswordCorrect) {
-    throw new CustomError.UnAuthenticatedError('Invalid Credentials');
+    throw new CustomError.UnAuthenticatedError('Invalid Old Password');
   }
 
   user.password = newPassword;

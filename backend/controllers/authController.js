@@ -10,7 +10,8 @@ const register = async (req, res) => {
   if (emailAlreadyExists) {
     throw new CustomError.BadRequestError('Email already exists');
   }
-  const user = await User.create(req.body);
+
+  const user = await User.create({ ...req.body, role: 'user' });
   const payload = { email, id: user._id, role: user.role };
 
   attachCookiesToResponse({ res, payload });
