@@ -6,7 +6,9 @@
 * Node.js
 * Express.js
 * React.js
+* Typescript
 * Mongoose
+* ESlint & Prettier
 
 ## Usage
 
@@ -24,4 +26,6 @@ Download the repository:
 
 ## Access the services in the development mode.
 
-Open [http://localhost:5000](http://localhost:5000) to view express.js service in the browser.
+Open [http://localhost:3200](http://localhost:3200) to view the application in the browser.
+
+Open [http://localhost:5200](http://localhost:5200) to view the api endpoints in the browser.

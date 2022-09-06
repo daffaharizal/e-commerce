@@ -7,9 +7,10 @@ services:
       args:
         NODE_ENV: development
     image: e-commerce-backend:1.0.0
+    container_name: e-commerce-be
     command: npm run dev
     ports:
-      - '5000:5000'
+      - '5200:5000'
       - '9229:9229' # Port 9229 is the default NodeJS debugging port.
     volumes:
       - ./backend:/app
@@ -17,6 +18,21 @@ services:
     env_file: ./backend/.env
     depends_on:
       - mongo
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        NODE_ENV: development
+    image: e-commerce-frontend:1.0.0
+    container_name: e-commerce-fe
+    volumes:
+      - ./frontend:/home/app/frontend
+      - /home/app/node_modules
+    ports:
+      - 3200:3000
+    environment:
+      - WATCHPACK_POLLING=true
+
   mongo:
     image: mongo
     environment:

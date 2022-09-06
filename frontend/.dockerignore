@@ -1,0 +1,13 @@
+node_modules
+build
+docker-compose.yml
+docker-compose.prod.yml
+Dockerfile
+Dockerfile.prod
+.dockerignore
+nginx
+README.MD
+.env.development
+.env.production
+npm-debug.log
+yarn.lock
