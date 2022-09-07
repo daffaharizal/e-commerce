@@ -5,12 +5,12 @@ const CustomError = require('../errors');
 const { attachCookiesToResponse } = require('../utils/jwt');
 
 const getAllUsers = async (req, res) => {
-  const users = await User.find({}).select('-password');
+  const users = await User.find({});
   return res.status(StatusCodes.OK).json({ users });
 };
 
 const getSingleUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.params.id }).select('-password');
+  const user = await User.findOne({ _id: req.params.id });
   if (!user) {
     throw new CustomError.BadRequestError('User not found');
   }
@@ -18,7 +18,7 @@ const getSingleUser = async (req, res) => {
 };
 
 const getCurrentUser = async (req, res) => {
-  const user = await User.findOne({ _id: req.user.id }).select('-password');
+  const user = await User.findOne({ _id: req.user.id });
   return res.status(StatusCodes.OK).json({ user });
 };
 
@@ -47,7 +47,7 @@ const updateUser = async (req, res) => {
       new: true,
       runValidators: true
     }
-  ).select('-password');
+  );
 
   const payload = { email, id: user._id, role: user.role };
   attachCookiesToResponse({ res, payload });
