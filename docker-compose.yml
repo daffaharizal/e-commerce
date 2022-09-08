@@ -29,6 +29,7 @@ services:
       - ./frontend:/home/app/frontend
       - /home/app/node_modules
     ports:
+      - 3000:3000
       - 3200:3000
     environment:
       - WATCHPACK_POLLING=true

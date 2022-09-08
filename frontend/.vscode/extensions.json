@@ -10,6 +10,6 @@
     "pkief.material-icon-theme",
     "mikestead.dotenv",
     "wix.vscode-import-cost",
-    "robbowen.synthwave-vscode"
+    "dracula-theme.theme-dracula"
   ]
 }

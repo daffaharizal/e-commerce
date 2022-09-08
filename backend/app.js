@@ -3,6 +3,7 @@ require('express-async-errors');
 
 // express
 const express = require('express');
+const cors = require('cors');
 const app = express();
 
 // rest of the packages
@@ -27,7 +28,14 @@ const errorHandlerMiddleware = require('./middleware/error-handler');
 
 morgan('tiny');
 
+const corsOptions = {
+  origin: process.env.CORS_ALLOWED_DOMAINS.split(','),
+  credentials: true,
+  optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
+};
+
 // build-in middleware
+app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static('./public'));

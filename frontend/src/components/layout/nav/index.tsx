@@ -13,14 +13,6 @@ export default function NavBar() {
           </a>
           <ul className="nav me-auto">
             <li className="nav-item">
-              <a
-                href="/home"
-                className="nav-link link-dark px-2 active"
-                aria-current="page">
-                Home
-              </a>
-            </li>
-            <li className="nav-item">
               <a href="/home" className="nav-link link-dark px-2">
                 Product
               </a>
@@ -28,7 +20,7 @@ export default function NavBar() {
 
             <li className="nav-item">
               <a href="/home" className="nav-link link-dark px-2">
-                About
+                Customer Service
               </a>
             </li>
           </ul>
@@ -43,17 +35,12 @@ export default function NavBar() {
             <ul className="dropdown-menu text-small">
               <li>
                 <a className="dropdown-item" href="/home">
-                  New project...
+                  Profile
                 </a>
               </li>
               <li>
                 <a className="dropdown-item" href="/home">
                   Settings
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="/home">
-                  Profile
                 </a>
               </li>
               <li>
