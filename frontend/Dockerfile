@@ -2,21 +2,20 @@
 FROM node:lts-alpine
 
 # Set the working directory
-ENV BASE_DIR=/home/app
-ENV APP_HOME=$BASE_DIR/frontend
+ENV APP_HOME=/home/app
 RUN mkdir -p $APP_HOME
 WORKDIR $APP_HOME
 
 ARG NODE_ENV
 
 # add `/app/node_modules/.bin` to $PATH
-ENV PATH $BASE_DIR/node_modules/.bin:$PATH
+ENV PATH $APP_HOME/node_modules/.bin:$PATH
 
 # install yarn
 RUN apk add yarn
 
 # install app dependencies
-COPY package.json $BASE_DIR/
+COPY package.json $APP_HOME/
 
 RUN if [ "$NODE_ENV" = "development" ]; \
   then yarn install --loglevel verbose; \

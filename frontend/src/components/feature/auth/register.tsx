@@ -8,7 +8,8 @@ const RegisterPage: React.FC = () => {
     register,
     handleSubmit,
     setError,
-    formState: { errors }
+    formState: { errors },
+    clearErrors
   } = useForm<IRegisterInput>({
     defaultValues: {
       email: 'ajithpmohan90@gmail.com',
@@ -80,9 +81,10 @@ const RegisterPage: React.FC = () => {
         <div className="section text-center">
           <h4 className="mb-4 pb-3">Sign Up</h4>
           <form
-            onSubmit={(...args) =>
-              void handleSubmit(handleRegistration, handleError)(...args)
-            }>
+            onSubmit={(...args) => {
+              clearErrors();
+              void handleSubmit(handleRegistration, handleError)(...args);
+            }}>
             <p>{errors.serverError?.message}</p>
             <div className="form-group">
               <input

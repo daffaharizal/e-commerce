@@ -26,7 +26,7 @@ services:
     image: e-commerce-frontend:1.0.0
     container_name: e-commerce-fe
     volumes:
-      - ./frontend:/home/app/frontend
+      - ./frontend:/home/app
       - /home/app/node_modules
     ports:
       - 3000:3000
