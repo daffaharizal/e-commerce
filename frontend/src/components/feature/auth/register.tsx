@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { IRegisterInput, IAuthError } from './types';
+
+import { AuthConsumer } from 'context/auth';
+import { IRegisterInput, IAuthResponse, IAuthError } from './types';
 
 const RegisterPage: React.FC = () => {
   const {
@@ -17,6 +20,11 @@ const RegisterPage: React.FC = () => {
       password: 'abc12345'
     }
   });
+
+  const { setAuthUser } = AuthConsumer();
+
+  const navigate = useNavigate();
+
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const [data, setData] = useState<IRegisterInput>();
@@ -24,7 +32,7 @@ const RegisterPage: React.FC = () => {
   useEffect(() => {
     const submitData = async () => {
       try {
-        const res = await axios.post(
+        const res: IAuthResponse = await axios.post(
           `http://${serverURL}/api/v1/auth/register/`,
           data,
           {
@@ -35,7 +43,12 @@ const RegisterPage: React.FC = () => {
             }
           }
         );
-        localStorage.setItem('authUser', JSON.stringify(res.data));
+        localStorage.setItem(
+          'authUser',
+          JSON.stringify({ isAuth: true, ...res.data })
+        );
+        setAuthUser({ isAuth: true, ...res.data });
+        navigate('/');
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           const {

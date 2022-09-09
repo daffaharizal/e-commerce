@@ -1,3 +1,5 @@
+import { iUser } from 'context/auth/types';
+
 export interface ILoginInput {
   email: string;
   password: string;
@@ -8,10 +10,14 @@ export interface IRegisterInput extends ILoginInput {
   fullName: string;
 }
 
-export type IAuthError = {
+export interface IAuthResponse {
+  data: iUser;
+}
+
+export interface IAuthError {
   response: {
     data: {
       msg?: string;
     };
   };
-};
+}

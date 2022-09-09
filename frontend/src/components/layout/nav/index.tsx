@@ -1,7 +1,12 @@
 import React from 'react';
 import * as Icons from 'react-bootstrap-icons';
+import { NavLink } from 'react-router-dom';
+
+import { AuthConsumer } from 'context/auth';
 
 export default function NavBar() {
+  const { isAuth } = AuthConsumer();
+
   return (
     <div>
       <nav className="py-3 border-bottom navbar-info bg-info">
@@ -13,46 +18,49 @@ export default function NavBar() {
           </a>
           <ul className="nav me-auto">
             <li className="nav-item">
-              <a href="/home" className="nav-link link-dark px-2">
+              <NavLink to="/" className="nav-link link-dark px-2">
                 Product
-              </a>
+              </NavLink>
             </li>
-
-            <li className="nav-item">
-              <a href="/home" className="nav-link link-dark px-2">
-                Customer Service
-              </a>
-            </li>
+            {!isAuth && (
+              <li className="nav-item">
+                <NavLink to="/auth" className="nav-link link-dark px-2">
+                  Login
+                </NavLink>
+              </li>
+            )}
           </ul>
-          <div className="dropdown text-end">
-            <a
-              href="/home"
-              className="d-block link-dark text-decoration-none dropdown-toggle"
-              data-bs-toggle="dropdown"
-              aria-expanded="false">
-              <Icons.Person color="black" size={40} />
-            </a>
-            <ul className="dropdown-menu text-small">
-              <li>
-                <a className="dropdown-item" href="/home">
-                  Profile
-                </a>
-              </li>
-              <li>
-                <a className="dropdown-item" href="/home">
-                  Settings
-                </a>
-              </li>
-              <li>
-                <hr className="dropdown-divider" />
-              </li>
-              <li>
-                <a className="dropdown-item" href="/home">
-                  Sign out
-                </a>
-              </li>
-            </ul>
-          </div>
+          {isAuth && (
+            <div className="dropdown text-end">
+              <NavLink
+                to="/"
+                className="d-block link-dark text-decoration-none dropdown-toggle"
+                data-bs-toggle="dropdown"
+                aria-expanded="false">
+                <Icons.Person color="black" size={40} />
+              </NavLink>
+              <ul className="dropdown-menu text-small">
+                <li>
+                  <NavLink to="/" className="dropdown-item">
+                    Profile
+                  </NavLink>
+                </li>
+                <li>
+                  <NavLink to="/" className="dropdown-item">
+                    Settings
+                  </NavLink>
+                </li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
+                <li>
+                  <NavLink to="/" className="dropdown-item">
+                    Sign out
+                  </NavLink>
+                </li>
+              </ul>
+            </div>
+          )}
         </div>
       </nav>
       <header className="py-3 mb-4 border-bottom">

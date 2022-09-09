@@ -1,7 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
-import { ILoginInput, IAuthError } from './types';
+
+import { AuthConsumer } from 'context/auth';
+import { ILoginInput, IAuthResponse, IAuthError } from './types';
 
 const LoginPage: React.FC = () => {
   const {
@@ -17,6 +20,10 @@ const LoginPage: React.FC = () => {
     }
   });
 
+  const { setAuthUser } = AuthConsumer();
+
+  const navigate = useNavigate();
+
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const [data, setData] = useState<ILoginInput>();
@@ -24,7 +31,7 @@ const LoginPage: React.FC = () => {
   useEffect(() => {
     const submitData = async () => {
       try {
-        const result = await axios.post(
+        const res: IAuthResponse = await axios.post(
           `http://${serverURL}/api/v1/auth/login/`,
           data,
           {
@@ -35,7 +42,12 @@ const LoginPage: React.FC = () => {
             }
           }
         );
-        localStorage.setItem('authUser', JSON.stringify(result.data));
+        localStorage.setItem(
+          'authUser',
+          JSON.stringify({ isAuth: true, ...res.data })
+        );
+        setAuthUser({ isAuth: true, ...res.data });
+        navigate('/');
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           const {
