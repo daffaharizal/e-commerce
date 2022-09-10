@@ -9,7 +9,7 @@ import { AuthConsumer } from 'context/auth';
 
 export default function Router() {
   const { isAuth } = AuthConsumer();
-  console.log(isAuth);
+
   return (
     <Routes>
       <Route element={<Layout />}>

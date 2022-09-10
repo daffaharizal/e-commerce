@@ -6,6 +6,8 @@ import axios from 'axios';
 import { AuthConsumer } from 'context/auth';
 import { ILoginInput, IAuthResponse, IAuthError } from './types';
 
+import styles from 'assets/css/Auth.module.css';
+
 const LoginPage: React.FC = () => {
   const {
     register,
@@ -83,9 +85,9 @@ const LoginPage: React.FC = () => {
   };
 
   return (
-    <div className="card-front">
-      <div className="center-wrap">
-        <div className="section text-center">
+    <div className={styles['card-front']}>
+      <div className={styles['center-wrap']}>
+        <div className={`${styles.section} text-center`}>
           <h4 className="mb-4 pb-3">Log In</h4>
           <form
             onSubmit={(...args) => {
@@ -93,32 +95,32 @@ const LoginPage: React.FC = () => {
               void handleSubmit(handleLogin, handleError)(...args);
             }}>
             <p>{errors.serverError?.message}</p>
-            <div className="form-group">
+            <div className={styles['form-group']}>
               <input
                 type="email"
                 {...register('email', loginOptions.email)}
                 placeholder="Your Email"
-                className="form-style"
+                className={styles['form-style']}
               />
-              <i className="input-icon uil uil-at"></i>
+              <i className={`${styles['input-icon']} uil uil-at`}></i>
               <p>{errors.email?.message}</p>
             </div>
-            <div className="form-group mt-2">
+            <div className={`${styles['form-group']} mt-2`}>
               <input
                 type="password"
                 {...register('password', loginOptions.password)}
                 placeholder="Password"
-                className="form-style"
+                className={styles['form-style']}
               />
-              <i className="input-icon uil uil-lock-alt"></i>
+              <i className={`${styles['input-icon']} uil uil-lock-alt`}></i>
               <p>{errors.password?.message}</p>
             </div>
-            <button type="submit" className="btn mt-4">
+            <button type="submit" className={`${styles['btn']} mt-4`}>
               Login
             </button>
           </form>
           <p className="mb-0 mt-4 text-center">
-            <a href="#0" className="link">
+            <a href="#0" className={styles.link}>
               Forgot your password?
             </a>
           </p>

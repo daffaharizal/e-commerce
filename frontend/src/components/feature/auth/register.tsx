@@ -6,6 +6,8 @@ import axios from 'axios';
 import { AuthConsumer } from 'context/auth';
 import { IRegisterInput, IAuthResponse, IAuthError } from './types';
 
+import styles from 'assets/css/Auth.module.css';
+
 const RegisterPage: React.FC = () => {
   const {
     register,
@@ -89,9 +91,9 @@ const RegisterPage: React.FC = () => {
   };
 
   return (
-    <div className="card-back">
-      <div className="center-wrap">
-        <div className="section text-center">
+    <div className={styles['card-back']}>
+      <div className={styles['center-wrap']}>
+        <div className={`${styles.section} text-center`}>
           <h4 className="mb-4 pb-3">Sign Up</h4>
           <form
             onSubmit={(...args) => {
@@ -99,37 +101,37 @@ const RegisterPage: React.FC = () => {
               void handleSubmit(handleRegistration, handleError)(...args);
             }}>
             <p>{errors.serverError?.message}</p>
-            <div className="form-group">
+            <div className={styles['form-group']}>
               <input
                 {...register('fullName', registerOptions.fullName)}
-                className="form-style"
+                className={styles['form-style']}
                 placeholder="Full Name"
               />
-              <i className="input-icon uil uil-user"></i>
+              <i className={`${styles['input-icon']} uil uil-user`}></i>
               <p>{errors.fullName?.message}</p>
             </div>
-            <div className="form-group mt-2">
+            <div className={`${styles['form-group']} mt-2`}>
               <input
                 type="email"
                 {...register('email', registerOptions.email)}
                 placeholder="Enter your Email"
-                className="form-style"
+                className={styles['form-style']}
               />
-              <i className="input-icon uil uil-at"></i>
+              <i className={`${styles['input-icon']} uil uil-at`}></i>
               <p>{errors.email?.message}</p>
             </div>
 
-            <div className="form-group mt-2">
+            <div className={`${styles['form-group']} mt-2`}>
               <input
                 type="password"
                 {...register('password', registerOptions.password)}
-                className="form-style"
+                className={styles['form-style']}
                 placeholder="Password"
               />
-              <i className="input-icon uil uil-lock-alt"></i>
+              <i className={`${styles['input-icon']} uil uil-lock-alt`}></i>
               <p>{errors.password?.message}</p>
             </div>
-            <button type="submit" className="btn mt-4">
+            <button type="submit" className={`${styles['btn']} mt-4`}>
               Sign up
             </button>
           </form>

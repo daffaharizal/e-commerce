@@ -1,4 +1,3 @@
-import React from 'react';
 import * as Icons from 'react-bootstrap-icons';
 import { NavLink } from 'react-router-dom';
 
