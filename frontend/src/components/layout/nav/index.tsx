@@ -3,6 +3,7 @@ import * as Icons from 'react-bootstrap-icons';
 import { NavLink } from 'react-router-dom';
 
 import { AuthConsumer } from 'context/auth';
+import { LogoutPage } from 'components/feature/auth';
 
 export default function NavBar() {
   const { isAuth } = AuthConsumer();
@@ -54,9 +55,7 @@ export default function NavBar() {
                   <hr className="dropdown-divider" />
                 </li>
                 <li>
-                  <NavLink to="/" className="dropdown-item">
-                    Sign out
-                  </NavLink>
+                  <LogoutPage />
                 </li>
               </ul>
             </div>
