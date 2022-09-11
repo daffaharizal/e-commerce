@@ -14,11 +14,11 @@ a:hover {
 .link:hover {
   color: #ffeba7;
 }
-p {
+/* p {
   font-weight: 500;
   font-size: 14px;
   line-height: 1.7;
-}
+} */
 h4 {
   font-weight: 600;
 }

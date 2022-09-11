@@ -32,7 +32,7 @@ export default function ProductPage() {
 
   return (
     <div>
-      <div className="container-fluid mt-2 mb-5">
+      <div className="container-lg mt-2 mb-5">
         <div className={styles.products}>
           <div className="tab-content" id="myTabContent">
             <div
@@ -59,7 +59,7 @@ export default function ProductPage() {
               <div className="row g-3">
                 {products.map((product) => (
                   <div className="col-md-4" key={product.id}>
-                    <div className={styles.card}>
+                    <div className={`${styles.card} bg-white`}>
                       <img src={product.image} className="card-img-top" />
                       <div className={styles['card-body']}>
                         <div className="d-flex justify-content-between">

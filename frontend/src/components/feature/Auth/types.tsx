@@ -21,3 +21,11 @@ export interface IAuthError {
     };
   };
 }
+
+export interface ILocationState {
+  state?: {
+    from?: {
+      pathname: string;
+    };
+  };
+}

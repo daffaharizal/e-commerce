@@ -4,7 +4,12 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { AuthConsumer } from 'context/auth';
-import { ILoginInput, IAuthResponse, IAuthError } from './types';
+import {
+  ILoginInput,
+  IAuthResponse,
+  IAuthError
+  // ILocationState
+} from './types';
 
 import styles from 'assets/css/Auth.module.css';
 
@@ -25,6 +30,8 @@ const LoginPage: React.FC = () => {
   const { setAuthUser } = AuthConsumer();
 
   const navigate = useNavigate();
+
+  // const location = useLocation() as ILocationState;
 
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
@@ -49,6 +56,7 @@ const LoginPage: React.FC = () => {
           JSON.stringify({ isAuth: true, ...res.data })
         );
         setAuthUser({ isAuth: true, ...res.data });
+
         navigate('/');
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
