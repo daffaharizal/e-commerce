@@ -5,6 +5,7 @@ import { iProduct, iProductResponse } from './types';
 
 import 'font-awesome/css/font-awesome.min.css';
 import styles from 'assets/css/Product.module.css';
+import ProductItem from './item';
 
 export default function ProductPage() {
   const [products, setProducts] = React.useState<iProduct[]>([]);
@@ -58,40 +59,7 @@ export default function ProductPage() {
               </div>
               <div className="row g-3">
                 {products.map((product) => (
-                  <div className="col-md-4" key={product.id}>
-                    <div className={`${styles.card} bg-white`}>
-                      <img src={product.image} className="card-img-top" />
-                      <div className={styles['card-body']}>
-                        <div className="d-flex justify-content-between">
-                          <span className={styles['font-weight-bold']}>
-                            {product.name}
-                          </span>
-                          <span className={styles['font-weight-bold']}>
-                            ${product.price}
-                          </span>
-                        </div>
-                        <p className={`${styles['card-text']} mb-1 mt-1`}>
-                          {product.description}
-                        </p>
-                        <div className="d-flex align-items-center flex-row">
-                          <img
-                            src="https://i.imgur.com/e9VnSng.png"
-                            width="20"
-                          />
-                          <span className="guarantee">2 Years Guarantee</span>
-                        </div>
-                      </div>
-                      <hr />
-                      <div className={styles['card-body']}>
-                        <div className={`${styles['buttons']} text-end`}>
-                          <button className="btn btn-outline-dark">
-                            add to wishlist
-                          </button>
-                          <button className="btn btn-dark">Add to cart</button>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
+                  <ProductItem product={product} key={product.id} />
                 ))}
               </div>
             </div>

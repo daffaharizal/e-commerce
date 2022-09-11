@@ -19,3 +19,7 @@ export interface iProductResponse {
     products: iProduct[];
   };
 }
+
+export interface iProductItemProps {
+  product: iProduct;
+}
