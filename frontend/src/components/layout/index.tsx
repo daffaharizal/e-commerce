@@ -1,6 +1,7 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
-import Navigation from './nav';
+
+import Navigation from 'components/layout/Nav';
 
 const Layout: React.FC = () => {
   return (

@@ -1,8 +1,10 @@
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
 
+import 'assets/css/App.css';
+
 import { AuthProvider } from 'context/auth';
-import Router from 'components/layout/router';
+import Router from 'components/layout/Router';
 
 function App() {
   return (

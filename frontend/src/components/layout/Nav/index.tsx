@@ -1,7 +1,7 @@
 import * as Icons from 'react-bootstrap-icons';
 import { NavLink } from 'react-router-dom';
 
-import { LogoutPage } from 'components/feature/auth';
+import { LogoutPage } from 'components/feature/Auth';
 import { AuthConsumer } from 'context/auth';
 
 export default function NavBar() {
