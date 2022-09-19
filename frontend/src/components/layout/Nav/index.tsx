@@ -12,13 +12,13 @@ export default function NavBar() {
       <nav className="py-3 border-bottom navbar-info bg-info">
         <div className="container-fluid d-flex flex-wrap">
           <a
-            href="/"
+            href="/products"
             className="d-flex align-items-center mb-2 mb-lg-0 text-black text-decoration-none">
             <Icons.Bootstrap color="black" size={40} />
           </a>
           <ul className="nav me-auto">
             <li className="nav-item">
-              <NavLink to="/" className="nav-link link-dark px-2">
+              <NavLink to="/products" className="nav-link link-dark px-2">
                 Product
               </NavLink>
             </li>

@@ -21,7 +21,7 @@ export default function LogoutPage() {
     });
     localStorage.removeItem('authUser');
     setAuthUser({ isAuth: false, user: {} });
-    navigate('/');
+    navigate('/products');
   };
 
   return (

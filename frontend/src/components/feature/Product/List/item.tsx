@@ -1,6 +1,7 @@
-import React from 'react';
-import styles from 'assets/css/Product.module.css';
-import { iProductItemProps } from './types';
+import { Link } from 'react-router-dom';
+
+import { iProductItemProps } from '../types';
+import styles from 'assets/css/ProductList.module.css';
 
 export default function ProductItem({ product }: iProductItemProps) {
   return (
@@ -9,7 +10,9 @@ export default function ProductItem({ product }: iProductItemProps) {
         <img src={product.image} className="card-img-top" />
         <div className={styles['card-body']}>
           <div className="d-flex justify-content-between">
-            <span className={styles['font-weight-bold']}>{product.name}</span>
+            <span className={styles['font-weight-bold']}>
+              <Link to={product.id}>{product.name}</Link>
+            </span>
             <span className={styles['font-weight-bold']}>${product.price}</span>
           </div>
           <p className={`${styles['card-text']} mb-1 mt-1`}>

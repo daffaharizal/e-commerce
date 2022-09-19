@@ -57,7 +57,7 @@ const LoginPage: React.FC = () => {
         );
         setAuthUser({ isAuth: true, ...res.data });
 
-        navigate('/');
+        navigate('/products');
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           const {

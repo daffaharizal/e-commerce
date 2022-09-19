@@ -50,7 +50,7 @@ const RegisterPage: React.FC = () => {
           JSON.stringify({ isAuth: true, ...res.data })
         );
         setAuthUser({ isAuth: true, ...res.data });
-        navigate('/');
+        navigate('/products');
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           const {

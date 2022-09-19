@@ -14,9 +14,15 @@ export interface iProduct {
   price: number;
 }
 
-export interface iProductResponse {
+export interface iProductListResponse {
   data: {
     products: iProduct[];
+  };
+}
+
+export interface iProductDetailResponse {
+  data: {
+    product: iProduct;
   };
 }
 

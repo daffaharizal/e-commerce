@@ -8,7 +8,7 @@ const ProtectedRoute: React.FC<iProtectedRoute> = ({ children }) => {
   const location = useLocation();
 
   if (isAuth) {
-    return <Navigate to="/" replace state={{ from: location }} />;
+    return <Navigate to="/products" replace state={{ from: location }} />;
   }
 
   return children;
