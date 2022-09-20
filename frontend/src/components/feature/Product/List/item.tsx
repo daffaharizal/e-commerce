@@ -3,6 +3,8 @@ import { Link } from 'react-router-dom';
 import { iProductItemProps } from '../types';
 import styles from 'assets/css/ProductList.module.css';
 
+import { StyledButton } from 'components/shared';
+
 export default function ProductItem({ product }: iProductItemProps) {
   return (
     <div className="col-md-4">
@@ -26,8 +28,10 @@ export default function ProductItem({ product }: iProductItemProps) {
         <hr />
         <div className={styles['card-body']}>
           <div className={`${styles['buttons']} text-end`}>
-            <button className="btn btn-outline-dark">add to wishlist</button>
-            <button className="btn btn-dark">Add to cart</button>
+            <StyledButton className="btn btn-outline-dark">
+              Add to Wishlist
+            </StyledButton>
+            <StyledButton className="btn btn-dark">Add to Cart</StyledButton>
           </div>
         </div>
       </div>

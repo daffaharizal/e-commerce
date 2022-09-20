@@ -5,6 +5,7 @@ import { useParams } from 'react-router-dom';
 import PureCarousel from 'components/shared/Carousel';
 import './style.css';
 
+import { StyledButton } from 'components/shared';
 import { iProduct, iProductDetailResponse } from '../types';
 
 export default function ProductDetailPage() {
@@ -128,9 +129,9 @@ export default function ProductDetailPage() {
                       +
                     </div>
                   </form>
-                  <a href="#" className="round-black-btn">
+                  <StyledButton className="round-black-btn">
                     Add to Cart
-                  </a>
+                  </StyledButton>
                 </div>
               </div>
             </div>
