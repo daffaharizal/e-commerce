@@ -1,4 +1,5 @@
 const path = require('path');
+const sharp = require('sharp');
 const { StatusCodes } = require('http-status-codes');
 
 const Product = require('../models/Product');
@@ -61,14 +62,21 @@ const uploadProductImage = async (req, res) => {
 
   const imagePath = path.join(
     __dirname,
-    '../public/uploads/' + `${productImage.name}`
+    `../public/uploads/${productImage.name}`
   );
-  await productImage.mv(imagePath);
+  // await productImage.mv(imagePath);
 
-  product.image = `/uploads/${productImage.name}`;
+  await sharp(productImage.data)
+    .resize({
+      width: 500
+    })
+    .toFile(imagePath);
+
+  const image = `/uploads/${productImage.name}`;
+  product.image = image;
   product.save();
 
-  res.status(StatusCodes.OK).json({ image: `/uploads/${productImage.name}` });
+  res.status(StatusCodes.OK).json({ image });
 };
 
 module.exports = {

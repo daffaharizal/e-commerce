@@ -6,10 +6,15 @@ import styles from 'assets/css/ProductList.module.css';
 import { StyledButton } from 'components/shared';
 
 export default function ProductItem({ product }: iProductItemProps) {
+  const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
+
   return (
     <div className="col-md-4">
       <div className={`${styles.card} bg-white`}>
-        <img src={product.image} className="card-img-top" />
+        <img
+          src={`http://${serverURL}${product.image}`}
+          className="card-img-top"
+        />
         <div className={styles['card-body']}>
           <div className="d-flex justify-content-between">
             <span className={styles['font-weight-bold']}>
