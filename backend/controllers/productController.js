@@ -63,7 +63,11 @@ const uploadProductImage = async (req, res) => {
   });
 
   productImages.map(async (image) => {
-    const imagePath = path.join(__dirname, `../public/uploads/${image.name}`);
+    const randomString = Math.random().toString(36).substring(2, 12);
+    const name = image.name.split('.');
+    const imageName = `${name[0]}_${randomString}.${name[1]}`;
+
+    const imagePath = path.join(__dirname, `../public/uploads/${imageName}`);
     // await image.mv(imagePath);
 
     await sharp(image.data)
@@ -72,7 +76,7 @@ const uploadProductImage = async (req, res) => {
       })
       .toFile(imagePath);
 
-    const url = `/uploads/${image.name}`;
+    const url = `/uploads/${imageName}`;
 
     await Product.findOneAndUpdate(
       { _id: req.params.id },
