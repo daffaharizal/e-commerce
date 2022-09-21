@@ -1,5 +1,10 @@
+export interface iProductImages {
+  name: string;
+  url: string;
+}
+
 export interface iPureCarousel {
   element: {
-    image: string;
+    images: iProductImages[];
   };
 }

@@ -1,9 +1,10 @@
 import { Link } from 'react-router-dom';
 
-import { iProductItemProps } from '../types';
-import styles from 'assets/css/ProductList.module.css';
-
 import { StyledButton } from 'components/shared';
+import { iProductItemProps } from '../types';
+
+import styles from 'assets/css/ProductList.module.css';
+import NoImage from 'assets/images/noproductimage.png';
 
 export default function ProductItem({ product }: iProductItemProps) {
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
@@ -11,10 +12,15 @@ export default function ProductItem({ product }: iProductItemProps) {
   return (
     <div className="col-md-4">
       <div className={`${styles.card} bg-white`}>
-        <img
-          src={`http://${serverURL}${product.image}`}
-          className="card-img-top"
-        />
+        {product.images.length > 0 ? (
+          <img
+            src={`http://${serverURL}${product.images[0].url}`}
+            className="card-img-top"
+            alt={product.images[0].name}
+          />
+        ) : (
+          <img src={NoImage} className="card-img-top" alt="noimage" />
+        )}
         <div className={styles['card-body']}>
           <div className="d-flex justify-content-between">
             <span className={styles['font-weight-bold']}>

@@ -41,42 +41,47 @@ const uploadProductImage = async (req, res) => {
   if (!req.files) {
     throw new CustomError.BadRequestError('No File Uploaded');
   }
-  const productImage = req.files.image;
-
-  if (!productImage.mimetype.startsWith('image')) {
-    throw new CustomError.BadRequestError('Please Upload Image');
-  }
+  const productImages = req.files.image;
 
   const maxSize = 1024 * 1024;
-
-  if (productImage.size > maxSize) {
-    throw new CustomError.BadRequestError(
-      'Please upload image smaller than 1MB'
-    );
-  }
 
   const product = await Product.findById(req.params.id);
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
   }
 
-  const imagePath = path.join(
-    __dirname,
-    `../public/uploads/${productImage.name}`
-  );
-  // await productImage.mv(imagePath);
+  productImages.map((image) => {
+    if (!image.mimetype.startsWith('image')) {
+      throw new CustomError.BadRequestError('Please Upload Image');
+    }
 
-  await sharp(productImage.data)
-    .resize({
-      width: 500
-    })
-    .toFile(imagePath);
+    if (image.size > maxSize) {
+      throw new CustomError.BadRequestError(
+        'Please upload image smaller than 1MB'
+      );
+    }
+  });
 
-  const image = `/uploads/${productImage.name}`;
-  product.image = image;
-  product.save();
+  productImages.map(async (image) => {
+    const imagePath = path.join(__dirname, `../public/uploads/${image.name}`);
+    // await image.mv(imagePath);
 
-  res.status(StatusCodes.OK).json({ image });
+    await sharp(image.data)
+      .resize({
+        width: 500
+      })
+      .toFile(imagePath);
+
+    const url = `/uploads/${image.name}`;
+
+    await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      { $push: { images: { name: image.name, url } } },
+      { new: true, runValidators: true }
+    );
+  });
+
+  res.status(StatusCodes.OK).json({ msg: 'Images Successfully Updated' });
 };
 
 module.exports = {

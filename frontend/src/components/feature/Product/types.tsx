@@ -1,3 +1,8 @@
+export interface iProductImages {
+  name: string;
+  url: string;
+}
+
 export interface iProduct {
   id: string;
   averageRating: number;
@@ -7,7 +12,7 @@ export interface iProduct {
   description: string;
   featured: boolean;
   freeShipping: boolean;
-  image: string;
+  images: iProductImages[];
   inventory: number;
   name: string;
   numOfReviews: number;
