@@ -3,17 +3,17 @@ import axios from 'axios';
 
 import styles from 'assets/css/ProductList.module.css';
 
-import { iProduct, iProductListResponse } from '../types';
+import { IProduct, IProductListResponse } from '../types';
 import ProductItem from './item';
 
 export default function ProductListPage() {
-  const [products, setProducts] = React.useState<iProduct[]>([]);
+  const [products, setProducts] = React.useState<IProduct[]>([]);
 
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   React.useEffect(() => {
     const fetchProduct = async () => {
-      const res: iProductListResponse = await axios.get(
+      const res: IProductListResponse = await axios.get(
         `http://${serverURL}/api/v1/products/`,
         {
           headers: {

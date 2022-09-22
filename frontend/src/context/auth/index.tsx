@@ -1,13 +1,14 @@
 import React from 'react';
-import { iAuthUser, iAuthContext, iAuthProvider } from './types';
+import { IChildrenProps } from 'types';
+import { IAuthUser, IAuthContext } from './types';
 
-const AuthContext = React.createContext<iAuthContext | undefined>(undefined);
+const AuthContext = React.createContext<IAuthContext | undefined>(undefined);
 
-const AuthProvider: React.FC<iAuthProvider> = ({ children }) => {
-  const [authUser, setAuthUser] = React.useState<iAuthUser>(
+const AuthProvider: React.FC<IChildrenProps> = ({ children }) => {
+  const [authUser, setAuthUser] = React.useState<IAuthUser>(
     JSON.parse(
       localStorage.getItem('authUser') || '{"isAuth": false, "user": {}}'
-    ) as iAuthUser
+    ) as IAuthUser
   );
 
   return (
@@ -17,6 +18,6 @@ const AuthProvider: React.FC<iAuthProvider> = ({ children }) => {
   );
 };
 
-const AuthConsumer = () => React.useContext(AuthContext) as iAuthContext;
+const AuthConsumer = () => React.useContext(AuthContext) as IAuthContext;
 
 export { AuthContext, AuthProvider, AuthConsumer };

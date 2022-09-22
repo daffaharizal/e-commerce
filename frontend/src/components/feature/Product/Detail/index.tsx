@@ -4,23 +4,24 @@ import { useParams } from 'react-router-dom';
 
 import './style.css';
 
-import ProductInfo from './ProductInfo';
 import { PureCarousel, StyledButton, UserRatingForm } from 'components/shared';
-import { iProduct, iProductDetailResponse } from '../types';
+import { ProductProvider } from 'context/product';
+import ProductInfo from './ProductInfo';
+import { IProduct, IProductDetailResponse } from '../types';
 
 export default function ProductDetailPage() {
   const { productId } = useParams() as {
     productId: string;
   };
 
-  const [product, setProduct] = React.useState<iProduct>();
+  const [product, setProduct] = React.useState<IProduct>();
   const [quantity, setQuantity] = React.useState<number>(1);
 
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   React.useEffect(() => {
     const fetchProduct = async () => {
-      const res: iProductDetailResponse = await axios.get(
+      const res: IProductDetailResponse = await axios.get(
         `http://${serverURL}/api/v1/products/${productId}`,
         {
           headers: {
@@ -47,27 +48,28 @@ export default function ProductDetailPage() {
   return (
     <>
       {!!product && (
-        <div className="container">
-          <div className="heading-section">
-            <h2>{product.name}</h2>
-          </div>
-          <div className="row">
-            <div className="col-md-6">
-              <PureCarousel images={product.images} />
+        <ProductProvider productId={productId}>
+          <div className="container">
+            <div className="heading-section">
+              <h2>{product.name}</h2>
             </div>
-            <div className="col-md-6">
-              <div className="product-dtl">
-                <div className="product-info">
-                  <div className="product-name">{product.category}</div>
-                  <UserRatingForm rid={product._id} totalReviews={3} />
-                  <div className="product-price-discount">
-                    <span>${product.price}</span>
-                    <span className="line-through"></span>
+            <div className="row">
+              <div className="col-md-6">
+                <PureCarousel images={product.images} />
+              </div>
+              <div className="col-md-6">
+                <div className="product-dtl">
+                  <div className="product-info">
+                    <div className="product-name">{product.category}</div>
+                    <UserRatingForm id={product.id} totalReviews={3} />
+                    <div className="product-price-discount">
+                      <span>${product.price}</span>
+                      <span className="line-through"></span>
+                    </div>
                   </div>
-                </div>
-                <p>{product.description}</p>
-                <div className="row">
-                  {/* <div className="col-md-6">
+                  <p>{product.description}</p>
+                  <div className="row">
+                    {/* <div className="col-md-6">
                     <label htmlFor="size">Size</label>
                     <select id="size" name="size" className="form-control">
                       <option>S</option>
@@ -76,45 +78,48 @@ export default function ProductDetailPage() {
                       <option>XL</option>
                     </select>
                   </div> */}
-                  <div className="col-md-6">
-                    <label htmlFor="color">Color</label>
-                    <select id="color" name="color" className="form-control">
-                      {product.colors.map((color, index) => (
-                        <option key={index}>{color}</option>
-                      ))}
-                    </select>
+                    <div className="col-md-6">
+                      <label htmlFor="color">Color</label>
+                      <select id="color" name="color" className="form-control">
+                        {product.colors.map((color, index) => (
+                          <option key={index}>{color}</option>
+                        ))}
+                      </select>
+                    </div>
                   </div>
-                </div>
-                <div className="product-count">
-                  <label htmlFor="size">Quantity</label>
-                  <form action="#" className="display-flex">
-                    <div
-                      className="qtyminus"
-                      onClick={() => handleQuantity(-1)}>
-                      -
-                    </div>
-                    <input
-                      type="text"
-                      name="quantity"
-                      value={quantity}
-                      className="qty"
-                      onChange={(e) => e.preventDefault()}
-                      disabled
-                    />
-                    <div className="qtyplus" onClick={() => handleQuantity(+1)}>
-                      +
-                    </div>
-                  </form>
-                  <StyledButton className="round-black-btn">
-                    Add to Cart
-                  </StyledButton>
+                  <div className="product-count">
+                    <label htmlFor="size">Quantity</label>
+                    <form action="#" className="display-flex">
+                      <div
+                        className="qtyminus"
+                        onClick={() => handleQuantity(-1)}>
+                        -
+                      </div>
+                      <input
+                        type="text"
+                        name="quantity"
+                        value={quantity}
+                        className="qty"
+                        onChange={(e) => e.preventDefault()}
+                        disabled
+                      />
+                      <div
+                        className="qtyplus"
+                        onClick={() => handleQuantity(+1)}>
+                        +
+                      </div>
+                    </form>
+                    <StyledButton className="round-black-btn">
+                      Add to Cart
+                    </StyledButton>
+                  </div>
                 </div>
               </div>
             </div>
-          </div>
 
-          <ProductInfo product={product} />
-        </div>
+            <ProductInfo product={product} />
+          </div>
+        </ProductProvider>
       )}
     </>
   );

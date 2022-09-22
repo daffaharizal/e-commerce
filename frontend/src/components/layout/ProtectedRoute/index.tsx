@@ -1,9 +1,9 @@
 import { Navigate, useLocation } from 'react-router-dom';
 
 import { AuthConsumer } from 'context/auth';
-import { iProtectedRoute } from './types';
+import { IProtectedRoute } from './types';
 
-const ProtectedRoute: React.FC<iProtectedRoute> = ({ children }) => {
+const ProtectedRoute: React.FC<IProtectedRoute> = ({ children }) => {
   const { isAuth } = AuthConsumer();
   const location = useLocation();
 

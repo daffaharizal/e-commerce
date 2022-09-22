@@ -1,6 +1,6 @@
 export type Auth = boolean;
 
-export interface iUser {
+export interface IUser {
   user: {
     email?: string;
     fullName?: string;
@@ -10,14 +10,10 @@ export interface iUser {
   };
 }
 
-export interface iAuthUser extends iUser {
+export interface IAuthUser extends IUser {
   isAuth: Auth;
 }
 
-export interface iAuthContext extends iAuthUser {
-  setAuthUser: React.Dispatch<React.SetStateAction<iAuthUser>>;
-}
-
-export interface iAuthProvider {
-  children: React.ReactNode;
+export interface IAuthContext extends IAuthUser {
+  setAuthUser: React.Dispatch<React.SetStateAction<IAuthUser>>;
 }

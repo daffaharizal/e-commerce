@@ -1,17 +1,17 @@
 import * as Icons from 'react-bootstrap-icons';
-import { iProductReviews } from 'components/feature/Product/types';
+import { IProductReviews } from 'components/feature/Product/types';
 import { UserRatingForm } from 'components/shared';
 
 export default function UserReviewCard({
   review: {
-    _id,
+    id,
     rating,
     title,
     comment,
     user: { fullName }
   }
 }: {
-  review: iProductReviews;
+  review: IProductReviews;
 }) {
   return (
     <div className="card mb-4">
@@ -20,7 +20,7 @@ export default function UserReviewCard({
       </h5>
       <div className="card-body">
         <h5 className="card-title">
-          <UserRatingForm rid={_id} star={rating} />
+          <UserRatingForm id={id} star={rating} />
           {title}
         </h5>
         <p className="card-text">{comment}</p>

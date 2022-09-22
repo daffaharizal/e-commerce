@@ -7,11 +7,11 @@ import {
   DotGroup
 } from 'pure-react-carousel';
 
-import { iPureCarousel } from './types';
+import { IPureCarousel } from './types';
 
 import NoImage from 'assets/images/noproductimage.png';
 
-export default function PureCarousel({ images }: iPureCarousel) {
+export default function PureCarousel({ images }: IPureCarousel) {
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   return (

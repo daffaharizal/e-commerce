@@ -1,3 +1,3 @@
-export interface iProtectedRoute {
+export interface IProtectedRoute {
   children: React.ReactElement;
 }

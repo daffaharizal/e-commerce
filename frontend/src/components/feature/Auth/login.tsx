@@ -4,10 +4,10 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { AuthConsumer } from 'context/auth';
+import { IErrorResponse } from 'types';
 import {
   ILoginInput,
-  IAuthResponse,
-  IAuthError
+  IAuthResponse
   // ILocationState
 } from './types';
 
@@ -64,7 +64,7 @@ const LoginPage: React.FC = () => {
             response: {
               data: { msg }
             }
-          } = error as IAuthError;
+          } = error as IErrorResponse;
           setError('serverError', { type: 'custom', message: msg });
         }
       }

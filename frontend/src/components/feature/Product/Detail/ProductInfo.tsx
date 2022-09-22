@@ -1,9 +1,9 @@
-import { iProductItemProps } from '../types';
+import { IProductItemProps } from '../types';
 import { UserReviewCard, UserReviewForm } from 'components/shared';
 
 export default function ProductInfo({
   product: { description, reviews }
-}: iProductItemProps) {
+}: IProductItemProps) {
   return (
     <div className="product-info-tabs">
       <ul className="nav nav-tabs" id="myTab" role="tablist">

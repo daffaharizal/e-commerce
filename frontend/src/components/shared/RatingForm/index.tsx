@@ -1,57 +1,42 @@
+import React from 'react';
 import styles from 'assets/css/UserRating.module.css';
-
 export default function UserRatingForm({
-  rid,
+  id = '',
   star = 0,
-  totalReviews = 0
+  totalReviews = 0,
+  disabled = true
 }: {
-  rid: number;
+  id?: string;
   star?: number;
   totalReviews?: number;
+  disabled?: boolean;
 }) {
+  const ratings = [5, 4, 3, 2, 1];
+  const [data, setData] = React.useState(star);
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setData(+event.target.value);
+  };
+
   return (
     <div className={styles['reviews-counter']}>
       <div className={styles.rate}>
-        <input
-          type="radio"
-          id={`${rid}_star5`}
-          defaultChecked={star === 5 ? true : false}
-        />
-        <label htmlFor={`${rid}_star5`} title="text">
-          5 stars
-        </label>
-        <input
-          type="radio"
-          id={`${rid}_star4`}
-          defaultChecked={star === 4 ? true : false}
-        />
-        <label htmlFor={`${rid}_star4`} title="text">
-          4 stars
-        </label>
-        <input
-          type="radio"
-          id={`${rid}_star3`}
-          defaultChecked={star === 3 ? true : false}
-        />
-        <label htmlFor={`${rid}_star3`} title="text">
-          3 stars
-        </label>
-        <input
-          type="radio"
-          id={`${rid}_star2`}
-          defaultChecked={star === 2 ? true : false}
-        />
-        <label htmlFor={`${rid}_star2`} title="text">
-          2 stars
-        </label>
-        <input
-          type="radio"
-          id={`${rid}_star1`}
-          defaultChecked={star === 1 ? true : false}
-        />
-        <label htmlFor={`${rid}_star1`} title="text">
-          1 star
-        </label>
+        {ratings.map((rating, index) => (
+          <React.Fragment key={index}>
+            <input
+              type="radio"
+              name={`rate${id}`}
+              id={`star${rating}${id}`}
+              defaultChecked={rating === data ? true : false}
+              value={rating}
+              onChange={handleChange}
+              disabled={disabled}
+            />
+            <label htmlFor={`star${rating}${id}`} title="text">
+              {rating} stars
+            </label>
+          </React.Fragment>
+        ))}
       </div>
       {!!totalReviews && <span>{totalReviews} Reviews</span>}
     </div>

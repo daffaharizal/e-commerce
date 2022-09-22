@@ -1,22 +1,22 @@
-export interface iUser {
+export interface IUser {
   _id: string;
   fullName: string;
 }
 
-export interface iProductImages {
+export interface IProductImages {
   name: string;
   url: string;
 }
 
-export interface iProductReviews {
-  _id: number;
+export interface IProductReviews {
+  id: string;
   rating: number;
   title: string;
   comment: string;
-  user: iUser;
+  user: IUser;
 }
 
-export interface iProduct {
+export interface IProduct {
   id: string;
   _id: number;
   averageRating: number;
@@ -26,26 +26,24 @@ export interface iProduct {
   description: string;
   featured: boolean;
   freeShipping: boolean;
-  images: iProductImages[];
+  images: IProductImages[];
   inventory: number;
   name: string;
   numOfReviews: number;
   price: number;
-  reviews: iProductReviews[];
+  reviews: IProductReviews[];
 }
 
-export interface iProductListResponse {
+export interface IProductListResponse {
   data: {
-    products: iProduct[];
+    products: IProduct[];
   };
 }
 
-export interface iProductDetailResponse {
-  data: {
-    product: iProduct;
-  };
+export interface IProductItemProps {
+  product: IProduct;
 }
 
-export interface iProductItemProps {
-  product: iProduct;
+export interface IProductDetailResponse {
+  data: IProductItemProps;
 }

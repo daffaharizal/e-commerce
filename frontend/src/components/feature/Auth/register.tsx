@@ -4,7 +4,8 @@ import { useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { AuthConsumer } from 'context/auth';
-import { IRegisterInput, IAuthResponse, IAuthError } from './types';
+import { IErrorResponse } from 'types';
+import { IRegisterInput, IAuthResponse } from './types';
 
 import styles from 'assets/css/Auth.module.css';
 
@@ -57,7 +58,7 @@ const RegisterPage: React.FC = () => {
             response: {
               data: { msg }
             }
-          } = error as IAuthError;
+          } = error as IErrorResponse;
           setError('serverError', { type: 'custom', message: msg });
         }
       }

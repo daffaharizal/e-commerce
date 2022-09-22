@@ -1,12 +1,12 @@
 import { Link } from 'react-router-dom';
 
 import { StyledButton } from 'components/shared';
-import { iProductItemProps } from '../types';
+import { IProductItemProps } from '../types';
 
 import styles from 'assets/css/ProductList.module.css';
 import NoImage from 'assets/images/noproductimage.png';
 
-export default function ProductItem({ product }: iProductItemProps) {
+export default function ProductItem({ product }: IProductItemProps) {
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   return (

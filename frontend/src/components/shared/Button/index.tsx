@@ -1,11 +1,11 @@
 import React from 'react';
-import { iStyledButton } from './types';
+import { IStyledButton } from './types';
 
 export default function StyledButton({
   type = 'button',
   children,
   ...rest
-}: iStyledButton) {
+}: IStyledButton) {
   return (
     <button type={type} {...rest}>
       {children}
