@@ -20,13 +20,14 @@ export default function UserReviewForm() {
   } = useForm<IReviewForm>({
     defaultValues: {
       product: productId,
-      rating: 1
+      rating: 0
     }
   });
 
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const [data, setData] = React.useState<IReviewForm>();
+  const [rating, setRating] = React.useState<number>(0);
 
   React.useEffect(() => {
     const submitForm = async () => {
@@ -65,7 +66,7 @@ export default function UserReviewForm() {
   };
 
   const handleFormSubmit: SubmitHandler<IReviewForm> = (values) => {
-    setData(values);
+    setData({ ...values, rating });
   };
 
   const handleFormError: SubmitErrorHandler<IReviewForm> = (errors) => {
@@ -84,7 +85,8 @@ export default function UserReviewForm() {
         <div className="card-body">
           <h5 className="card-title pb-4 tex-dark">
             <label>Overall rating</label>
-            <UserRatingForm disabled={false} />
+            <UserRatingForm disabled={false} setRating={setRating} />
+            <p className="text-danger">{errors.rating?.message}</p>
           </h5>
           <div className="card-text">
             <div className="form-group pb-4 text-dark">

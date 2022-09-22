@@ -1,21 +1,21 @@
 import React from 'react';
 import styles from 'assets/css/UserRating.module.css';
+
+import { IUserRatingProps } from './types';
+
 export default function UserRatingForm({
   id = '',
   star = 0,
   totalReviews = 0,
-  disabled = true
-}: {
-  id?: string;
-  star?: number;
-  totalReviews?: number;
-  disabled?: boolean;
-}) {
+  disabled = true,
+  setRating
+}: IUserRatingProps) {
   const ratings = [5, 4, 3, 2, 1];
   const [data, setData] = React.useState(star);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setData(+event.target.value);
+    setRating && setRating(+event.target.value);
   };
 
   return (
