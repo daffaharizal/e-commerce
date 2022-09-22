@@ -1,10 +1,5 @@
-export interface iProductImages {
-  name: string;
-  url: string;
-}
+import { iProductImages } from 'components/feature/Product/types';
 
 export interface iPureCarousel {
-  element: {
-    images: iProductImages[];
-  };
+  images: iProductImages[];
 }

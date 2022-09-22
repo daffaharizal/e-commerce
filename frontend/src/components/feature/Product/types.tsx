@@ -1,10 +1,24 @@
+export interface iUser {
+  _id: string;
+  fullName: string;
+}
+
 export interface iProductImages {
   name: string;
   url: string;
 }
 
+export interface iProductReviews {
+  _id: number;
+  rating: number;
+  title: string;
+  comment: string;
+  user: iUser;
+}
+
 export interface iProduct {
   id: string;
+  _id: number;
   averageRating: number;
   category: string;
   colors: string[];
@@ -17,6 +31,7 @@ export interface iProduct {
   name: string;
   numOfReviews: number;
   price: number;
+  reviews: iProductReviews[];
 }
 
 export interface iProductListResponse {

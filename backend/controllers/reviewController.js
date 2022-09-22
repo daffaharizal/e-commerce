@@ -34,15 +34,7 @@ const createReview = async (req, res) => {
 };
 
 const getAllReviews = async (req, res) => {
-  const reviews = await Review.find({})
-    .populate({
-      path: 'product',
-      select: 'name'
-    })
-    .populate({
-      path: 'user',
-      select: 'name role'
-    });
+  const reviews = await Review.find({});
 
   res.status(StatusCodes.OK).json({ reviews });
 };
@@ -50,15 +42,7 @@ const getAllReviews = async (req, res) => {
 const getSingleReview = async (req, res) => {
   const { id: reviewId } = req.params;
 
-  const review = await Review.findOne({ _id: reviewId })
-    .populate({
-      path: 'product',
-      select: 'name'
-    })
-    .populate({
-      path: 'user',
-      select: 'name role'
-    });
+  const review = await Review.findOne({ _id: reviewId });
 
   if (!review) {
     throw new CustomError.NotFoundError(`No Review with such id - ${reviewId}`);
@@ -78,7 +62,7 @@ const updateReview = async (req, res) => {
     })
     .populate({
       path: 'user',
-      select: 'name role'
+      select: 'fullName role'
     });
   if (!review) {
     throw new CustomError.NotFoundError(`No Review with such id - ${reviewId}`);
@@ -126,7 +110,7 @@ const getSingleProductReviews = async (req, res) => {
 
   const reviews = await Review.find({ product: productId }).populate({
     path: 'user',
-    select: 'name'
+    select: 'fullName'
   });
 
   res.status(StatusCodes.OK).json({ reviews });
@@ -145,7 +129,7 @@ const getSingleUserReviews = async (req, res) => {
 
   const reviews = await Review.find({ user: userId }).populate({
     path: 'user',
-    select: 'name'
+    select: 'fullName'
   });
 
   res.status(StatusCodes.OK).json({ reviews });

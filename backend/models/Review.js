@@ -30,6 +30,13 @@ const ReviewSchema = new mongoose.Schema({
 // unique together
 ReviewSchema.index({ product: 1, user: 1 }, { unique: true });
 
+ReviewSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
+  this.populate({
+    path: 'user',
+    select: 'fullName'
+  });
+});
+
 ReviewSchema.statics.CalculateAvgRating = async function (productId) {
   const result = await this.aggregate([
     { $match: { product: productId } },

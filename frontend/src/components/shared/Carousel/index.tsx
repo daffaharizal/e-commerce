@@ -11,7 +11,7 @@ import { iPureCarousel } from './types';
 
 import NoImage from 'assets/images/noproductimage.png';
 
-export default function PureCarousel({ element: { images } }: iPureCarousel) {
+export default function PureCarousel({ images }: iPureCarousel) {
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   return (

@@ -92,7 +92,7 @@ ProductSchema.virtual('reviews', {
 ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
   this.populate({
     path: 'user',
-    select: 'name'
+    select: 'fullName'
   }).populate('reviews');
 });
 
