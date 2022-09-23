@@ -18,20 +18,19 @@ export interface IProductReviews {
 
 export interface IProduct {
   id: string;
-  _id: number;
-  averageRating: number;
+  name: string;
   category: string;
-  colors: string[];
   company: string;
   description: string;
+  colors: string[];
+  price: number;
+  inventory: number;
+  averageRating: number;
+  numOfReviews: number;
+  images: IProductImages[];
+  reviews: IProductReviews[];
   featured: boolean;
   freeShipping: boolean;
-  images: IProductImages[];
-  inventory: number;
-  name: string;
-  numOfReviews: number;
-  price: number;
-  reviews: IProductReviews[];
 }
 
 export interface IProductListResponse {

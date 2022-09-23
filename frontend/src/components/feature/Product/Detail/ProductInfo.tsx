@@ -43,7 +43,7 @@ export default function ProductInfo({ product }: IProductItemProps) {
             role="tab"
             aria-controls="review"
             aria-selected="false">
-            Reviews ({reviews.length})
+            Reviews ({product.numOfReviews})
           </button>
         </li>
       </ul>

@@ -61,7 +61,11 @@ export default function ProductDetailPage() {
                 <div className="product-dtl">
                   <div className="product-info">
                     <div className="product-name">{product.category}</div>
-                    <UserRatingForm id={product.id} totalReviews={3} />
+                    <UserRatingForm
+                      id={product.id}
+                      star={product.averageRating}
+                      numOfReviews={product.numOfReviews}
+                    />
                     <div className="product-price-discount">
                       <span>${product.price}</span>
                       <span className="line-through"></span>

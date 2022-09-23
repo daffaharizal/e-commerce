@@ -6,7 +6,7 @@ import { IUserRatingProps } from './types';
 export default function UserRatingForm({
   id = '',
   star = 0,
-  totalReviews = 0,
+  numOfReviews = 0,
   disabled = true,
   setRating
 }: IUserRatingProps) {
@@ -38,7 +38,7 @@ export default function UserRatingForm({
           </React.Fragment>
         ))}
       </div>
-      {!!totalReviews && <span>{totalReviews} Reviews</span>}
+      {!!numOfReviews && <span>{numOfReviews} Reviews</span>}
     </div>
   );
 }
