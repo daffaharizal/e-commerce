@@ -1,9 +1,13 @@
-import { IProductItemProps } from '../types';
+import React from 'react';
+
+import { IProductItemProps, IProductReviews } from '../types';
 import { UserReviewCard, UserReviewForm } from 'components/shared';
 
-export default function ProductInfo({
-  product: { description, reviews }
-}: IProductItemProps) {
+export default function ProductInfo({ product }: IProductItemProps) {
+  const [reviews, setReviews] = React.useState<IProductReviews[]>(
+    product.reviews
+  );
+
   return (
     <div className="product-info-tabs">
       <ul className="nav nav-tabs" id="myTab" role="tablist">
@@ -40,7 +44,7 @@ export default function ProductInfo({
           id="description"
           role="tabpanel"
           aria-labelledby="description-tab">
-          {description}
+          {product.description}
         </div>
         <div
           className="tab-pane fade"
@@ -56,7 +60,7 @@ export default function ProductInfo({
             <p className="mb-4">There are no reviews yet.</p>
           )}
 
-          <UserReviewForm />
+          <UserReviewForm setReviews={setReviews} />
         </div>
       </div>
     </div>

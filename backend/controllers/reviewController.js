@@ -29,7 +29,11 @@ const createReview = async (req, res) => {
   }
 
   req.body.user = userId;
-  const review = await Review.create(req.body);
+  let review = await Review.create(req.body);
+  review = await review.populate({
+    path: 'user',
+    select: 'fullName'
+  });
   res.status(StatusCodes.CREATED).json({ review });
 };
 

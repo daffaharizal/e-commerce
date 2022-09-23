@@ -99,7 +99,7 @@ const createOrder = async (req, res) => {
 const getAllOrder = async (req, res) => {
   const orders = await Order.find().populate({
     path: 'user',
-    select: 'name role'
+    select: 'fullName role'
   });
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
@@ -108,7 +108,7 @@ const getSingleOrder = async (req, res) => {
   const { id: OrderID } = req.params;
   const order = await Order.findOne({ _id: OrderID }).populate({
     path: 'user',
-    select: 'name role'
+    select: 'fullName role'
   });
   if (!order) {
     throw new CustomError.NotFoundError(`No Order with ID: ${OrderID}`);
@@ -125,7 +125,7 @@ const getCurrentUserOrders = async (req, res) => {
     user: req.user.id
   }).populate({
     path: 'user',
-    select: 'name role'
+    select: 'fullName role'
   });
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };

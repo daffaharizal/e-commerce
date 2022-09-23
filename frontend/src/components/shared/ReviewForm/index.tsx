@@ -4,11 +4,11 @@ import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { UserRatingForm } from 'components/shared';
 import { ProductConsumer } from 'context/product';
 import { IErrorResponse } from 'types';
-import { IReviewForm } from './types';
+import { IReviewForm, IReviewFormResponse, ISetReviews } from './types';
 
 import axios from 'axios';
 
-export default function UserReviewForm() {
+export default function UserReviewForm({ setReviews }: ISetReviews) {
   const { productId } = ProductConsumer();
 
   const {
@@ -20,7 +20,10 @@ export default function UserReviewForm() {
   } = useForm<IReviewForm>({
     defaultValues: {
       product: productId,
-      rating: 0
+      rating: 0,
+      title: 'Awesome',
+      comment:
+        'Its nice one... Quality wise, size wise perfect. After using more than one moth, i must say that, this is the best one ever purchased this category'
     }
   });
 
@@ -32,13 +35,18 @@ export default function UserReviewForm() {
   React.useEffect(() => {
     const submitForm = async () => {
       try {
-        await axios.post(`http://${serverURL}/api/v1/reviews/`, data, {
-          withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
+        const res: IReviewFormResponse = await axios.post(
+          `http://${serverURL}/api/v1/reviews/`,
+          data,
+          {
+            withCredentials: true,
+            headers: {
+              'Content-Type': 'application/json',
+              Accept: 'application/json'
+            }
           }
-        });
+        );
+        setReviews && setReviews((current) => [...current, res.data.review]);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           const {
