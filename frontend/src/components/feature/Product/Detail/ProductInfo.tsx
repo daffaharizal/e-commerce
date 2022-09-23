@@ -1,11 +1,20 @@
 import React from 'react';
 
-import { IProductItemProps, IProductReviews } from '../types';
 import { UserReviewCard, UserReviewForm } from 'components/shared';
+import { IProductItemProps, IProductReviews } from '../types';
+import { AuthConsumer } from 'context/auth';
 
 export default function ProductInfo({ product }: IProductItemProps) {
   const [reviews, setReviews] = React.useState<IProductReviews[]>(
     product.reviews
+  );
+  const {
+    isAuth,
+    user: { _id: userId }
+  } = AuthConsumer();
+
+  const isCurrentUserReviewed = reviews.some(
+    (review) => review.user._id === userId
   );
 
   return (
@@ -59,8 +68,9 @@ export default function ProductInfo({ product }: IProductItemProps) {
           {reviews.length === 0 && (
             <p className="mb-4">There are no reviews yet.</p>
           )}
-
-          <UserReviewForm setReviews={setReviews} />
+          {isAuth && !isCurrentUserReviewed && (
+            <UserReviewForm setReviews={setReviews} />
+          )}
         </div>
       </div>
     </div>
