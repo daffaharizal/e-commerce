@@ -1,4 +1,4 @@
-# pull official base image
+# Pull official base image
 FROM node:lts-alpine
 
 # Set the working directory
@@ -8,13 +8,12 @@ WORKDIR $APP_HOME
 
 ARG NODE_ENV
 
-# add `/app/node_modules/.bin` to $PATH
+# Add `/home/app/node_modules/.bin` to $PATH
 ENV PATH $APP_HOME/node_modules/.bin:$PATH
 
-# install yarn
+# Install yarn
 RUN apk add yarn
 
-# install app dependencies
 COPY package.json $APP_HOME/
 
 RUN if [ "$NODE_ENV" = "development" ]; \

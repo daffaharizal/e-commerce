@@ -31,7 +31,6 @@ const login = async (req, res) => {
   if (!isPasswordCorrect) {
     throw new CustomError.UnAuthenticatedError('Invalid Credentials');
   }
-
   const payload = { email, id: user._id, role: user.role };
   attachCookiesToResponse({ res, payload });
 

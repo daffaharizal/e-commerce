@@ -7,9 +7,10 @@ const cors = require('cors');
 const app = express();
 
 // rest of the packages
-const morgan = require('morgan');
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
+const morgan = require('morgan');
+const winston = require('./utils/winston');
 
 // database
 const connectDB = require('./db/connect');
@@ -26,8 +27,6 @@ const userRouter = require('./routes/userRoutes');
 const notFound = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
-morgan('tiny');
-
 const corsOptions = {
   origin: process.env.CORS_ALLOWED_DOMAINS.split(','),
   credentials: true,
@@ -40,6 +39,7 @@ app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
 app.use(express.static('./public'));
 app.use(fileUpload());
+app.use(morgan('combined', { stream: winston.stream }));
 
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
