@@ -4,7 +4,7 @@ const winston = require('winston');
 const options = {
   file: {
     level: 'warn',
-    filename: './logs/app.log',
+    filename: './src/logs/app.log',
     handleExceptions: true,
     maxsize: 5242880, // 5MB
     maxFiles: 5,

@@ -2,14 +2,13 @@
   "name": "e-commerce-api",
   "version": "1.0.0",
   "description": "E-Commerce backend build using Node & Express.js",
-  "main": "app.js",
-  "scripts": {
-    "start": "node app.js",
-    "dev": "nodemon --inspect=0.0.0.0:9229 app.js",
-    "format": "prettier --config prettier.config.js './**/*.{js,jsx}' --write"
-  },
   "author": "AJITH P MOHAN <ajithpmohan90@gmail.com>",
   "license": "MIT",
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": "nodemon --inspect=0.0.0.0:9229 src/app.js",
+    "format": "prettier --config prettier.config.js './**/*.{js,jsx}' --write"
+  },
   "dependencies": {
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
