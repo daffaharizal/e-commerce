@@ -10,6 +10,7 @@ const app = express();
 const cookieParser = require('cookie-parser');
 const fileUpload = require('express-fileupload');
 const morgan = require('morgan');
+const path = require('path');
 const winston = require('./utils/winston');
 
 // database
@@ -37,7 +38,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
-app.use(express.static('./public'));
+app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 app.use(morgan('combined', { stream: winston.stream }));
 

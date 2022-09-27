@@ -1,10 +1,11 @@
+const path = require('path');
 const winston = require('winston');
 
 // define the custom settings for each transport (file, console)
 const options = {
   file: {
     level: 'warn',
-    filename: './src/logs/app.log',
+    filename: path.join(__dirname, '../logs/app.log'),
     handleExceptions: true,
     maxsize: 5242880, // 5MB
     maxFiles: 5,

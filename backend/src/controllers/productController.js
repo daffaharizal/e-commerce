@@ -45,7 +45,7 @@ const uploadProductImage = async (req, res) => {
   if (!req.files) {
     throw new CustomError.BadRequestError('No File Uploaded');
   }
-  const productImages = req.files.image;
+  const productImages = [].concat(req.files.image);
 
   const maxSize = 1024 * 1024;
 
@@ -80,7 +80,7 @@ const uploadProductImage = async (req, res) => {
       })
       .toFile(imagePath);
 
-    const url = `/uploads/${imageName}`;
+    const url = `/static/uploads/${imageName}`;
 
     await Product.findOneAndUpdate(
       { _id: req.params.id },

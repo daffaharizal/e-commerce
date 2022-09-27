@@ -7,7 +7,7 @@ Dockerfile.prod
 .dockerignore
 nginx
 README.MD
-.env.development
-.env.production
 npm-debug.log
 yarn.lock
+.env.development
+.env.production

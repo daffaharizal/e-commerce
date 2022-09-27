@@ -11,17 +11,12 @@ ARG NODE_ENV
 # Add `/home/app/node_modules/.bin` to $PATH
 ENV PATH $APP_HOME/node_modules/.bin:$PATH
 
-# Install yarn
-RUN apk add yarn
-
 COPY package.json $APP_HOME/
 
 RUN if [ "$NODE_ENV" = "development" ]; \
-  then yarn install --loglevel verbose; \
+  then yarn install --loglevel warn && yarn cache clean --force; \
   else yarn install --only=production; \
   fi
-
-RUN yarn cache clean
 
 # Copies everything over to $APP_HOME
 COPY . $APP_HOME
