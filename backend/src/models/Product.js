@@ -23,7 +23,7 @@ const ProductSchema = new mongoose.Schema(
         name: {
           type: String,
           required: [true, 'Please provide image name'],
-          maxlength: [16, 'Name can not be more than 16 characters']
+          maxlength: [64, 'Name can not be more than 64 characters']
         },
         url: {
           type: String,
