@@ -1,71 +1,9 @@
-import React, { useEffect, useState } from 'react';
-import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
-import axios from 'axios';
-
-import { AuthConsumer } from 'context/auth';
-import { IErrorResponse } from 'types';
-import { IRegisterInput, IAuthResponse } from './types';
+import { IAuthProps } from './types';
+import withAuth from './hoc';
 
 import styles from 'assets/css/Auth.module.css';
 
-const RegisterPage: React.FC = () => {
-  const {
-    register,
-    handleSubmit,
-    setError,
-    formState: { errors },
-    clearErrors
-  } = useForm<IRegisterInput>({
-    defaultValues: {
-      email: 'ajithpmohan90@gmail.com',
-      fullName: 'AJITH P MOHAN',
-      password: 'abc12345'
-    }
-  });
-
-  const { setAuthUser } = AuthConsumer();
-
-  const navigate = useNavigate();
-
-  const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
-
-  const [data, setData] = useState<IRegisterInput>();
-
-  useEffect(() => {
-    const submitData = async () => {
-      try {
-        const res: IAuthResponse = await axios.post(
-          `http://${serverURL}/api/v1/auth/register/`,
-          data,
-          {
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json'
-            }
-          }
-        );
-        localStorage.setItem(
-          'authUser',
-          JSON.stringify({ isAuth: true, ...res.data })
-        );
-        setAuthUser({ isAuth: true, ...res.data });
-        navigate('/products');
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const {
-            response: {
-              data: { msg }
-            }
-          } = error as IErrorResponse;
-          setError('serverError', { type: 'custom', message: msg });
-        }
-      }
-    };
-    data && submitData();
-  }, [data]);
-
+const BaseRegisterPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
   const registerOptions = {
     fullName: {
       required: 'This is required',
@@ -83,24 +21,12 @@ const RegisterPage: React.FC = () => {
     }
   };
 
-  const handleRegistration: SubmitHandler<IRegisterInput> = (data) => {
-    setData(data);
-  };
-
-  const handleError: SubmitErrorHandler<IRegisterInput> = (errors) => {
-    console.log('Errors --', errors);
-  };
-
   return (
     <div className={styles['card-back']}>
       <div className={styles['center-wrap']}>
         <div className={`${styles.section} text-center`}>
           <h4 className="mb-4 pb-3">Sign Up</h4>
-          <form
-            onSubmit={(...args) => {
-              clearErrors();
-              void handleSubmit(handleRegistration, handleError)(...args);
-            }}>
+          <form onSubmit={handleOnSubmit}>
             <p>{errors.serverError?.message}</p>
             <div className={styles['form-group']}>
               <input
@@ -141,5 +67,11 @@ const RegisterPage: React.FC = () => {
     </div>
   );
 };
+
+const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
+
+const RegisterPage = withAuth({
+  serverUrl: `http://${serverUrl}/api/v1/auth/register/`
+})(BaseRegisterPage);
 
 export default RegisterPage;
