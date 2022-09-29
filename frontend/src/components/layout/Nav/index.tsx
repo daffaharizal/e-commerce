@@ -11,27 +11,20 @@ export default function NavBar() {
     <div>
       <nav className="py-3 border-bottom navbar-info bg-info">
         <div className="container-fluid d-flex flex-wrap">
-          <a
-            href="/products"
+          <NavLink
+            to="/products"
             className="d-flex align-items-center mb-2 mb-lg-0 text-black text-decoration-none">
             <Icons.Bootstrap color="black" size={40} />
-          </a>
+          </NavLink>
           <ul className="nav me-auto">
-            <li className="nav-item">
+            {/* <li className="nav-item">
               <NavLink to="/products" className="nav-link link-dark px-2">
                 Product
               </NavLink>
-            </li>
-            {!isAuth && (
-              <li className="nav-item">
-                <NavLink to="/auth" className="nav-link link-dark px-2">
-                  Login
-                </NavLink>
-              </li>
-            )}
+            </li> */}
           </ul>
-          {isAuth && (
-            <div className="dropdown text-end">
+          {isAuth ? (
+            <div className="dropdown text-end justify-content-center">
               <NavLink
                 to="/"
                 className="d-block link-dark text-decoration-none dropdown-toggle"
@@ -55,6 +48,16 @@ export default function NavBar() {
                 </li>
                 <li>
                   <LogoutPage />
+                </li>
+              </ul>
+            </div>
+          ) : (
+            <div className="d-flex flex-wrap">
+              <ul className="nav me-auto">
+                <li className="nav-item">
+                  <NavLink to="/auth" className="nav-link link-dark px-2">
+                    Login
+                  </NavLink>
                 </li>
               </ul>
             </div>
