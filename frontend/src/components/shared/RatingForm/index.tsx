@@ -38,7 +38,7 @@ export default function UserRatingForm({
           </React.Fragment>
         ))}
       </div>
-      {!!numOfReviews && <span>{numOfReviews} Reviews</span>}
+      <span>{numOfReviews} Reviews</span>
     </div>
   );
 }

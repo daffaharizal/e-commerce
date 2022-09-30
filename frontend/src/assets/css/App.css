@@ -1,3 +1,18 @@
+@import url('https://fonts.googleapis.com/css2?family=Allerta+Stencil&display=swap');
+
 body {
   background-color: #eee;
+}
+
+.vh-35 {
+  height: 35vh !important;
+}
+
+.buttons button {
+  margin: 3px;
+  font-size: 12px;
+}
+
+.fs-0 {
+  font-size: 0.875rem;
 }

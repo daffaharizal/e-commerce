@@ -19,7 +19,7 @@ export default function NavBar() {
           <div className="col-lg-8 col-md-10 col-sm-12">
             <div className="input-group">
               <input
-                className="form-control form-control-lg border-end-0 border rounded-pill"
+                className="form-control border-end-0 border rounded-pill"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
@@ -28,7 +28,7 @@ export default function NavBar() {
                 <button
                   className="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
                   type="button">
-                  <Icons.Search size={32} />
+                  <Icons.Search size={24} />
                 </button>
               </span>
             </div>
