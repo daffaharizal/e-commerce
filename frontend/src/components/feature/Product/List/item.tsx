@@ -36,6 +36,7 @@ export default function ProductItem({ product }: IProductItemProps) {
               id={product.id}
               star={product.averageRating}
               numOfReviews={product.numOfReviews}
+              showNumOfReviews={true}
             />
             <span>{product.category}</span>
           </li>

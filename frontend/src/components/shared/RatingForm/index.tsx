@@ -7,6 +7,7 @@ export default function UserRatingForm({
   id = '',
   star = 0,
   numOfReviews = 0,
+  showNumOfReviews = false,
   disabled = true,
   setRating
 }: IUserRatingProps) {
@@ -38,7 +39,7 @@ export default function UserRatingForm({
           </React.Fragment>
         ))}
       </div>
-      <span>{numOfReviews} Reviews</span>
+      {showNumOfReviews && <span>{numOfReviews} Reviews</span>}
     </div>
   );
 }

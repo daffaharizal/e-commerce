@@ -65,6 +65,7 @@ export default function ProductDetailPage() {
                       id={product.id}
                       star={product.averageRating}
                       numOfReviews={product.numOfReviews}
+                      showNumOfReviews={true}
                     />
                     <div className="product-price-discount">
                       <span>${product.price}</span>
