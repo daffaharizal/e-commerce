@@ -31,7 +31,7 @@ export default function ProductListPage() {
   }, []);
 
   return (
-    <div className="container-lg mt-2 mb-5">
+    <div className="container-lg mb-5">
       <div className={styles.products}>
         <div className="tab-content" id="myTabContent">
           <div

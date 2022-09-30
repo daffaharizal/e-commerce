@@ -8,82 +8,70 @@ export default function NavBar() {
   const { isAuth } = AuthConsumer();
 
   return (
-    <div>
-      <nav className="py-3 border-bottom navbar-info bg-info">
-        <div className="container-fluid d-flex flex-wrap">
-          <NavLink
-            to="/products"
-            className="d-flex align-items-center mb-2 mb-lg-0 text-black text-decoration-none">
-            <Icons.Bootstrap color="black" size={40} />
-          </NavLink>
-          <ul className="nav me-auto">
-            {/* <li className="nav-item">
-              <NavLink to="/products" className="nav-link link-dark px-2">
-                Product
-              </NavLink>
-            </li> */}
-          </ul>
+    <nav className="navbar navbar-expand-lg navbar-info border-bottom  bg-info d-flex justify-content-between align-items-center flex-nowrap mb-3">
+      <NavLink
+        to="/products"
+        className="navbar-brand p-2 text-black text-decoration-none">
+        <Icons.Bootstrap color="black" size={40} />
+      </NavLink>
+      <form className="form-inline flex-fill">
+        <div className="row justify-content-md-center">
+          <div className="col-lg-8 col-md-10 col-sm-12">
+            <div className="input-group">
+              <input
+                className="form-control form-control-lg border-end-0 border rounded-pill"
+                type="search"
+                placeholder="Search"
+                aria-label="Search"
+              />
+              <span className="input-group-append">
+                <button
+                  className="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
+                  type="button">
+                  <Icons.Search size={32} />
+                </button>
+              </span>
+            </div>
+          </div>
+        </div>
+      </form>
+      <div className="dropdown p-2 text-end">
+        <NavLink
+          to="/"
+          className="d-block link-dark text-decoration-none dropdown-toggle"
+          data-bs-toggle="dropdown"
+          aria-expanded="false">
+          <Icons.Person color="black" size={40} />
+        </NavLink>
+        <div
+          className="dropdown-menu dropdown-menu-end"
+          aria-labelledby="navbarDropdownMenuLink">
           {isAuth ? (
-            <div className="dropdown text-end justify-content-center">
-              <NavLink
-                to="/"
-                className="d-block link-dark text-decoration-none dropdown-toggle"
-                data-bs-toggle="dropdown"
-                aria-expanded="false">
-                <Icons.Person color="black" size={40} />
+            <>
+              <NavLink to="/cart" className="dropdown-item">
+                Cart
               </NavLink>
-              <ul className="dropdown-menu text-small">
-                <li>
-                  <NavLink to="/" className="dropdown-item">
-                    Profile
-                  </NavLink>
-                </li>
-                <li>
-                  <NavLink to="/" className="dropdown-item">
-                    Settings
-                  </NavLink>
-                </li>
-                <li>
-                  <hr className="dropdown-divider" />
-                </li>
-                <li>
-                  <LogoutPage />
-                </li>
-              </ul>
-            </div>
+              <NavLink to="/profile" className="dropdown-item">
+                Profile
+              </NavLink>
+              <NavLink to="/settings" className="dropdown-item">
+                Settings
+              </NavLink>
+              <hr className="dropdown-divider" />
+              <LogoutPage />
+            </>
           ) : (
-            <div className="d-flex flex-wrap">
-              <ul className="nav me-auto">
-                <li className="nav-item">
-                  <NavLink to="/auth" className="nav-link link-dark px-2">
-                    Login
-                  </NavLink>
-                </li>
-              </ul>
-            </div>
+            <>
+              <NavLink to="/auth" className="dropdown-item">
+                Hello, Sign In
+              </NavLink>
+              <NavLink to="/cart" className="dropdown-item">
+                Cart
+              </NavLink>
+            </>
           )}
         </div>
-      </nav>
-      <header className="py-3 mb-4 border-bottom">
-        <div className="container-fluid d-flex flex-wrap justify-content-center">
-          <a
-            href="/"
-            className="d-flex align-items-center mb-3 mb-lg-0 me-lg-auto text-dark text-decoration-none">
-            <svg className="bi me-2" width="40" height="32">
-              <use></use>
-            </svg>
-            <span className="fs-4">eCommerce</span>
-          </a>
-          <form className="col-12 col-lg-auto mb-3 mb-lg-0" role="search">
-            <input
-              type="search"
-              className="form-control"
-              placeholder="Search..."
-              aria-label="Search"
-            />
-          </form>
-        </div>
-      </header>
-    </div>
+      </div>
+    </nav>
   );
 }
