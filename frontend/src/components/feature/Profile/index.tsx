@@ -22,8 +22,7 @@ export default function ProfilePage() {
     const showMe = async () => {
       try {
         const res = await callAxios<IUserProfileResponse>({
-          api: '/users/showme',
-          axiosMethod: 'GET'
+          axiosApi: '/users/showme'
         });
 
         const {
@@ -44,14 +43,32 @@ export default function ProfilePage() {
     void showMe();
   }, []);
 
-  const handleOnSubmit = (event: React.FormEvent) => {
+  const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     clearErrors();
-    void handleSubmit(handleAuthentication, handleError)();
+    void handleSubmit(handleOnSubmit, handleError)();
   };
 
-  const handleAuthentication: SubmitHandler<IUserProfile> = (values) => {
-    console.log(values);
+  const handleOnSubmit: SubmitHandler<IUserProfile> = (values) => {
+    const updateUser = async () => {
+      try {
+        await callAxios<IUserProfileResponse>({
+          axiosApi: '/users/update-user',
+          axiosMethod: 'POST',
+          axiosData: values
+        });
+      } catch (error) {
+        if (axios.isAxiosError(error) && error.response) {
+          const {
+            response: {
+              data: { msg }
+            }
+          } = error as IErrorResponse;
+          setError('serverError', { type: 'custom', message: msg });
+        }
+      }
+    };
+    void updateUser();
   };
 
   const handleError: SubmitErrorHandler<IUserProfile> = (errors) => {
@@ -82,7 +99,8 @@ export default function ProfilePage() {
             <h3 className="fw-bold mb-0">Update Profile</h3>
           </div>
           <div className="modal-body p-5 pt-0">
-            <form onSubmit={handleOnSubmit}>
+            <form onSubmit={onSubmit}>
+              <p>{errors.serverError?.message}</p>
               <div className="form-floating mb-3">
                 <input
                   type="text"
