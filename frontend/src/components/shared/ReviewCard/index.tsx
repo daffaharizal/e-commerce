@@ -1,4 +1,5 @@
-import * as Icons from 'react-bootstrap-icons';
+import { FaUser } from 'react-icons/fa';
+
 import { IProductReviews } from 'components/feature/Product/types';
 import { UserRatingForm } from 'components/shared';
 
@@ -16,7 +17,8 @@ export default function UserReviewCard({
   return (
     <div className="card mb-4">
       <h5 className="card-header text-dark py-3">
-        <Icons.Person color="black" size={20} /> {fullName}
+        <FaUser size={20} />
+        <span className="ps-2">{fullName}</span>
       </h5>
       <div className="card-body">
         <h5 className="card-title">

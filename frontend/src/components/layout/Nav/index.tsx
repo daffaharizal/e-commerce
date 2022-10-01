@@ -1,4 +1,5 @@
-import * as Icons from 'react-bootstrap-icons';
+import { BsBootstrap, BsSearch } from 'react-icons/bs';
+import { BiUser } from 'react-icons/bi';
 import { NavLink } from 'react-router-dom';
 
 import { LogoutPage } from 'components/feature/Auth';
@@ -12,7 +13,7 @@ export default function NavBar() {
       <NavLink
         to="/products"
         className="navbar-brand p-2 text-black text-decoration-none">
-        <Icons.Bootstrap color="black" size={40} />
+        <BsBootstrap size={36} />
       </NavLink>
       <form className="form-inline flex-fill">
         <div className="row justify-content-md-center">
@@ -28,7 +29,7 @@ export default function NavBar() {
                 <button
                   className="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
                   type="button">
-                  <Icons.Search size={24} />
+                  <BsSearch size={24} />
                 </button>
               </span>
             </div>
@@ -41,7 +42,7 @@ export default function NavBar() {
           className="d-block link-dark text-decoration-none dropdown-toggle"
           data-bs-toggle="dropdown"
           aria-expanded="false">
-          <Icons.Person color="black" size={40} />
+          <BiUser size={36} />
         </NavLink>
         <div
           className="dropdown-menu dropdown-menu-end"

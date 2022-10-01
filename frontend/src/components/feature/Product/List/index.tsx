@@ -1,6 +1,5 @@
 import React from 'react';
 import axios from 'axios';
-import * as Icons from 'react-bootstrap-icons';
 
 import ProductItem from './item';
 import { IProduct, IProductListResponse } from '../types';
@@ -38,11 +37,7 @@ export default function ProductListPage() {
           role="tabpanel"
           aria-labelledby="home-tab">
           <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center">
-            <span className="fw-bold text-uppercase">Products</span>
-            <div>
-              <Icons.ListUl color="black" size={32} />
-              <Icons.Grid3x3GapFill color="black" size={24} />
-            </div>
+            <span className="fw-bold text-uppercase">New Product</span>
           </div>
           <div className="row g-3">
             {products.map((product) => (
