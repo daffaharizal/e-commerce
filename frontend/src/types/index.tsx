@@ -1,5 +1,5 @@
 export interface IChildrenProps {
-  children: React.ReactNode;
+  children: React.ReactElement;
 }
 
 export interface IErrorResponse {

@@ -2,7 +2,7 @@ import { BsBootstrap, BsSearch } from 'react-icons/bs';
 import { BiUser } from 'react-icons/bi';
 import { NavLink } from 'react-router-dom';
 
-import { LogoutPage } from 'components/feature/Auth';
+import { LogoutPage } from 'components/feature';
 import { AuthConsumer } from 'context/auth';
 
 export default function NavBar() {

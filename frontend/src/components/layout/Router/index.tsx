@@ -1,9 +1,13 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 import Layout from 'components/layout';
-import { AuthPage } from 'components/feature/Auth';
-import ProductPage from 'components/feature/Product';
-import NoMatch from 'components/feature/NoMatch';
+import {
+  AuthPage,
+  NoMatch,
+  ProductPage,
+  ProfilePage
+} from 'components/feature';
+import PrivateRoute from 'components/layout/PrivateRoute';
 import ProtectedRoute from 'components/layout/ProtectedRoute';
 
 export default function Router() {
@@ -18,6 +22,14 @@ export default function Router() {
             <ProtectedRoute>
               <AuthPage />
             </ProtectedRoute>
+          }
+        />
+        <Route
+          path="profile"
+          element={
+            <PrivateRoute>
+              <ProfilePage />
+            </PrivateRoute>
           }
         />
         <Route path="*" element={<NoMatch />} />
