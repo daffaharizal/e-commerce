@@ -1,13 +1,14 @@
 const mongoose = require('mongoose');
 const validator = require('validator');
 const bcrypt = require('bcryptjs');
+const moment = require('moment');
 
 const userSchema = new mongoose.Schema({
   fullName: {
     type: String,
     required: [true, 'Please provide full name'],
-    minlength: 3,
-    maxlength: 50
+    minlength: [3, 'Full Name can be atleast 3 characters long'],
+    maxlength: [50, 'Full Name cannot be more than 64 characters']
   },
   email: {
     type: String,
@@ -18,6 +19,14 @@ const userSchema = new mongoose.Schema({
       message: 'Please provide valid email'
     }
   },
+  dateOfBirth: {
+    type: Date
+    // validate: {
+    //   validator: validator.Date,
+    //   message: 'Please provide a valid date'
+    // }
+  },
+
   password: {
     type: String,
     required: [true, 'Please provide password'],
@@ -44,6 +53,8 @@ userSchema.methods.comparePassword = async function (currentPassword) {
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   delete obj.password;
+  obj.dateOfBirth =
+    obj.dateOfBirth && moment(obj.dateOfBirth).format('YYYY/MM/DD');
   return obj;
 };
 

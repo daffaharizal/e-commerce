@@ -26,7 +26,7 @@ const callAxios = async <T,>({
       res = await instance.post(axiosApi, axiosData);
       return res.data;
     default:
-      console.error("Method doesn't exists");
+      console.error("Method doesn't exist.");
   }
 };
 

@@ -1,0 +1,8 @@
+.dob input[type='text'] {
+  border-width: 0px;
+  margin-top: -10px !important;
+}
+
+.dob input[type='text']:focus {
+  box-shadow: none;
+}

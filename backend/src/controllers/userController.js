@@ -27,7 +27,7 @@ const updateUser = async (req, res) => {
     user: { id: userID }
   } = req;
 
-  const { email, fullName } = req.body;
+  const { email, fullName, dateOfBirth } = req.body;
   if (!email || !fullName) {
     throw new CustomError.BadRequestError('Please provide Email & Full Name');
   }
@@ -39,10 +39,9 @@ const updateUser = async (req, res) => {
       'Another user with same email exist. Please provide another email.'
     );
   }
-
   const user = await User.findOneAndUpdate(
     { _id: userID },
-    { email, fullName },
+    { email, fullName, dateOfBirth },
     {
       new: true,
       runValidators: true

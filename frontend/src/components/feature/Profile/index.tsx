@@ -1,12 +1,22 @@
 import React, { useEffect } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import axios from 'axios';
-import { callAxios } from 'helpers';
 
+import { callAxios } from 'helpers';
 import { IUserProfile, IUserProfileResponse } from './types';
 import { IErrorResponse } from 'types';
+import { DatePicker } from 'react-rainbow-components';
+
+import styles from 'assets/css/Profile.module.css';
+import moment from 'moment';
 
 export default function ProfilePage() {
+  const [dateOfBirth, setdateOfBirth] = React.useState<Date | undefined>();
+
+  const onDOBChange = (value: Date) => {
+    setdateOfBirth(value);
+  };
+
   const {
     register,
     handleSubmit,
@@ -19,15 +29,18 @@ export default function ProfilePage() {
   });
 
   useEffect(() => {
-    const showMe = async () => {
+    void (async () => {
       try {
         const res = await callAxios<IUserProfileResponse>({
           axiosApi: '/users/showme'
         });
 
         const {
-          user: { fullName, email }
+          user: { fullName, email, dateOfBirth }
         } = res as IUserProfileResponse;
+
+        setdateOfBirth(new Date(dateOfBirth || new Date(2009, 11, 31)));
+
         reset({ fullName, email });
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -39,8 +52,7 @@ export default function ProfilePage() {
           setError('serverError', { type: 'custom', message: msg });
         }
       }
-    };
-    void showMe();
+    })();
   }, []);
 
   const onSubmit = (event: React.FormEvent) => {
@@ -50,12 +62,15 @@ export default function ProfilePage() {
   };
 
   const handleOnSubmit: SubmitHandler<IUserProfile> = (values) => {
-    const updateUser = async () => {
+    void (async () => {
       try {
         await callAxios<IUserProfileResponse>({
           axiosApi: '/users/update-user',
           axiosMethod: 'POST',
-          axiosData: values
+          axiosData: {
+            ...values,
+            dateOfBirth: moment(dateOfBirth).format('YYYY/MM/DD')
+          }
         });
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
@@ -67,8 +82,7 @@ export default function ProfilePage() {
           setError('serverError', { type: 'custom', message: msg });
         }
       }
-    };
-    void updateUser();
+    })();
   };
 
   const handleError: SubmitErrorHandler<IUserProfile> = (errors) => {
@@ -111,7 +125,7 @@ export default function ProfilePage() {
                 <label htmlFor="floatingInput">Full Name</label>
                 <p>{errors.fullName?.message}</p>
               </div>
-              <div className="form-floating mb-3">
+              <div className="form-floating">
                 <input
                   type="email"
                   {...register('email', formOptions.email)}
@@ -121,6 +135,20 @@ export default function ProfilePage() {
                 <label htmlFor="floatingInput">Email address</label>
                 <p>{errors.email?.message}</p>
               </div>
+              <div className="form-floating mb-3">
+                <DatePicker
+                  required
+                  value={dateOfBirth}
+                  onChange={onDOBChange}
+                  minDate={new Date(1950, 0, 1)}
+                  maxDate={new Date(2009, 11, 31)}
+                  formatStyle="medium"
+                  className={`form-control rounded-3 ${styles.dob}`}
+                />
+                <label htmlFor="floatingInput">Date of Birth</label>
+                {/* <p>{errors.email?.message}</p> */}
+              </div>
+
               <button
                 className="w-100 mb-2 btn btn-lg rounded-3 btn-primary mt-3"
                 type="submit">
