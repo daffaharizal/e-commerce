@@ -1,8 +1,10 @@
 import React, { useEffect } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import axios from 'axios';
+import { toast } from 'react-toastify';
 
 import { callAxios } from 'helpers';
+
 import { IUserProfile, IUserProfileResponse } from './types';
 import { IErrorResponse } from 'types';
 import { DatePicker } from 'react-rainbow-components';
@@ -72,6 +74,7 @@ export default function ProfilePage() {
             dateOfBirth: moment(dateOfBirth).format('YYYY/MM/DD')
           }
         });
+        toast('🚀 Profile Updated!');
       } catch (error) {
         if (axios.isAxiosError(error) && error.response) {
           const {
@@ -80,6 +83,7 @@ export default function ProfilePage() {
             }
           } = error as IErrorResponse;
           setError('serverError', { type: 'custom', message: msg });
+          toast('Error Occurred. Try Again!');
         }
       }
     })();

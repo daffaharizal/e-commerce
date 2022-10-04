@@ -3,3 +3,4 @@ export { default as PureCarousel } from './Carousel';
 export { default as UserRatingForm } from './RatingForm';
 export { default as UserReviewCard } from './ReviewCard';
 export { default as UserReviewForm } from './ReviewForm';
+export { default as ToastAlert } from './ToastAlert';

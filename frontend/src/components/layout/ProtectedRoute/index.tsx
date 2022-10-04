@@ -8,7 +8,9 @@ const ProtectedRoute: React.FC<IChildrenProps> = ({ children }) => {
   const location = useLocation();
 
   if (isAuth) {
-    return <Navigate to="/products" replace state={{ from: location }} />;
+    return (
+      <Navigate to="/products" replace state={{ from: location.pathname }} />
+    );
   }
 
   return children;

@@ -9,3 +9,8 @@ export interface IErrorResponse {
     };
   };
 }
+
+export interface IReactRouterLocation {
+  pathname: string;
+  state?: { from: string };
+}

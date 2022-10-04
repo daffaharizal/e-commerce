@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-import { useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
 import { AuthConsumer } from 'context/auth';
-import { IErrorResponse } from 'types';
+import { IErrorResponse, IReactRouterLocation } from 'types';
 import { IAuthResponse, IAuthProps, IFormInput, IWithAuth } from './types';
 
 const withAuth =
@@ -28,6 +28,7 @@ const withAuth =
     const { setAuthUser } = AuthConsumer();
 
     const navigate = useNavigate();
+    const location = useLocation() as IReactRouterLocation;
 
     const [data, setData] = useState<IFormInput>();
 
@@ -47,7 +48,11 @@ const withAuth =
           );
           setAuthUser({ isAuth: true, ...res.data });
 
-          navigate('/products');
+          const redirectPath = location.state
+            ? location.state.from
+            : '/products';
+
+          navigate(redirectPath);
         } catch (error) {
           if (axios.isAxiosError(error) && error.response) {
             const {
