@@ -6,30 +6,30 @@
   "license": "MIT",
   "private": true,
   "dependencies": {
-    "@tanstack/react-query": "^4.9.0",
+    "@tanstack/react-query": "^4.10.1",
     "@testing-library/jest-dom": "^5.16.5",
     "@testing-library/react": "^13.4.0",
     "@testing-library/user-event": "^14.4.3",
-    "@types/jest": "^29.0.1",
-    "@types/node": "^18.7.16",
-    "@types/react": "^18.0.19",
+    "@types/jest": "^29.1.2",
+    "@types/node": "^18.8.3",
+    "@types/react": "^18.0.21",
     "@types/react-dom": "^18.0.6",
-    "axios": "^0.27.2",
-    "bootstrap": "^5.2.1",
+    "axios": "^1.1.1",
+    "bootstrap": "^5.2.2",
     "font-awesome": "^4.7.0",
     "moment": "^2.29.4",
     "pure-react-carousel": "^1.29.0",
     "react": "^18.2.0",
     "react-bootstrap": "^2.5.0",
     "react-dom": "^18.2.0",
-    "react-hook-form": "^7.35.0",
+    "react-hook-form": "^7.37.0",
     "react-icons": "^4.4.0",
     "react-rainbow-components": "^1.31.0",
-    "react-router-dom": "^6.3.0",
+    "react-router-dom": "^6.4.2",
     "react-scripts": "^5.0.1",
     "react-toastify": "^9.0.8",
-    "typescript": "^4.8.3",
-    "web-vitals": "^3.0.1"
+    "typescript": "^4.8.4",
+    "web-vitals": "^3.0.3"
   },
   "scripts": {
     "start": "react-scripts start",
@@ -57,13 +57,13 @@
     ]
   },
   "devDependencies": {
-    "@typescript-eslint/eslint-plugin": "^5.36.2",
-    "@typescript-eslint/parser": "^5.36.2",
-    "eslint": "^8.23.0",
+    "@typescript-eslint/eslint-plugin": "^5.39.0",
+    "@typescript-eslint/parser": "^5.39.0",
+    "eslint": "^8.24.0",
     "eslint-config-prettier": "^8.5.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-prefer-arrow": "^1.2.3",
-    "eslint-plugin-unicorn": "^43.0.2",
+    "eslint-plugin-unicorn": "^44.0.2",
     "typescript-plugin-css-modules": "^3.4.0"
   }
 }
