@@ -1,7 +1,7 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
 
-import { AuthConsumer } from 'context/auth';
+import { AuthConsumer } from 'context';
 import axios from 'axios';
 
 export default function LogoutPage() {

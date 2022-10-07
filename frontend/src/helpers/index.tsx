@@ -1,5 +1,8 @@
 import axios, { AxiosResponse } from 'axios';
+import { toast } from 'react-toastify';
+
 import { IAxiosProps } from './types';
+import { IErrorResponse } from 'types';
 
 const callAxios = async <T,>({
   axiosApi,
@@ -30,4 +33,19 @@ const callAxios = async <T,>({
   }
 };
 
-export { callAxios };
+const axiosError = (error: IErrorResponse) => {
+  if (axios.isAxiosError(error) && error.response) {
+    if (error.code == 'ERR_NETWORK') {
+      toast(error.message);
+    } else {
+      const {
+        response: {
+          data: { msg }
+        }
+      } = error;
+      toast(msg);
+    }
+  }
+};
+
+export { callAxios, axiosError };

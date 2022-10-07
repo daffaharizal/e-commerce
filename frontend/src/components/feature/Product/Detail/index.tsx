@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import './style.css';
 
 import { PureCarousel, StyledButton, UserRatingForm } from 'components/shared';
-import { ProductProvider } from 'context/product';
+import { ProductProvider } from 'context';
 import ProductInfo from './ProductInfo';
 import { IProduct, IProductDetailResponse } from '../types';
 

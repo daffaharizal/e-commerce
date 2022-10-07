@@ -2,7 +2,7 @@ import React from 'react';
 
 import { UserReviewCard, UserReviewForm } from 'components/shared';
 import { IProductItemProps, IProductReviews } from '../types';
-import { AuthConsumer } from 'context/auth';
+import { AuthConsumer } from 'context';
 
 export default function ProductInfo({ product }: IProductItemProps) {
   const [reviews, setReviews] = React.useState<IProductReviews[]>(

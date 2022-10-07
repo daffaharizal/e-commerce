@@ -3,6 +3,8 @@ export interface IChildrenProps {
 }
 
 export interface IErrorResponse {
+  code: string;
+  message?: string;
   response: {
     data: {
       msg?: string;

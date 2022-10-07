@@ -1,16 +1,18 @@
-import React, { useEffect } from 'react';
-import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
+import React from 'react';
+import { useQuery, useMutation } from '@tanstack/react-query';
 import axios from 'axios';
+import moment from 'moment';
+import { useForm, SubmitHandler } from 'react-hook-form';
+import { DatePicker } from 'react-rainbow-components';
 import { toast } from 'react-toastify';
 
-import { callAxios } from 'helpers';
+// import { QueryConsumer } from 'context';
+import { callAxios, axiosError } from 'helpers';
 
-import { IUserProfile, IUserProfileResponse } from './types';
 import { IErrorResponse } from 'types';
-import { DatePicker } from 'react-rainbow-components';
+import { IUserProfile, IUserProfileResponse } from './types';
 
 import styles from 'assets/css/Profile.module.css';
-import moment from 'moment';
 
 export default function ProfilePage() {
   const [dateOfBirth, setdateOfBirth] = React.useState<Date | undefined>();
@@ -23,74 +25,77 @@ export default function ProfilePage() {
     register,
     handleSubmit,
     reset,
-    setError,
     formState: { errors },
     clearErrors
   } = useForm<IUserProfile>({
     defaultValues: {}
   });
 
-  useEffect(() => {
-    void (async () => {
-      try {
-        const res = await callAxios<IUserProfileResponse>({
-          axiosApi: '/users/showme'
-        });
+  const getProfile = async () => {
+    const res = await callAxios<IUserProfileResponse>({
+      axiosApi: '/users/showme'
+    });
+    const {
+      user: { fullName, email, dateOfBirth }
+    } = res as IUserProfileResponse;
 
-        const {
-          user: { fullName, email, dateOfBirth }
-        } = res as IUserProfileResponse;
+    // set date state hook with fetched data
+    setdateOfBirth(new Date(dateOfBirth || new Date(2009, 11, 31)));
 
-        setdateOfBirth(new Date(dateOfBirth || new Date(2009, 11, 31)));
+    // set react-hook-form with fetched data
+    reset({ fullName, email });
 
-        reset({ fullName, email });
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const {
-            response: {
-              data: { msg }
-            }
-          } = error as IErrorResponse;
-          setError('serverError', { type: 'custom', message: msg });
-        }
+    return { fullName, email, dateOfBirth };
+  };
+
+  const updateProfile = async (axiosData: IUserProfile) => {
+    return await callAxios<IUserProfileResponse>({
+      axiosApi: '/users/update-user',
+      axiosMethod: 'POST',
+      axiosData
+    });
+  };
+
+  // Access the client
+  // const queryClient = QueryConsumer();
+
+  // Queries
+  const { isLoading, isError } = useQuery(['profile'], getProfile, {
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        axiosError(error as IErrorResponse);
       }
-    })();
-  }, []);
+    },
+    refetchOnWindowFocus: false
+    // refetchIntervalInBackground: false,
+    // refetchOnMount: false
+  });
+
+  // Mutations
+  const mutation = useMutation(updateProfile, {
+    onSuccess: () => {
+      // Invalidate and refetch
+      // await queryClient.invalidateQueries(['profile']);
+      toast('🚀 Profile Updated!');
+    },
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        axiosError(error as IErrorResponse);
+      }
+    }
+  });
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();
     clearErrors();
-    void handleSubmit(handleOnSubmit, handleError)();
+    void handleSubmit(handleOnSubmit)();
   };
 
   const handleOnSubmit: SubmitHandler<IUserProfile> = (values) => {
-    void (async () => {
-      try {
-        await callAxios<IUserProfileResponse>({
-          axiosApi: '/users/update-user',
-          axiosMethod: 'POST',
-          axiosData: {
-            ...values,
-            dateOfBirth: moment(dateOfBirth).format('YYYY/MM/DD')
-          }
-        });
-        toast('🚀 Profile Updated!');
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const {
-            response: {
-              data: { msg }
-            }
-          } = error as IErrorResponse;
-          setError('serverError', { type: 'custom', message: msg });
-          toast('Error Occurred. Try Again!');
-        }
-      }
-    })();
-  };
-
-  const handleError: SubmitErrorHandler<IUserProfile> = (errors) => {
-    console.log('Errors --', errors);
+    mutation.mutate({
+      ...values,
+      dateOfBirth: moment(dateOfBirth).format('YYYY/MM/DD')
+    });
   };
 
   const formOptions = {
@@ -105,6 +110,9 @@ export default function ProfilePage() {
     }
   };
 
+  if (isLoading) return <span>Loading...</span>;
+  if (isError) return <span>An Error Occured!</span>;
+
   return (
     <div
       className="modal modal-signin position-static d-block py-5"
@@ -117,8 +125,7 @@ export default function ProfilePage() {
             <h3 className="fw-bold mb-0">Update Profile</h3>
           </div>
           <div className="modal-body p-5 pt-0">
-            <form onSubmit={onSubmit}>
-              <p>{errors.serverError?.message}</p>
+            <form onSubmit={onSubmit} noValidate>
               <div className="form-floating mb-3">
                 <input
                   type="text"
@@ -150,7 +157,6 @@ export default function ProfilePage() {
                   className={`form-control rounded-3 ${styles.dob}`}
                 />
                 <label htmlFor="floatingInput">Date of Birth</label>
-                {/* <p>{errors.email?.message}</p> */}
               </div>
 
               <button

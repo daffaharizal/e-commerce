@@ -4,18 +4,17 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import 'assets/css/App.css';
 
-import { ToastAlert } from 'components/shared';
-import { AuthProvider } from 'context/auth';
 import Router from 'components/layout/Router';
+
+import { AuthProvider, QueryProvider } from 'context';
 
 function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <>
+        <QueryProvider>
           <Router />
-          <ToastAlert />
-        </>
+        </QueryProvider>
       </AuthProvider>
     </div>
   );

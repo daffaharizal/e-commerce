@@ -1,5 +1,5 @@
 import { UseFormRegister, FieldErrorsImpl } from 'react-hook-form';
-import { IUser } from 'context/auth/types';
+import { IUser } from 'context/Auth/types';
 
 export interface ILoginInput {
   email: string;

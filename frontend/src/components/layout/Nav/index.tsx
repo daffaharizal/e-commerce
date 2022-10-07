@@ -3,7 +3,7 @@ import { BiUser } from 'react-icons/bi';
 import { NavLink } from 'react-router-dom';
 
 import { LogoutPage } from 'components/feature';
-import { AuthConsumer } from 'context/auth';
+import { AuthConsumer } from 'context';
 
 export default function NavBar() {
   const { isAuth } = AuthConsumer();

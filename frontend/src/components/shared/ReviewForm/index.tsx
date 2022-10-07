@@ -2,7 +2,7 @@ import React from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 
 import { UserRatingForm } from 'components/shared';
-import { ProductConsumer } from 'context/product';
+import { ProductConsumer } from 'context';
 import { IErrorResponse } from 'types';
 import { IReviewForm, IReviewFormResponse, ISetReviews } from './types';
 
