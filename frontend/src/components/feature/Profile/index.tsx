@@ -17,10 +17,6 @@ import styles from 'assets/css/Profile.module.css';
 export default function ProfilePage() {
   const [dateOfBirth, setdateOfBirth] = React.useState<Date | undefined>();
 
-  const onDOBChange = (value: Date) => {
-    setdateOfBirth(value);
-  };
-
   const {
     register,
     handleSubmit,
@@ -84,6 +80,10 @@ export default function ProfilePage() {
       }
     }
   });
+
+  const onDOBChange = (value: Date) => {
+    setdateOfBirth(value);
+  };
 
   const onSubmit = (event: React.FormEvent) => {
     event.preventDefault();

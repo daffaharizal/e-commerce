@@ -1,13 +1,14 @@
 import React from 'react';
 import axios from 'axios';
+import { useQuery } from '@tanstack/react-query';
 
 import { CartConsumer } from 'context';
+import { callAxios, axiosError } from 'helpers';
+import { IErrorResponse } from 'types';
 import ProductItem from './item';
-import { IProduct, IProductListResponse } from '../types';
+import { IProduct, IProductsResponse } from '../types';
 
 export default function ProductListPage() {
-  const [products, setProducts] = React.useState<IProduct[]>([]);
-
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const [cart, cartDispatch] = CartConsumer();
@@ -36,24 +37,32 @@ export default function ProductListPage() {
     });
   };
 
-  React.useEffect(() => {
-    const fetchProduct = async () => {
-      const res: IProductListResponse = await axios.get(
-        `http://${serverUrl}/api/v1/products/`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-          }
-        }
-      );
-      const {
-        data: { products }
-      } = res;
-      setProducts(products);
-    };
-    products.length === 0 && fetchProduct();
-  }, []);
+  const fetchProducts = async () => {
+    const res = await callAxios<IProductsResponse>({
+      axiosApi: '/products'
+    });
+
+    const { products } = res as IProductsResponse;
+
+    return products;
+  };
+
+  // Queries
+  const {
+    data: products,
+    isLoading,
+    isError
+  } = useQuery(['products'], fetchProducts, {
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        axiosError(error as IErrorResponse);
+      }
+    },
+    refetchOnWindowFocus: false
+  });
+
+  if (isLoading) return <span>Loading...</span>;
+  if (isError) return <span>An Error Occured!</span>;
 
   return (
     <div className="container-lg mb-5">

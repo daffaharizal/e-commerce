@@ -1,13 +1,16 @@
 import React from 'react';
 import axios from 'axios';
 import { useParams } from 'react-router-dom';
+import { useQuery } from '@tanstack/react-query';
 
 import './style.css';
 
 import { PureCarousel, StyledButton, UserRatingForm } from 'components/shared';
 import { ProductProvider, CartConsumer } from 'context';
+import { callAxios, axiosError } from 'helpers';
+import { IErrorResponse } from 'types';
 import ProductInfo from './ProductInfo';
-import { IProduct, IProductDetailResponse } from '../types';
+import { IProduct, IProductResponse } from '../types';
 
 export default function ProductDetailPage() {
   const { productId } = useParams() as {
@@ -15,10 +18,7 @@ export default function ProductDetailPage() {
   };
   const [cart, cartDispatch] = CartConsumer();
 
-  const [product, setProduct] = React.useState<IProduct>();
   const [quantity, setQuantity] = React.useState<number>(1);
-
-  const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const handleAddToCart = (product: IProduct) => {
     const lineItemExist = cart.lineItems.some(
@@ -39,31 +39,37 @@ export default function ProductDetailPage() {
     });
   };
 
-  React.useEffect(() => {
-    const fetchProduct = async () => {
-      const res: IProductDetailResponse = await axios.get(
-        `http://${serverURL}/api/v1/products/${productId}`,
-        {
-          headers: {
-            'Content-Type': 'application/json',
-            Accept: 'application/json'
-          }
-        }
-      );
-      const {
-        data: { product }
-      } = res;
-      setProduct(product);
-    };
+  const fetchProduct = async () => {
+    const res = await callAxios<IProductResponse>({
+      axiosApi: `/products/${productId}`
+    });
+    const { product } = res as IProductResponse;
 
-    !product && fetchProduct();
-  }, []);
+    return product;
+  };
+
+  // Queries
+  const {
+    data: product,
+    isLoading,
+    isError
+  } = useQuery(['product', productId], fetchProduct, {
+    onError: (error) => {
+      if (axios.isAxiosError(error) && error.response) {
+        axiosError(error as IErrorResponse);
+      }
+    },
+    refetchOnWindowFocus: false
+  });
 
   const handleQuantity = (count: number) => {
     setQuantity((current) => {
       return current === 1 && count < 0 ? current : count + current;
     });
   };
+
+  if (isLoading) return <span>Loading...</span>;
+  if (isError) return <span>An Error Occured!</span>;
 
   return (
     <>

@@ -33,21 +33,15 @@ export interface IProduct {
   freeShipping: boolean;
 }
 
-export interface IProductListResponse {
-  data: {
-    products: IProduct[];
-  };
+export interface IProductsResponse {
+  products: IProduct[];
 }
 
-export interface IProductInfo {
+export interface IProductResponse {
   product: IProduct;
 }
 
-export interface IProductItemProps extends IProductInfo {
+export interface IProductItemProps extends IProductResponse {
   serverUrl: string;
   handleAddToCart: (product: IProduct) => void;
-}
-
-export interface IProductDetailResponse {
-  data: IProductItemProps;
 }
