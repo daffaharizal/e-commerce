@@ -39,8 +39,13 @@ export interface IProductListResponse {
   };
 }
 
-export interface IProductItemProps {
+export interface IProductInfo {
   product: IProduct;
+}
+
+export interface IProductItemProps extends IProductInfo {
+  serverUrl: string;
+  handleAddToCart: (product: IProduct) => void;
 }
 
 export interface IProductDetailResponse {

@@ -5,7 +5,8 @@ import {
   AuthPage,
   NoMatch,
   ProductPage,
-  ProfilePage
+  ProfilePage,
+  CartPage
 } from 'components/feature';
 import PrivateRoute from 'components/layout/PrivateRoute';
 import ProtectedRoute from 'components/layout/ProtectedRoute';
@@ -16,6 +17,7 @@ export default function Router() {
       <Route element={<Layout />}>
         <Route path="/" element={<Navigate replace to="/products" />} />
         <Route path="products/*" element={<ProductPage />} />
+        <Route path="cart" element={<CartPage />} />
         <Route
           path="auth"
           element={

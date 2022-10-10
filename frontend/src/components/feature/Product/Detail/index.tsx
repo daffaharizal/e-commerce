@@ -5,7 +5,7 @@ import { useParams } from 'react-router-dom';
 import './style.css';
 
 import { PureCarousel, StyledButton, UserRatingForm } from 'components/shared';
-import { ProductProvider } from 'context';
+import { ProductProvider, CartConsumer } from 'context';
 import ProductInfo from './ProductInfo';
 import { IProduct, IProductDetailResponse } from '../types';
 
@@ -13,11 +13,32 @@ export default function ProductDetailPage() {
   const { productId } = useParams() as {
     productId: string;
   };
+  const [cart, cartDispatch] = CartConsumer();
+  console.log(cart);
 
   const [product, setProduct] = React.useState<IProduct>();
   const [quantity, setQuantity] = React.useState<number>(1);
 
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
+
+  const handleAddToCart = (product: IProduct) => {
+    const lineItemExist = cart.lineItems.some(
+      (lineItem) => lineItem.itemId === product.id
+    );
+
+    const actionType = lineItemExist ? 'UPDATE_LINE_ITEM' : 'ADD_LINE_ITEM';
+
+    cartDispatch({
+      type: actionType,
+      payload: {
+        itemId: product.id,
+        item: product,
+        quantity,
+        discount: 0,
+        price: product.price
+      }
+    });
+  };
 
   React.useEffect(() => {
     const fetchProduct = async () => {
@@ -114,7 +135,9 @@ export default function ProductDetailPage() {
                         +
                       </div>
                     </form>
-                    <StyledButton className="round-black-btn">
+                    <StyledButton
+                      className="round-black-btn"
+                      onClick={() => handleAddToCart(product)}>
                       Add to Cart
                     </StyledButton>
                   </div>

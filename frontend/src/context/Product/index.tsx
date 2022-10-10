@@ -17,4 +17,4 @@ const ProductProvider: React.FC<IProductProps> = ({ productId, children }) => {
 const ProductConsumer = () =>
   React.useContext(ProductContext) as IProductContext;
 
-export { ProductContext, ProductProvider, ProductConsumer };
+export { ProductProvider, ProductConsumer };

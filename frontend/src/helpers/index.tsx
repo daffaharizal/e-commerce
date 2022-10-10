@@ -22,14 +22,17 @@ const callAxios = async <T,>({
 
   let res: AxiosResponse<T>;
   switch (axiosMethod) {
-    case 'GET':
+    case 'GET': {
       res = await instance.get(axiosApi);
       return res.data;
-    case 'POST':
+    }
+    case 'POST': {
       res = await instance.post(axiosApi, axiosData);
       return res.data;
-    default:
+    }
+    default: {
       console.error("Method doesn't exist.");
+    }
   }
 };
 
@@ -42,7 +45,7 @@ const axiosError = (error: IErrorResponse) => {
         response: {
           data: { msg }
         }
-      } = error;
+      } = error as IErrorResponse;
       toast(msg);
     }
   }

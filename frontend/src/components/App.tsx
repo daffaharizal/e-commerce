@@ -6,15 +6,17 @@ import 'assets/css/App.css';
 
 import Router from 'components/layout/Router';
 
-import { AuthProvider, QueryProvider } from 'context';
+import { AuthProvider, CartProvider, QueryProvider } from 'context';
 
 function App() {
   return (
     <div className="App">
       <AuthProvider>
-        <QueryProvider>
-          <Router />
-        </QueryProvider>
+        <CartProvider>
+          <QueryProvider>
+            <Router />
+          </QueryProvider>
+        </CartProvider>
       </AuthProvider>
     </div>
   );

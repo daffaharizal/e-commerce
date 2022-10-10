@@ -7,6 +7,7 @@
     "pkief.material-icon-theme",
     "mikestead.dotenv",
     "wix.vscode-import-cost",
-    "robbowen.synthwave-vscode"
+    "robbowen.synthwave-vscode",
+    "christian-kohler.npm-intellisense"
   ]
 }

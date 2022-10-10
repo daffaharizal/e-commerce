@@ -1,20 +1,21 @@
 import { Link } from 'react-router-dom';
 
 import { StyledButton, UserRatingForm } from 'components/shared';
-
 import NoImage from 'assets/images/noproductimage.png';
 
 import { IProductItemProps } from '../types';
 
-export default function ProductItem({ product }: IProductItemProps) {
-  const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
-
+const ProductItem: React.FC<IProductItemProps> = ({
+  product,
+  serverUrl,
+  handleAddToCart
+}) => {
   return (
     <div className="col-lg-4 col-md-6">
       <div className="card">
         {product.images.length > 0 ? (
           <img
-            src={`http://${serverURL}${product.images[0].url}`}
+            src={`http://${serverUrl}${product.images[0].url}`}
             className="card-img-top vh-35"
             alt={product.images[0].name}
           />
@@ -46,7 +47,9 @@ export default function ProductItem({ product }: IProductItemProps) {
             <StyledButton className="btn btn-outline-dark text-uppercase">
               Add to Wishlist
             </StyledButton>
-            <StyledButton className="btn btn-dark text-uppercase">
+            <StyledButton
+              className="btn btn-dark text-uppercase"
+              onClick={() => handleAddToCart(product)}>
               Add to Cart
             </StyledButton>
           </div>
@@ -54,4 +57,6 @@ export default function ProductItem({ product }: IProductItemProps) {
       </div>
     </div>
   );
-}
+};
+
+export default ProductItem;

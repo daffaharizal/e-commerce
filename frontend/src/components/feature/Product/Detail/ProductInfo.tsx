@@ -1,13 +1,14 @@
 import React from 'react';
 
 import { UserReviewCard, UserReviewForm } from 'components/shared';
-import { IProductItemProps, IProductReviews } from '../types';
+import { IProductReviews, IProductInfo } from '../types';
 import { AuthConsumer } from 'context';
 
-export default function ProductInfo({ product }: IProductItemProps) {
+const ProductInfo: React.FC<IProductInfo> = ({ product }) => {
   const [reviews, setReviews] = React.useState<IProductReviews[]>(
     product.reviews
   );
+
   const {
     isAuth,
     user: { _id: userId }
@@ -75,4 +76,6 @@ export default function ProductInfo({ product }: IProductItemProps) {
       </div>
     </div>
   );
-}
+};
+
+export default ProductInfo;

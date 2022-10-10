@@ -20,4 +20,4 @@ const AuthProvider: React.FC<IChildrenProps> = ({ children }) => {
 
 const AuthConsumer = () => React.useContext(AuthContext) as IAuthContext;
 
-export { AuthContext, AuthProvider, AuthConsumer };
+export { AuthProvider, AuthConsumer };
