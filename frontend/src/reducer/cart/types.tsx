@@ -1,7 +1,9 @@
 import { IProduct } from 'components/feature/Product/types';
 
-export interface ILineItem {
+export interface ILineItemId {
   itemId: string;
+}
+export interface ILineItem extends ILineItemId {
   item: IProduct;
   quantity: number;
   discount: number;
@@ -11,11 +13,12 @@ export interface ILineItem {
 export interface ICart {
   currency: string;
   lineItems: ILineItem[];
+  subTotal: number;
   totalDiscount: number;
-  totalPrice: number;
+  netAmount: number;
 }
 
 export type ACTIONTYPE = {
   type: 'ADD_LINE_ITEM' | 'UPDATE_LINE_ITEM' | 'REMOVE_LINE_ITEM';
-  payload: ILineItem;
+  payload: ILineItem | ILineItemId;
 };

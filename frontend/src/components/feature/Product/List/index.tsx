@@ -11,7 +11,6 @@ export default function ProductListPage() {
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const [cart, cartDispatch] = CartConsumer();
-  console.log(cart);
 
   const handleAddToCart = (product: IProduct) => {
     const lineItemExist = cart.lineItems.some(

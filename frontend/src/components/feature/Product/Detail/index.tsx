@@ -14,7 +14,6 @@ export default function ProductDetailPage() {
     productId: string;
   };
   const [cart, cartDispatch] = CartConsumer();
-  console.log(cart);
 
   const [product, setProduct] = React.useState<IProduct>();
   const [quantity, setQuantity] = React.useState<number>(1);
