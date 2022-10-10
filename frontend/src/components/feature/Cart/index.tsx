@@ -2,6 +2,7 @@ import React from 'react';
 import { FaPlus, FaMinus, FaTimes, FaLongArrowAltLeft } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
+import './styles.css';
 import { CartConsumer } from 'context';
 import NoImage from 'assets/images/noproductimage.png';
 import { IProduct } from 'components/feature/Product/types';
@@ -46,17 +47,11 @@ export default function CartPage() {
   };
 
   return (
-    <section
-      className="h-100 h-custom"
-      // style="background-color: #d2c9ff;"
-    >
-      <div className="container py-5 h-100">
+    <section className="h-100 h-custom">
+      <div className="container py-5">
         <div className="row d-flex justify-content-center align-items-center h-100">
           <div className="col-12">
-            <div
-              className="card card-registration card-registration-2"
-              // style="border-radius: 15px;"
-            >
+            <div className="card card-registration card-registration-2">
               <div className="card-body p-0">
                 <div className="row g-0">
                   <div className="col-lg-8">
@@ -65,7 +60,9 @@ export default function CartPage() {
                         <h1 className="fw-bold mb-0 text-black">
                           Shopping Cart
                         </h1>
-                        <h6 className="mb-0 text-muted">3 items</h6>
+                        <h6 className="mb-0 text-muted">
+                          {lineItems.length} items
+                        </h6>
                       </div>
                       <hr className="my-4" />
                       {lineItems.length > 0 &&
@@ -73,26 +70,32 @@ export default function CartPage() {
                           <React.Fragment key={itemId}>
                             <div className="row mb-4 d-flex justify-content-between align-items-center">
                               <div className="col-md-2 col-lg-2 col-xl-2">
-                                {item.images.length > 0 ? (
-                                  <img
-                                    src={`http://${serverUrl}${item.images[0].url}`}
-                                    className="img-fluid rounded-3"
-                                    alt={item.images[0].name}
-                                  />
-                                ) : (
-                                  <img
-                                    src={NoImage}
-                                    className="img-fluid rounded-3"
-                                    alt="noimage"
-                                  />
-                                )}
+                                <NavLink to={`/products/${itemId}`}>
+                                  {item.images.length > 0 ? (
+                                    <img
+                                      src={`http://${serverUrl}${item.images[0].url}`}
+                                      className="img-fluid rounded-3 text-black text-decoration-none"
+                                      alt={item.images[0].name}
+                                    />
+                                  ) : (
+                                    <img
+                                      src={NoImage}
+                                      className="img-fluid rounded-3 text-black text-decoration-none"
+                                      alt="noimage"
+                                    />
+                                  )}
+                                </NavLink>
                               </div>
                               <div className="col-md-3 col-lg-3 col-xl-3">
                                 <h6 className="text-muted text-capitalize">
                                   {item.category}
                                 </h6>
                                 <h6 className="text-black mb-0 text-capitalize">
-                                  {item.name}
+                                  <NavLink
+                                    to={`/products/${itemId}`}
+                                    className="text-black text-decoration-none">
+                                    {item.name}
+                                  </NavLink>
                                 </h6>
                               </div>
                               <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
@@ -160,7 +163,9 @@ export default function CartPage() {
                       <hr className="my-4" />
 
                       <div className="d-flex justify-content-between mb-4">
-                        <h5 className="text-uppercase">items 3</h5>
+                        <h5 className="text-uppercase">
+                          {lineItems.length} items
+                        </h5>
                         <h5>$ {subTotal}</h5>
                       </div>
 
@@ -168,8 +173,8 @@ export default function CartPage() {
 
                       <div className="mb-4 pb-2">
                         <select className="select form-control">
-                          <option value="1">Standard Delivery - $0.00</option>
-                          <option value="1">Premium Delivery - €5.00</option>
+                          <option value="1">Standard Delivery ($ 0.00)</option>
+                          <option value="1">Premium Delivery ($ 5.00)</option>
                         </select>
                       </div>
 
