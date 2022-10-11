@@ -23,6 +23,7 @@ const orderRouter = require('./routes/orderRoutes');
 const reviewRouter = require('./routes/reviewRoutes');
 const stripeRouter = require('./routes/stripeRoutes');
 const userRouter = require('./routes/userRoutes');
+const wishlistRouter = require('./routes/wishlistRoutes');
 
 // middleware
 const notFound = require('./middleware/not-found');
@@ -48,6 +49,7 @@ app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/reviews', reviewRouter);
 app.use('/api/v1/stripe', stripeRouter);
 app.use('/api/v1/users', userRouter);
+app.use('/api/v1/wishlist', wishlistRouter);
 
 app.use(notFound);
 app.use(errorHandlerMiddleware);
