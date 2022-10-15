@@ -1,17 +1,19 @@
 const { StatusCodes } = require('http-status-codes');
 const CustomError = require('../errors');
 
+const mongoose = require('mongoose');
+
 const Product = require('../models/Product');
 const Wishlist = require('../models/Wishlist');
 
 const addItem = async (req, res) => {
-  const { folderName, productId, folderId } = req.body;
+  const { folderName, folderId, productId } = req.body;
   const { name: productName } = await Product.findById(productId);
 
-  let msg = `${productName} added to ${folderName.trim()}`;
+  let msg = `${productName} added to ${folderName}`;
 
   if (folderId) {
-    let wishlist = await Wishlist.findOne({
+    const wishlist = await Wishlist.findOne({
       user: req.user.id,
       folders: { $elemMatch: { id: folderId } }
     });
@@ -31,16 +33,15 @@ const addItem = async (req, res) => {
       throw new CustomError.BadRequestError(
         'This item was already in the wishlist'
       );
-    } else {
-      folder.items.push({ product: productId });
     }
+    folder.items.push({ product: productId });
     wishlist.save();
     msg = `${productName} added to ${folder.name}`;
   } else {
     if (!folderName.trim()) {
       throw new CustomError.BadRequestError('Please provide a folder name');
     }
-    let wishlist = await Wishlist.findOneAndUpdate(
+    const wishlist = await Wishlist.findOneAndUpdate(
       {
         user: req.user.id
       },
@@ -48,10 +49,10 @@ const addItem = async (req, res) => {
       { new: true, upsert: true, runValidators: true }
     );
 
-    const folderalreadyExist = wishlist.folders.some(
+    const folderAlreadyExist = wishlist.folders.some(
       (folder) => folder.name === folderName.trim()
     );
-    if (folderalreadyExist) {
+    if (folderAlreadyExist) {
       throw new CustomError.BadRequestError('Folder already Exist');
     }
 
@@ -65,24 +66,93 @@ const addItem = async (req, res) => {
   res.status(StatusCodes.CREATED).json({ msg });
 };
 
-// const removeItem = async (req, res) => {
-//   const { folderId, productId } = req.body;
-// };
+const removeItem = async (req, res) => {
+  const { folderId, productId } = req.body;
 
-// const removeFolder = async (req, res) => {
-//   const { folderId } = req.params;
-// };
+  const wishlist = await Wishlist.findOne({
+    user: req.user.id
+  });
 
-// const showFolders = async (req, res) => {};
+  if (!wishlist) {
+    throw new CustomError.BadRequestError('Wishlist not found');
+  }
 
-// const showFolderItems = async (req, res) => {
-//   const { folderId } = req.params;
-// };
+  const folder = wishlist.folders.find((folder) => folder.id === folderId);
+
+  if (!folder) {
+    throw new CustomError.BadRequestError('No such Folder');
+  }
+
+  const item = folder.items.some(
+    (item) => item.product.toString() === productId
+  );
+  if (!item) {
+    throw new CustomError.BadRequestError('No such Item');
+  }
+
+  folder.items.remove({ product: productId });
+  wishlist.save();
+
+  res.status(StatusCodes.OK).json({ msg: 'Item removed successfully' });
+};
+
+const removeFolder = async (req, res) => {
+  const { folderId } = req.params;
+
+  const wishlist = await Wishlist.findOne({
+    user: req.user.id
+  });
+
+  if (!wishlist) {
+    throw new CustomError.BadRequestError('Wishlist not found');
+  }
+
+  const folder = wishlist.folders.find((folder) => folder.id === folderId);
+
+  if (!folder) {
+    throw new CustomError.BadRequestError('No such Folder');
+  }
+
+  wishlist.folders.remove({ _id: mongoose.Types.ObjectId(folderId) });
+  wishlist.save();
+
+  res.status(StatusCodes.OK).json({ msg: 'Folder removed successfully' });
+};
+
+const showFolders = async (req, res) => {
+  const wishlist = await Wishlist.findOne({
+    user: req.user.id
+  });
+
+  if (!wishlist) {
+    throw new CustomError.BadRequestError('Wishlist not found');
+  }
+
+  res.status(StatusCodes.OK).json({ wishlist });
+};
+
+const showFolderItems = async (req, res) => {
+  const { folderId } = req.params;
+  const wishlist = await Wishlist.findOne({
+    user: req.user.id
+  });
+
+  if (!wishlist) {
+    throw new CustomError.BadRequestError('Wishlist not found');
+  }
+
+  const folder = wishlist.folders.find((folder) => folder.id === folderId);
+
+  if (!folder) {
+    throw new CustomError.BadRequestError('No such Folder');
+  }
+  res.status(StatusCodes.OK).json({ folder });
+};
 
 module.exports = {
-  addItem
-  // removeItem,
-  // removeFolder,
-  // showFolders,
-  // showFolderItems
+  addItem,
+  removeItem,
+  removeFolder,
+  showFolders,
+  showFolderItems
 };

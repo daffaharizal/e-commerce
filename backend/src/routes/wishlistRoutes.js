@@ -20,13 +20,13 @@ router.post(
   addItem
 );
 
-router.post(
+router.delete(
   '/remove-item',
   [authenticateUser, authorizePermissions('user')],
   removeItem
 );
 
-router.post(
+router.delete(
   '/remove-folder/:folderId',
   [authenticateUser, authorizePermissions('user')],
   removeFolder
