@@ -8,6 +8,15 @@ const WishlistItemSchema = new mongoose.Schema({
   }
 });
 
+const WishlistFolderSchema = new mongoose.Schema({
+  name: {
+    type: String,
+    unique: true,
+    required: true
+  },
+  items: [WishlistItemSchema]
+});
+
 const WishlistSchema = new mongoose.Schema(
   {
     user: {
@@ -16,7 +25,7 @@ const WishlistSchema = new mongoose.Schema(
       required: true,
       unique: true
     },
-    items: [WishlistItemSchema]
+    folders: [WishlistFolderSchema]
   },
   {
     toJSON: { virtuals: true },

@@ -6,12 +6,42 @@ const {
   authorizePermissions
 } = require('../middleware/authentication');
 
-const { wishlistItem } = require('../controllers/wishlistController');
+const {
+  addItem,
+  removeItem,
+  removeFolder,
+  showFolders,
+  showFolderItems
+} = require('../controllers/wishlistController');
 
 router.post(
-  '/:product',
+  '/add-item',
   [authenticateUser, authorizePermissions('user')],
-  wishlistItem
+  addItem
+);
+
+router.post(
+  '/remove-item',
+  [authenticateUser, authorizePermissions('user')],
+  removeItem
+);
+
+router.post(
+  '/remove-folder/:folderId',
+  [authenticateUser, authorizePermissions('user')],
+  removeFolder
+);
+
+router.get(
+  '/show-folders/',
+  [authenticateUser, authorizePermissions('user')],
+  showFolders
+);
+
+router.get(
+  '/:folderId/show-items/',
+  [authenticateUser, authorizePermissions('user')],
+  showFolderItems
 );
 
 module.exports = router;
