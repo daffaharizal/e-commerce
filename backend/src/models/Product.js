@@ -83,12 +83,12 @@ const ProductSchema = new mongoose.Schema(
   }
 );
 
-ProductSchema.set('toJSON', {
-  transform: function (doc, ret) {
-    ret.id = ret._id;
-    delete ret._id;
-  }
-});
+ProductSchema.methods.toJSON = function () {
+  const obj = this.toObject();
+  obj.id = obj._id;
+  delete obj._id;
+  return obj;
+};
 
 ProductSchema.virtual('reviews', {
   ref: 'Review',

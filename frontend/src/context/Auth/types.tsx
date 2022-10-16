@@ -5,8 +5,7 @@ export interface IUser {
     email?: string;
     fullName?: string;
     role?: string;
-    _id?: string;
-    __v?: number;
+    id?: string;
   };
 }
 

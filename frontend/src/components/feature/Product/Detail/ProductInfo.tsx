@@ -11,7 +11,7 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
 
   const {
     isAuth,
-    user: { _id: userId }
+    user: { id: userId }
   } = AuthConsumer();
 
   const isCurrentUserReviewed = reviews.some(
