@@ -78,9 +78,17 @@ const ProductSchema = new mongoose.Schema(
   {
     timestamps: true,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
+    versionKey: false
   }
 );
+
+ProductSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+  }
+});
 
 ProductSchema.virtual('reviews', {
   ref: 'Review',
@@ -89,11 +97,11 @@ ProductSchema.virtual('reviews', {
   justOne: false
 });
 
-ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
-  this.populate({
-    path: 'user',
-    select: 'fullName'
-  }).populate('reviews');
-});
+// ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
+//   this.populate({
+//     path: 'user',
+//     select: 'fullName'
+//   }).populate('reviews');
+// });
 
 module.exports = mongoose.model('Product', ProductSchema);

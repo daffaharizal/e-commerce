@@ -8,9 +8,13 @@ const Wishlist = require('../models/Wishlist');
 
 const addItem = async (req, res) => {
   const { folderName, folderId, productId } = req.body;
-  const { name: productName } = await Product.findById(productId);
 
-  let msg = `${productName} added to ${folderName}`;
+  const product = await Product.findById(productId);
+  if (!product) {
+    throw new CustomError.BadRequestError('No such Product');
+  }
+
+  let msg = `${product.name} added to ${folderName}`;
 
   if (folderId) {
     const wishlist = await Wishlist.findOne({
@@ -36,7 +40,7 @@ const addItem = async (req, res) => {
     }
     folder.items.push({ product: productId });
     wishlist.save();
-    msg = `${productName} added to ${folder.name}`;
+    msg = `${product.name} added to ${folder.name}`;
   } else {
     if (!folderName.trim()) {
       throw new CustomError.BadRequestError('Please provide a folder name');
@@ -122,6 +126,17 @@ const removeFolder = async (req, res) => {
 const showFolders = async (req, res) => {
   const wishlist = await Wishlist.findOne({
     user: req.user.id
+  }).populate({
+    path: 'folders',
+    populate: {
+      path: 'items',
+      populate: {
+        path: 'product',
+        // model: 'Product'
+        select:
+          'id name price category company featured freeShipping inventory averageRating numOfReviews images'
+      }
+    }
   });
 
   if (!wishlist) {
@@ -135,6 +150,16 @@ const showFolderItems = async (req, res) => {
   const { folderId } = req.params;
   const wishlist = await Wishlist.findOne({
     user: req.user.id
+  }).populate({
+    path: 'folders',
+    populate: {
+      path: 'items',
+      populate: {
+        path: 'product',
+        select:
+          'id name price category company featured freeShipping inventory averageRating numOfReviews images'
+      }
+    }
   });
 
   if (!wishlist) {

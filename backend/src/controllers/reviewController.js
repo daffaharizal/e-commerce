@@ -59,15 +59,7 @@ const updateReview = async (req, res) => {
   const { id: reviewId } = req.params;
   const { rating, title, comment } = req.body;
 
-  const review = await Review.findOne({ _id: reviewId })
-    .populate({
-      path: 'product',
-      select: 'name'
-    })
-    .populate({
-      path: 'user',
-      select: 'fullName role'
-    });
+  const review = await Review.findOne({ _id: reviewId });
   if (!review) {
     throw new CustomError.NotFoundError(`No Review with such id - ${reviewId}`);
   }
@@ -112,10 +104,7 @@ const getSingleProductReviews = async (req, res) => {
     );
   }
 
-  const reviews = await Review.find({ product: productId }).populate({
-    path: 'user',
-    select: 'fullName'
-  });
+  const reviews = await Review.find({ product: productId });
 
   res.status(StatusCodes.OK).json({ reviews });
 };
@@ -131,10 +120,7 @@ const getSingleUserReviews = async (req, res) => {
     throw new CustomError.NotFoundError(`No User with such id - ${userId}`);
   }
 
-  const reviews = await Review.find({ user: userId }).populate({
-    path: 'user',
-    select: 'fullName'
-  });
+  const reviews = await Review.find({ user: userId });
 
   res.status(StatusCodes.OK).json({ reviews });
 };

@@ -30,12 +30,20 @@ const ReviewSchema = new mongoose.Schema(
   {
     timestamps: true,
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
+    versionKey: false
   }
 );
 
 // unique together
 ReviewSchema.index({ product: 1, user: 1 }, { unique: true });
+
+ReviewSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+  }
+});
 
 ReviewSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
   this.populate({
@@ -60,8 +68,8 @@ ReviewSchema.statics.CalculateAvgRating = async function (productId) {
     await this.model('Product').findOneAndUpdate(
       { _id: productId },
       {
-        averageRating: Math.ceil(result[0]?.averageRating || 0),
-        numOfReviews: result[0]?.numOfReviews || 0
+        averageRating: Math.ceil(result[0].averageRating || 0),
+        numOfReviews: result[0].numOfReviews || 0
       }
     );
   } catch (error) {

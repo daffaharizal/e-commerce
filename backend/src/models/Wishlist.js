@@ -29,8 +29,37 @@ const WishlistSchema = new mongoose.Schema(
   },
   {
     toJSON: { virtuals: true },
-    toObject: { virtuals: true }
+    toObject: { virtuals: true },
+    versionKey: false
   }
 );
+
+WishlistItemSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    // ret.id = ret._id;
+    delete ret._id;
+  }
+});
+
+WishlistFolderSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+  }
+});
+
+WishlistSchema.set('toJSON', {
+  transform: function (doc, ret) {
+    ret.id = ret._id;
+    delete ret._id;
+  }
+});
+
+WishlistSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
+  this.populate({
+    path: 'user',
+    select: 'fullName'
+  });
+});
 
 module.exports = mongoose.model('Wishlist', WishlistSchema);
