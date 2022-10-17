@@ -1,5 +1,10 @@
 import React from 'react';
+import { StyledButton } from 'components/shared';
 
-export default function ProductWishlistPage() {
-  return <div>ProductWishlist</div>;
+export default function WishlistItem() {
+  return (
+    <StyledButton className="btn btn-outline-dark text-uppercase">
+      Add to Wishlist
+    </StyledButton>
+  );
 }

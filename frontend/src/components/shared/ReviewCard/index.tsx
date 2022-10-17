@@ -1,11 +1,10 @@
 import { FaUser } from 'react-icons/fa';
 
 import { IProductReviews } from 'components/feature/Product/types';
-import { UserRatingForm } from 'components/shared';
+import { UserRating } from 'components/shared';
 
 export default function UserReviewCard({
   review: {
-    id,
     rating,
     title,
     comment,
@@ -22,7 +21,7 @@ export default function UserReviewCard({
       </h5>
       <div className="card-body">
         <h5 className="card-title">
-          <UserRatingForm id={id} star={rating} />
+          <UserRating rate={rating} emoji={true} />
           {title}
         </h5>
         <p className="card-text">{comment}</p>

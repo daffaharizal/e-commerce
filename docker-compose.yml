@@ -41,6 +41,8 @@ services:
       - MONGO_INITDB_ROOT_PASSWORD=dbPassword
     volumes:
       - mongo-db:/data/db
+    ports:
+      - 27017:27017
 
 volumes:
   mongo-db:

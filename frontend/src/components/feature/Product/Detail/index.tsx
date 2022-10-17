@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import './style.css';
 
-import { PureCarousel, StyledButton, UserRatingForm } from 'components/shared';
+import { PureCarousel, StyledButton, UserRating } from 'components/shared';
 import { ProductProvider, CartConsumer } from 'context';
 import { callAxios, axiosError } from 'helpers';
 import { IErrorResponse } from 'types';
@@ -87,12 +87,8 @@ export default function ProductDetailPage() {
                 <div className="product-dtl">
                   <div className="product-info">
                     <div className="product-name">{product.category}</div>
-                    <UserRatingForm
-                      id={product.id}
-                      star={product.averageRating}
-                      numOfReviews={product.numOfReviews}
-                      showNumOfReviews={true}
-                    />
+                    <UserRating rate={product.averageRating} />
+                    <span>{product.numOfReviews} Reviews</span>
                     <div className="product-price-discount">
                       <span>${product.price}</span>
                       <span className="line-through"></span>

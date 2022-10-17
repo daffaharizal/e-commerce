@@ -6,6 +6,7 @@ export interface IUser {
 export interface IProductImages {
   name: string;
   url: string;
+  isPublicUrl: boolean;
 }
 
 export interface IProductReviews {

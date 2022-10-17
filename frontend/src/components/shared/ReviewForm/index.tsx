@@ -1,7 +1,7 @@
 import React from 'react';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 
-import { UserRatingForm } from 'components/shared';
+import { UserRating } from 'components/shared';
 import { ProductConsumer } from 'context';
 import { IErrorResponse } from 'types';
 import { IReviewForm, IReviewFormResponse, ISetReviews } from './types';
@@ -93,7 +93,7 @@ export default function UserReviewForm({ setReviews }: ISetReviews) {
         <div className="card-body">
           <h5 className="card-title pb-4 tex-dark">
             <label>Overall rating</label>
-            <UserRatingForm disabled={false} setRating={setRating} />
+            <UserRating emoji={true} readonly={false} setRating={setRating} />
             <p className="text-danger">{errors.rating?.message}</p>
           </h5>
           <div className="card-text">

@@ -16,3 +16,8 @@ body {
 .fs-0 {
   font-size: 0.875rem;
 }
+
+.rate {
+  float: left;
+  padding: 0 10px 0 0;
+}

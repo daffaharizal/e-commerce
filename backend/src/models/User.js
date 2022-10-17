@@ -59,7 +59,7 @@ userSchema.methods.comparePassword = async function (currentPassword) {
 userSchema.methods.toJSON = function () {
   const obj = this.toObject();
   obj.id = obj._id;
-  delete obj._id;
+  // delete obj._id;
   delete obj.password;
   obj.dateOfBirth =
     obj.dateOfBirth && moment(obj.dateOfBirth).format('YYYY/MM/DD');

@@ -20,11 +20,11 @@ export default function PureCarousel({ images }: IPureCarousel) {
       naturalSlideHeight={85}
       totalSlides={images.length > 0 ? images.length : 1}>
       <Slider>
-        {images.map(({ name, url }, index) => (
+        {images.map(({ name, url, isPublicUrl }, index) => (
           <Slide index={index} key={index}>
             <Image
               hasMasterSpinner
-              src={`http://${serverURL}${url}`}
+              src={isPublicUrl ? url : `http://${serverURL}${url}`}
               alt={name}
             />
           </Slide>

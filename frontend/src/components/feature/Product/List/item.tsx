@@ -1,6 +1,6 @@
 import { Link } from 'react-router-dom';
 
-import { StyledButton, UserRatingForm } from 'components/shared';
+import { StyledButton, UserRating } from 'components/shared';
 import NoImage from 'assets/images/noproductimage.png';
 
 import { IProductItemProps } from '../types';
@@ -15,7 +15,11 @@ const ProductItem: React.FC<IProductItemProps> = ({
       <div className="card">
         {product.images.length > 0 ? (
           <img
-            src={`http://${serverUrl}${product.images[0].url}`}
+            src={
+              product.images[0].isPublicUrl
+                ? product.images[0].url
+                : `http://${serverUrl}${product.images[0].url}`
+            }
             className="card-img-top vh-35"
             alt={product.images[0].name}
           />
@@ -33,12 +37,11 @@ const ProductItem: React.FC<IProductItemProps> = ({
         </div>
         <ul className="list-group list-group-flush">
           <li className="list-group-item d-flex justify-content-between text-capitalize text-black">
-            <UserRatingForm
-              id={product.id}
-              star={product.averageRating}
-              numOfReviews={product.numOfReviews}
-              showNumOfReviews={true}
-            />
+            <div>
+              <UserRating rate={product.averageRating} />
+              <span>{product.numOfReviews} Reviews</span>
+            </div>
+
             <span>{product.category}</span>
           </li>
         </ul>

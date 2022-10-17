@@ -28,6 +28,10 @@ const ProductSchema = new mongoose.Schema(
         url: {
           type: String,
           required: [true, 'Please provide image url']
+        },
+        isPublicUrl: {
+          type: Boolean,
+          default: false
         }
       }
     ],
