@@ -47,9 +47,6 @@ const ProductItem: React.FC<IProductItemProps> = ({
         </ul>
         <div className="card-body">
           <div className="buttons text-end">
-            <StyledButton className="btn btn-outline-dark text-uppercase">
-              Add to Wishlist
-            </StyledButton>
             <StyledButton
               className="btn btn-dark text-uppercase"
               onClick={() => handleAddToCart(product)}>

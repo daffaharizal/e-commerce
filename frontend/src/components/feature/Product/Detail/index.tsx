@@ -5,6 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import './style.css';
 
+import { WishListFolderModal } from 'components/feature';
 import { PureCarousel, StyledButton, UserRating } from 'components/shared';
 import { ProductProvider, CartConsumer } from 'context';
 import { callAxios, axiosError } from 'helpers';
@@ -137,10 +138,11 @@ export default function ProductDetailPage() {
                       </div>
                     </form>
                     <StyledButton
-                      className="round-black-btn"
+                      className="btn btn-dark my-3 px-5"
                       onClick={() => handleAddToCart(product)}>
                       Add to Cart
                     </StyledButton>
+                    <WishListFolderModal productId={productId} />
                   </div>
                 </div>
               </div>
