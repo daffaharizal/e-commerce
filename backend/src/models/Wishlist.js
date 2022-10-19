@@ -11,7 +11,6 @@ const WishlistItemSchema = new mongoose.Schema({
 const WishlistFolderSchema = new mongoose.Schema({
   name: {
     type: String,
-    unique: true,
     required: true
   },
   items: [WishlistItemSchema]

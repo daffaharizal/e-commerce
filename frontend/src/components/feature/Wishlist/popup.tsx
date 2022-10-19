@@ -16,11 +16,7 @@ import {
   IWistListAddItemResponse
 } from './types';
 
-export default function WishListFolderModal({
-  productId
-}: {
-  productId: string;
-}) {
+export default function WishlistPopup({ productId }: { productId: string }) {
   const [modalShow, setModalShow] = React.useState(false);
   const [folderData, setFolderData] = React.useState({
     folderId: '',
@@ -31,11 +27,8 @@ export default function WishListFolderModal({
     const res = await callAxios<IWishListResponse>({
       axiosApi: '/wishlist/show-folders'
     });
-    const {
-      wishlist: { folders }
-    } = res as IWishListResponse;
-
-    return folders;
+    const { wishlist } = res as IWishListResponse;
+    return wishlist?.folders || wishlist;
   };
 
   const addItem = async (axiosData: IWistListAddItemProps) => {
@@ -94,7 +87,7 @@ export default function WishListFolderModal({
         size="lg"
         aria-labelledby="contained-modal-title-vcenter"
         centered>
-        <Modal.Header closeButton>
+        <Modal.Header>
           <Modal.Title id="contained-modal-title-vcenter">
             Wishlist Items
           </Modal.Title>
@@ -102,8 +95,8 @@ export default function WishListFolderModal({
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              <Form.Label className="text-muted">Existing Lists</Form.Label>
-              {data &&
+              {data && <Form.Label>Existing Lists</Form.Label>}
+              {data ? (
                 data.map((folder) => (
                   <Form.Check
                     type="radio"
@@ -119,10 +112,15 @@ export default function WishListFolderModal({
                       })
                     }
                   />
-                ))}
+                ))
+              ) : (
+                <Form.Text className="text-muted">
+                  No lists created yet!
+                </Form.Text>
+              )}
             </Form.Group>
             <Form.Group className="mb-3">
-              <Form.Label className="text-muted">OR Create New List</Form.Label>
+              <Form.Label>Create New List</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter a new list name"

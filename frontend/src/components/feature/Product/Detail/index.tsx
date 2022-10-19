@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import './style.css';
 
-import { WishListFolderModal } from 'components/feature';
+import { WishlistPopup } from 'components/feature';
 import { PureCarousel, StyledButton, UserRating } from 'components/shared';
 import { ProductProvider, CartConsumer } from 'context';
 import { callAxios, axiosError } from 'helpers';
@@ -142,7 +142,7 @@ export default function ProductDetailPage() {
                       onClick={() => handleAddToCart(product)}>
                       Add to Cart
                     </StyledButton>
-                    <WishListFolderModal productId={productId} />
+                    <WishlistPopup productId={productId} />
                   </div>
                 </div>
               </div>

@@ -132,16 +132,15 @@ const showFolders = async (req, res) => {
       path: 'items',
       populate: {
         path: 'product',
-        // model: 'Product'
         select:
           'id name price category company featured freeShipping inventory averageRating numOfReviews images'
       }
     }
   });
 
-  if (!wishlist) {
-    throw new CustomError.BadRequestError('Wishlist not found');
-  }
+  // if (!wishlist) {
+  //   throw new CustomError.BadRequestError('Wishlist not found');
+  // }
 
   res.status(StatusCodes.OK).json({ wishlist });
 };

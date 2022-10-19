@@ -73,7 +73,11 @@ export default function CartPage() {
                                 <NavLink to={`/products/${itemId}`}>
                                   {item.images.length > 0 ? (
                                     <img
-                                      src={`http://${serverUrl}${item.images[0].url}`}
+                                      src={
+                                        item.images[0].isPublicUrl
+                                          ? item.images[0].url
+                                          : `http://${serverUrl}${item.images[0].url}`
+                                      }
                                       className="img-fluid rounded-3 text-black text-decoration-none"
                                       alt={item.images[0].name}
                                     />

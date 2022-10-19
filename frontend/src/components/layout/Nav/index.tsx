@@ -52,6 +52,9 @@ export default function NavBar() {
               <NavLink to="/cart" className="dropdown-item">
                 Cart
               </NavLink>
+              <NavLink to="/wishlist" className="dropdown-item">
+                Wishlist
+              </NavLink>
               <NavLink to="/profile" className="dropdown-item">
                 Profile
               </NavLink>
