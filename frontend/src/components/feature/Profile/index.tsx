@@ -7,7 +7,7 @@ import { DatePicker } from 'react-rainbow-components';
 import { toast } from 'react-toastify';
 
 // import { QueryConsumer } from 'context';
-import { callAxios, axiosError } from 'helpers';
+import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
 import { IUserProfile, IUserProfileResponse } from './types';
@@ -28,7 +28,7 @@ export default function ProfilePage() {
   });
 
   const getProfile = async () => {
-    const res = await callAxios<IUserProfileResponse>({
+    const res = await axiosCreate<IUserProfileResponse>({
       axiosApi: '/users/showme'
     });
     const {
@@ -45,7 +45,7 @@ export default function ProfilePage() {
   };
 
   const updateProfile = async (axiosData: IUserProfile) => {
-    return await callAxios<IUserProfileResponse>({
+    return await axiosCreate<IUserProfileResponse>({
       axiosApi: '/users/update-user',
       axiosMethod: 'POST',
       axiosData

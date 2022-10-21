@@ -1,8 +1,15 @@
+import Card from 'react-bootstrap/Card';
+import Col from 'react-bootstrap/Col';
+import ListGroup from 'react-bootstrap/ListGroup';
+import { LazyLoadImage } from 'react-lazy-load-image-component';
 import { Link } from 'react-router-dom';
 
-import { StyledButton, UserRating } from 'components/shared';
-import NoImage from 'assets/images/noproductimage.png';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 
+import NoImage from 'assets/images/noproductimage.png';
+import { truncate } from 'helpers';
+
+import { StyledButton, UserRating } from 'components/shared';
 import { IProductItemProps } from '../types';
 
 const ProductItem: React.FC<IProductItemProps> = ({
@@ -11,51 +18,60 @@ const ProductItem: React.FC<IProductItemProps> = ({
   handleAddToCart
 }) => {
   return (
-    <div className="col-lg-4 col-md-6">
-      <div className="card">
+    <Col>
+      <Card>
         {product.images.length > 0 ? (
-          <img
+          <LazyLoadImage
             src={
               product.images[0].isPublicUrl
                 ? product.images[0].url
                 : `http://${serverUrl}${product.images[0].url}`
             }
             className="card-img-top vh-35"
+            effect="blur"
             alt={product.images[0].name}
           />
         ) : (
-          <img src={NoImage} className="card-img-top vh-35" alt="noimage" />
+          <Card.Img
+            src={NoImage}
+            variant="top"
+            className="card-img-top vh-35"
+            alt="noimage"
+          />
         )}
-        <div className="card-body border-bottom">
-          <h5 className="card-title d-flex justify-content-between text-capitalize">
+        <Card.Body className="border-bottom min-vh-15 max-vh-15">
+          <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
             <Link to={product.id} className="text-success text-decoration-none">
               {product.name}
             </Link>
             <span className="fw-bold text-danger">${product.price}</span>
-          </h5>
-          <p className="card-text mb-1 mt-1 fs-0">{product.description}</p>
-        </div>
-        <ul className="list-group list-group-flush">
-          <li className="list-group-item d-flex justify-content-between text-capitalize text-black">
+          </Card.Title>
+          <Card.Text className="mb-1 mt-1 fs-0">
+            {truncate(product.description)}
+          </Card.Text>
+        </Card.Body>
+        <ListGroup as="ul" variant="flush">
+          <ListGroup.Item
+            as="li"
+            className="d-flex justify-content-between text-capitalize text-black">
             <div>
               <UserRating rate={product.averageRating} />
               <span>{product.numOfReviews} Reviews</span>
             </div>
-
             <span>{product.category}</span>
-          </li>
-        </ul>
-        <div className="card-body">
-          <div className="buttons text-end">
+          </ListGroup.Item>
+        </ListGroup>
+        <Card.Body>
+          <Card.Text as="div" className="buttons text-end">
             <StyledButton
               className="btn btn-dark text-uppercase"
               onClick={() => handleAddToCart(product)}>
               Add to Cart
             </StyledButton>
-          </div>
-        </div>
-      </div>
-    </div>
+          </Card.Text>
+        </Card.Body>
+      </Card>
+    </Col>
   );
 };
 

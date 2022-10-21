@@ -8,7 +8,7 @@ import { toast } from 'react-toastify';
 
 import { StyledButton } from 'components/shared';
 import { QueryConsumer } from 'context';
-import { callAxios, axiosError } from 'helpers';
+import { axiosCreate, axiosError } from 'helpers';
 import { IErrorResponse } from 'types';
 import {
   IWishListResponse,
@@ -24,7 +24,7 @@ export default function WishlistPopup({ productId }: { productId: string }) {
   });
 
   const fetchFolders = async () => {
-    const res = await callAxios<IWishListResponse>({
+    const res = await axiosCreate<IWishListResponse>({
       axiosApi: '/wishlist/show-folders'
     });
     const { wishlist } = res as IWishListResponse;
@@ -32,7 +32,7 @@ export default function WishlistPopup({ productId }: { productId: string }) {
   };
 
   const addItem = async (axiosData: IWistListAddItemProps) => {
-    return await callAxios<IWistListAddItemResponse>({
+    return await axiosCreate<IWistListAddItemResponse>({
       axiosApi: '/wishlist/add-item',
       axiosMethod: 'POST',
       axiosData

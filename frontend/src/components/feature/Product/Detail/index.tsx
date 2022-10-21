@@ -8,7 +8,7 @@ import './style.css';
 import { WishlistPopup } from 'components/feature';
 import { PureCarousel, StyledButton, UserRating } from 'components/shared';
 import { ProductProvider, CartConsumer } from 'context';
-import { callAxios, axiosError } from 'helpers';
+import { axiosCreate, axiosError } from 'helpers';
 import { IErrorResponse } from 'types';
 import ProductInfo from './ProductInfo';
 import { IProduct, IProductResponse } from '../types';
@@ -41,7 +41,7 @@ export default function ProductDetailPage() {
   };
 
   const fetchProduct = async () => {
-    const res = await callAxios<IProductResponse>({
+    const res = await axiosCreate<IProductResponse>({
       axiosApi: `/products/${productId}`
     });
     const { product } = res as IProductResponse;

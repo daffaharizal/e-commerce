@@ -4,7 +4,7 @@ import { toast } from 'react-toastify';
 import { IAxiosProps } from './types';
 import { IErrorResponse } from 'types';
 
-const callAxios = async <T,>({
+const axiosCreate = async <T,>({
   axiosApi,
   axiosMethod = 'GET',
   axiosData = {}
@@ -51,4 +51,7 @@ const axiosError = (error: IErrorResponse) => {
   }
 };
 
-export { callAxios, axiosError };
+const truncate = (input: string) =>
+  input?.length > 200 ? `${input.slice(0, 197)}...` : input;
+
+export { axiosCreate, axiosError, truncate };

@@ -1,9 +1,10 @@
 import React from 'react';
 import axios from 'axios';
+import Row from 'react-bootstrap/Row';
 import { useQuery } from '@tanstack/react-query';
 
 import { CartConsumer } from 'context';
-import { callAxios, axiosError } from 'helpers';
+import { axiosCreate, axiosError } from 'helpers';
 import { IErrorResponse } from 'types';
 import ProductItem from './item';
 import { IProduct, IProductsResponse } from '../types';
@@ -38,7 +39,7 @@ export default function ProductListPage() {
   };
 
   const fetchProducts = async () => {
-    const res = await callAxios<IProductsResponse>({
+    const res = await axiosCreate<IProductsResponse>({
       axiosApi: '/products'
     });
 
@@ -75,7 +76,7 @@ export default function ProductListPage() {
           <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center">
             <span className="fw-bold text-uppercase">New Product</span>
           </div>
-          <div className="row g-3">
+          <Row xs={1} md={3} className="g-3">
             {products.map((product) => (
               <ProductItem
                 key={product.id}
@@ -84,7 +85,7 @@ export default function ProductListPage() {
                 handleAddToCart={handleAddToCart}
               />
             ))}
-          </div>
+          </Row>
         </div>
       </div>
     </div>
