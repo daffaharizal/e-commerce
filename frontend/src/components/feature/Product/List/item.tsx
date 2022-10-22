@@ -39,7 +39,7 @@ const ProductItem: React.FC<IProductItemProps> = ({
             alt="noimage"
           />
         )}
-        <Card.Body className="border-bottom min-vh-15 max-vh-15">
+        <Card.Body className="border-bottom">
           <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
             <Link to={product.id} className="text-success text-decoration-none">
               {product.name}

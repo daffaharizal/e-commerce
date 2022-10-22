@@ -1,6 +1,9 @@
 import React from 'react';
 import axios from 'axios';
+import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
+import TabContent from 'react-bootstrap/TabContent';
+import TabPane from 'react-bootstrap/TabPane';
 import { useQuery } from '@tanstack/react-query';
 
 import { CartConsumer } from 'context';
@@ -66,28 +69,24 @@ export default function ProductListPage() {
   if (isError) return <span>An Error Occured!</span>;
 
   return (
-    <div className="container-lg mb-5">
-      <div className="tab-content" id="myTabContent">
-        <div
-          className="tab-pane fade show active"
-          id="home"
-          role="tabpanel"
-          aria-labelledby="home-tab">
+    <Container fluid="lg" className="mb-5">
+      <TabContent id="myTabContent">
+        <TabPane active aria-labelledby="products-tab">
           <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center">
             <span className="fw-bold text-uppercase">New Product</span>
           </div>
-          <Row xs={1} md={3} className="g-3">
-            {products.map((product) => (
-              <ProductItem
-                key={product.id}
-                product={product}
-                serverUrl={serverUrl}
-                handleAddToCart={handleAddToCart}
-              />
-            ))}
-          </Row>
-        </div>
-      </div>
-    </div>
+        </TabPane>
+      </TabContent>
+      <Row lg={3} md={2} sm={2} xs={1} className="g-3">
+        {products.map((product) => (
+          <ProductItem
+            key={product.id}
+            product={product}
+            serverUrl={serverUrl}
+            handleAddToCart={handleAddToCart}
+          />
+        ))}
+      </Row>
+    </Container>
   );
 }
