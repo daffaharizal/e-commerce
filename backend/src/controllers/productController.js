@@ -12,8 +12,24 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const products = await Product.find({});
-  res.status(StatusCodes.OK).json({ products, count: products.length });
+  const { limit, page: currentPage } = req.query;
+
+  const products = await Product.find()
+    .skip((currentPage - 1) * limit)
+    .limit(limit);
+  const totalItems = await Product.count();
+
+  const totalPages = Math.ceil(totalItems / limit);
+
+  res.status(StatusCodes.OK).json({
+    products,
+    paging: {
+      currentPage,
+      totalPages,
+      currentItems: products.length,
+      totalItems: totalItems
+    }
+  });
 };
 
 const getSingleProduct = async (req, res) => {

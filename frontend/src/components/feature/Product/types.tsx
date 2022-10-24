@@ -36,6 +36,12 @@ export interface IProduct {
 
 export interface IProductsResponse {
   products: IProduct[];
+  paging: {
+    currentPage: number;
+    totalPages: number;
+    currentItems: number;
+    totalItems: number;
+  };
 }
 
 export interface IProductResponse {

@@ -6,7 +6,8 @@ import TabContent from 'react-bootstrap/TabContent';
 import TabPane from 'react-bootstrap/TabPane';
 import { useQuery } from '@tanstack/react-query';
 
-import { CartConsumer } from 'context';
+import { OffsetPagination } from 'components/shared';
+import { CartConsumer, QueryConsumer } from 'context';
 import { axiosCreate, axiosError } from 'helpers';
 import { IErrorResponse } from 'types';
 import ProductItem from './item';
@@ -14,6 +15,14 @@ import { IProduct, IProductsResponse } from '../types';
 
 export default function ProductListPage() {
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
+
+  // Access the client
+  const queryClient = QueryConsumer();
+
+  const [{ limit, page }, setPaging] = React.useState({
+    limit: 100,
+    page: 1
+  });
 
   const [cart, cartDispatch] = CartConsumer();
 
@@ -41,32 +50,54 @@ export default function ProductListPage() {
     });
   };
 
-  const fetchProducts = async () => {
+  const fetchProducts = async (limit = 100, page = 1) => {
     const res = await axiosCreate<IProductsResponse>({
-      axiosApi: '/products'
+      axiosApi: `/products?limit=${limit}&page=${page}`
     });
-
-    const { products } = res as IProductsResponse;
-
-    return products;
+    return res;
   };
 
+  // Prefetch the next page!
+  React.useEffect(() => {
+    async () => {
+      await queryClient.prefetchQuery(['projects', limit, page], () =>
+        fetchProducts(limit, page)
+      );
+    };
+  }, [limit, page, queryClient]);
+
   // Queries
-  const {
-    data: products,
-    isLoading,
-    isError
-  } = useQuery(['products'], fetchProducts, {
-    onError: (error) => {
-      if (axios.isAxiosError(error) && error.response) {
-        axiosError(error as IErrorResponse);
-      }
-    },
-    refetchOnWindowFocus: false
-  });
+  const { data, isLoading, isError } = useQuery(
+    ['products', limit, page],
+    () => fetchProducts(limit, page),
+    {
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          axiosError(error as IErrorResponse);
+        }
+      },
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+      staleTime: 5000
+    }
+  );
+
+  const handlePagination = (
+    event: React.MouseEvent<HTMLAnchorElement>
+  ): void => {
+    const targetText = Number.parseInt(
+      (event.target as HTMLAnchorElement).text
+    );
+    !Number.isNaN(targetText) &&
+      setPaging((current) => ({
+        ...current,
+        page: targetText
+      }));
+  };
 
   if (isLoading) return <span>Loading...</span>;
   if (isError) return <span>An Error Occured!</span>;
+  console.log('Hello');
 
   return (
     <Container fluid="lg" className="mb-5">
@@ -74,11 +105,18 @@ export default function ProductListPage() {
         <TabPane active aria-labelledby="products-tab">
           <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center">
             <span className="fw-bold text-uppercase">New Product</span>
+            <span className="fw-bold text-uppercase">
+              <OffsetPagination
+                totalPages={data?.paging.totalPages || 0}
+                currentPage={page}
+                handleClick={handlePagination}
+              />
+            </span>
           </div>
         </TabPane>
       </TabContent>
       <Row lg={3} md={2} sm={2} xs={1} className="g-3">
-        {products.map((product) => (
+        {data?.products.map((product) => (
           <ProductItem
             key={product.id}
             product={product}

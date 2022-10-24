@@ -16,9 +16,11 @@ const {
   authorizePermissions
 } = require('../middleware/authentication');
 
+const { offsetPagination } = require('../middleware/pagination');
+
 router
   .route('/')
-  .get(getAllProducts)
+  .get([offsetPagination], getAllProducts)
   .post([authenticateUser, authorizePermissions('admin')], createProduct);
 
 router.patch(
