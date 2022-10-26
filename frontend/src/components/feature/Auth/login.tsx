@@ -1,9 +1,16 @@
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+
 import { IAuthProps } from './types';
 import withAuth from './hoc';
-
 import styles from 'assets/css/Auth.module.css';
 
-const BaseLoginPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
+const BaseLoginPage = ({
+  isLoading,
+  register,
+  errors,
+  handleOnSubmit
+}: IAuthProps) => {
   const loginOptions = {
     email: {
       required: 'This is required',
@@ -42,9 +49,21 @@ const BaseLoginPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
               <i className={`${styles['input-icon']} uil uil-lock-alt`}></i>
               <p>{errors.password?.message}</p>
             </div>
-            <button type="submit" className={`${styles['btn']} mt-4`}>
+            <Button
+              type="submit"
+              className={`${styles['btn']} mt-4`}
+              disabled={isLoading}>
+              {isLoading && (
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              )}
               Login
-            </button>
+            </Button>
           </form>
           <p className="mb-0 mt-4 text-center">
             <a href="#0" className={styles.link}>

@@ -1,9 +1,17 @@
+import Button from 'react-bootstrap/Button';
+import Spinner from 'react-bootstrap/Spinner';
+
 import { IAuthProps } from './types';
 import withAuth from './hoc';
 
 import styles from 'assets/css/Auth.module.css';
 
-const BaseRegisterPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
+const BaseRegisterPage = ({
+  isLoading,
+  register,
+  errors,
+  handleOnSubmit
+}: IAuthProps) => {
   const registerOptions = {
     fullName: {
       required: 'This is required',
@@ -57,9 +65,21 @@ const BaseRegisterPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
               <i className={`${styles['input-icon']} uil uil-lock-alt`}></i>
               <p>{errors.password?.message}</p>
             </div>
-            <button type="submit" className={`${styles['btn']} mt-4`}>
+            <Button
+              type="submit"
+              className={`${styles['btn']} mt-4`}
+              disabled={isLoading}>
+              {isLoading && (
+                <Spinner
+                  as="span"
+                  animation="grow"
+                  size="sm"
+                  role="status"
+                  aria-hidden="true"
+                />
+              )}
               Sign up
-            </button>
+            </Button>
           </form>
         </div>
       </div>

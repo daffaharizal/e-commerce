@@ -40,7 +40,7 @@ const withAuth =
     };
 
     // Mutations
-    const { mutate } = useMutation(authentication);
+    const { mutate, isLoading } = useMutation(authentication);
 
     const handleOnSubmit = (event: React.FormEvent) => {
       event.preventDefault();
@@ -76,6 +76,7 @@ const withAuth =
     return (
       <Component
         {...props}
+        isLoading={isLoading}
         register={register}
         errors={errors}
         handleOnSubmit={handleOnSubmit}

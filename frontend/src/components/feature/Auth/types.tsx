@@ -17,6 +17,7 @@ export interface IAuthResponse {
 export type IFormInput = IRegisterInput | ILoginInput;
 
 export type IAuthProps = {
+  isLoading: boolean;
   register: UseFormRegister<IFormInput>;
   handleOnSubmit: (event: React.FormEvent) => void;
   errors: FieldErrorsImpl<{
