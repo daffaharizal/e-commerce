@@ -1,27 +1,41 @@
 import React from 'react';
+import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 
 import { AuthConsumer } from 'context';
-import axios from 'axios';
+import { axiosCreate, axiosError } from 'helpers';
+import { IErrorResponse } from 'types';
 
 export default function LogoutPage() {
+  const navigate = useNavigate();
   const { setAuthUser } = AuthConsumer();
 
-  const navigate = useNavigate();
+  const logout = async () => {
+    return await axiosCreate({
+      axiosApi: '/auth/logout'
+    });
+  };
 
-  const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
+  // Mutations
+  const { mutate } = useMutation(logout);
 
-  const handleLogOut = async () => {
-    await axios.get(`http://${serverURL}/api/v1/auth/logout/`, {
-      withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-        Accept: 'application/json'
+  const handleLogOut = () => {
+    mutate(undefined, {
+      onSuccess: () => {
+        localStorage.removeItem('authUser');
+        setAuthUser({ isAuth: false });
+        navigate('/products');
+        toast('🚀 Logout Sucessfully!');
+      },
+      onError: (error) => {
+        console.error(error);
+        if (axios.isAxiosError(error) && error.response) {
+          axiosError(error as IErrorResponse);
+        }
       }
     });
-    localStorage.removeItem('authUser');
-    setAuthUser({ isAuth: false });
-    navigate('/products');
   };
 
   return (
