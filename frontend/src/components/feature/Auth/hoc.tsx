@@ -1,20 +1,22 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import axios from 'axios';
 import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
-import axios from 'axios';
+import { toast } from 'react-toastify';
+import { useMutation } from '@tanstack/react-query';
 
 import { AuthConsumer } from 'context';
+import { axiosCreate, axiosError } from 'helpers';
 import { IErrorResponse, IReactRouterLocation } from 'types';
-import { IAuthResponse, IAuthProps, IFormInput, IWithAuth } from './types';
+import { IAuthResponse, IAuthProps, IFormInput } from './types';
 
 const withAuth =
-  ({ serverUrl }: IWithAuth) =>
+  (axiosApi: string) =>
   <P extends object>(Component: React.ComponentType<P & IAuthProps>) =>
   (props: P) => {
     const {
       register,
       handleSubmit,
-      setError,
       formState: { errors },
       clearErrors
     } = useForm<IFormInput>({
@@ -26,59 +28,49 @@ const withAuth =
     });
 
     const { setAuthUser } = AuthConsumer();
-
     const navigate = useNavigate();
     const location = useLocation() as IReactRouterLocation;
 
-    const [data, setData] = useState<IFormInput>();
+    const authentication = async (axiosData: IFormInput) => {
+      return await axiosCreate<IAuthResponse>({
+        axiosApi,
+        axiosData,
+        axiosMethod: 'POST'
+      });
+    };
 
-    useEffect(() => {
-      const submitData = async () => {
-        try {
-          const res: IAuthResponse = await axios.post(serverUrl, data, {
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json'
-            }
-          });
+    // Mutations
+    const { mutate } = useMutation(authentication);
+
+    const handleOnSubmit = (event: React.FormEvent) => {
+      event.preventDefault();
+      clearErrors();
+      void handleSubmit(handleAuthentication)();
+    };
+
+    const handleAuthentication: SubmitHandler<IFormInput> = (values) => {
+      mutate(values, {
+        onSuccess: (user) => {
           localStorage.setItem(
             'authUser',
-            JSON.stringify({ isAuth: true, ...res.data })
+            JSON.stringify({ isAuth: true, ...user })
           );
-          setAuthUser({ isAuth: true, ...res.data });
+          setAuthUser({ isAuth: true, ...user });
 
           const redirectPath = location.state
             ? location.state.from
             : '/products';
 
           navigate(redirectPath);
-        } catch (error) {
+          toast('🚀 Login Sucessfully!');
+        },
+        onError: (error) => {
+          console.error(error);
           if (axios.isAxiosError(error) && error.response) {
-            const {
-              response: {
-                data: { msg }
-              }
-            } = error as IErrorResponse;
-            setError('serverError', { type: 'custom', message: msg });
+            axiosError(error as IErrorResponse);
           }
         }
-      };
-      data && submitData();
-    }, [data]);
-
-    const handleOnSubmit = (event: React.FormEvent) => {
-      event.preventDefault();
-      clearErrors();
-      void handleSubmit(handleAuthentication, handleError)();
-    };
-
-    const handleAuthentication: SubmitHandler<IFormInput> = (values) => {
-      setData(values);
-    };
-
-    const handleError: SubmitErrorHandler<IFormInput> = (errors) => {
-      console.log('Errors --', errors);
+      });
     };
 
     return (

@@ -20,7 +20,7 @@ export default function ProductListPage() {
   const queryClient = QueryConsumer();
 
   const [{ limit, page }, setPaging] = React.useState({
-    limit: 100,
+    limit: 10,
     page: 1
   });
 
@@ -97,7 +97,6 @@ export default function ProductListPage() {
 
   if (isLoading) return <span>Loading...</span>;
   if (isError) return <span>An Error Occured!</span>;
-  console.log('Hello');
 
   return (
     <Container fluid="lg" className="mb-5">

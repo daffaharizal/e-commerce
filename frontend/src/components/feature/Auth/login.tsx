@@ -22,7 +22,6 @@ const BaseLoginPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
         <div className={`${styles.section} text-center`}>
           <h4 className="mb-4 pb-3">Log In</h4>
           <form onSubmit={handleOnSubmit}>
-            <p>{errors.serverError?.message}</p>
             <div className={styles['form-group']}>
               <input
                 type="email"
@@ -58,10 +57,6 @@ const BaseLoginPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
   );
 };
 
-const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
-
-const LoginPage = withAuth({
-  serverUrl: `http://${serverUrl}/api/v1/auth/login/`
-})(BaseLoginPage);
+const LoginPage = withAuth('/auth/login')(BaseLoginPage);
 
 export default LoginPage;

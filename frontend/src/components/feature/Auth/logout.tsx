@@ -20,7 +20,7 @@ export default function LogoutPage() {
       }
     });
     localStorage.removeItem('authUser');
-    setAuthUser({ isAuth: false, user: {} });
+    setAuthUser({ isAuth: false });
     navigate('/products');
   };
 

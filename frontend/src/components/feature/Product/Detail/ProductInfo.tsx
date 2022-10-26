@@ -9,13 +9,10 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
     product.reviews
   );
 
-  const {
-    isAuth,
-    user: { id: userId }
-  } = AuthConsumer();
+  const { isAuth, user } = AuthConsumer();
 
   const isCurrentUserReviewed = reviews.some(
-    (review) => review.user._id === userId
+    (review) => review.user._id === user?.id
   );
 
   return (

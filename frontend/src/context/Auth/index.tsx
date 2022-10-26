@@ -7,7 +7,7 @@ const AuthContext = React.createContext<IAuthContext | undefined>(undefined);
 const AuthProvider: React.FC<IChildrenProps> = ({ children }) => {
   const [authUser, setAuthUser] = React.useState<IAuthUser>(
     JSON.parse(
-      localStorage.getItem('authUser') || '{"isAuth": false, "user": {}}'
+      localStorage.getItem('authUser') || '{"isAuth": false}'
     ) as IAuthUser
   );
 

@@ -1,11 +1,11 @@
 export type Auth = boolean;
 
 export interface IUser {
-  user: {
-    email?: string;
-    fullName?: string;
-    role?: string;
-    id?: string;
+  user?: {
+    email: string;
+    fullName: string;
+    role: string;
+    id: string;
   };
 }
 

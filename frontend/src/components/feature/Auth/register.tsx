@@ -27,7 +27,6 @@ const BaseRegisterPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
         <div className={`${styles.section} text-center`}>
           <h4 className="mb-4 pb-3">Sign Up</h4>
           <form onSubmit={handleOnSubmit}>
-            <p>{errors.serverError?.message}</p>
             <div className={styles['form-group']}>
               <input
                 {...register('fullName', registerOptions.fullName)}
@@ -68,10 +67,6 @@ const BaseRegisterPage = ({ register, errors, handleOnSubmit }: IAuthProps) => {
   );
 };
 
-const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
-
-const RegisterPage = withAuth({
-  serverUrl: `http://${serverUrl}/api/v1/auth/register/`
-})(BaseRegisterPage);
+const RegisterPage = withAuth('/auth/register')(BaseRegisterPage);
 
 export default RegisterPage;
