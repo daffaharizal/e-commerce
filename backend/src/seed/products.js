@@ -3,7 +3,7 @@ const Product = require('../models/Product');
 
 const createRandomProduct = async () => {
   const PRODUCTS = [];
-  Array.from({ length: 1000 }).forEach(() => {
+  Array.from({ length: 100 }).forEach(() => {
     PRODUCTS.push({
       name: faker.commerce.productName(),
       price: faker.commerce.price(200, 2000, 0),
