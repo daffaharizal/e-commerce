@@ -75,11 +75,7 @@ const withAuth =
 
     return (
       <Component
-        {...props}
-        isLoading={isLoading}
-        register={register}
-        errors={errors}
-        handleOnSubmit={handleOnSubmit}
+        {...{ ...props, errors, handleOnSubmit, isLoading, register }}
       />
     );
   };

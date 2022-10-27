@@ -22,13 +22,14 @@ const getAllProducts = async (req, res) => {
   const totalPages = Math.ceil(totalItems / limit);
 
   res.status(StatusCodes.OK).json({
-    products,
     paging: {
+      hasMore: currentPage < totalPages,
       currentPage,
       totalPages,
       currentItems: products.length,
       totalItems: totalItems
-    }
+    },
+    products
   });
 };
 

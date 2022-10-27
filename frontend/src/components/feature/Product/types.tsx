@@ -37,6 +37,7 @@ export interface IProduct {
 export interface IProductsResponse {
   products: IProduct[];
   paging: {
+    hasMore: boolean;
     currentPage: number;
     totalPages: number;
     currentItems: number;
