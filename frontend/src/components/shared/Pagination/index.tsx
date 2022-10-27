@@ -31,14 +31,14 @@ export function StyledButtonPagination({
   hasMore,
   isPreviousData,
   page,
-  setPaging
+  totalPages,
+  setUrlQuery
 }: {
-  hasMore: boolean | undefined;
   isPreviousData: boolean;
   page: number;
-  setPaging: React.Dispatch<
-    React.SetStateAction<{ limit: number; page: number }>
-  >;
+  hasMore: boolean | undefined;
+  totalPages: number | undefined;
+  setUrlQuery: React.Dispatch<React.SetStateAction<{ page: number }>>;
 }) {
   return (
     <div className="fw-bold text-uppercase">
@@ -47,22 +47,22 @@ export function StyledButtonPagination({
         className="mx-3"
         variant="info"
         onClick={() =>
-          setPaging((old) => ({
+          setUrlQuery((old) => ({
             ...old,
             page: Math.max(old.page - 1, 1)
           }))
         }
-        disabled={page === 1}>
+        disabled={page <= 1 || (totalPages ? page > totalPages : true)}>
         Previous Page
       </Button>
       <Button
         variant="info"
-        onClick={() => {
-          setPaging((old) => ({
+        onClick={() =>
+          setUrlQuery((old) => ({
             ...old,
             page: hasMore ? old.page + 1 : old.page
-          }));
-        }}
+          }))
+        }
         disabled={isPreviousData || !hasMore}>
         Next Page
       </Button>

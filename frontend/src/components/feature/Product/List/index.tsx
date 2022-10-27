@@ -4,6 +4,7 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import TabContent from 'react-bootstrap/TabContent';
 import TabPane from 'react-bootstrap/TabPane';
+import { useQueryParams, NumberParam, withDefault } from 'use-query-params';
 import { useQuery } from '@tanstack/react-query';
 
 import { StyledButtonPagination } from 'components/shared';
@@ -19,9 +20,8 @@ export default function ProductListPage() {
   // Access the client
   const queryClient = QueryConsumer();
 
-  const [{ limit, page }, setPaging] = React.useState({
-    limit: 10,
-    page: 1
+  const [{ page }, setUrlQuery] = useQueryParams({
+    page: withDefault(NumberParam, 1)
   });
 
   const [cart, cartDispatch] = CartConsumer();
@@ -50,7 +50,10 @@ export default function ProductListPage() {
     });
   };
 
-  const fetchProducts = async (limit = 100, page = 1) => {
+  const fetchProducts = async ({ limit = 15, page = 1 }) => {
+    if (!Number.isInteger(page) || page <= 0) {
+      throw Error;
+    }
     const res = await axiosCreate<IProductsResponse>({
       axiosApi: `/products?limit=${limit}&page=${page}`
     });
@@ -59,8 +62,8 @@ export default function ProductListPage() {
 
   // Queries
   const { data, isLoading, isError, isPreviousData } = useQuery(
-    ['products', limit, page],
-    () => fetchProducts(limit, page),
+    ['products', page],
+    () => fetchProducts({ page }),
     {
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
@@ -76,11 +79,11 @@ export default function ProductListPage() {
   // Prefetch the next page!
   React.useEffect(() => {
     async () => {
-      await queryClient.prefetchQuery(['projects', limit, page], () =>
-        fetchProducts(limit, page)
+      await queryClient.prefetchQuery(['projects', page], () =>
+        fetchProducts({ page })
       );
     };
-  }, [limit, page, queryClient]);
+  }, [page, queryClient]);
 
   if (isLoading) return <span>Loading...</span>;
   if (isError) return <span>An Error Occured!</span>;
@@ -93,10 +96,11 @@ export default function ProductListPage() {
             <span className="fw-bold text-uppercase">New Product</span>
             <StyledButtonPagination
               {...{
-                hasMore: data?.paging.hasMore,
                 isPreviousData,
                 page,
-                setPaging
+                setUrlQuery,
+                hasMore: data?.paging.hasMore,
+                totalPages: data?.paging.totalPages
               }}
             />
           </div>
