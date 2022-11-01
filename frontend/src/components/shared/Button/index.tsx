@@ -1,15 +1,17 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { IStyledButton } from './types';
 
-export default function StyledButton({
+const StyledButton: React.FC<PropsWithChildren & IStyledButton> = ({
   type = 'button',
   onClick,
   children,
   ...rest
-}: IStyledButton) {
+}) => {
   return (
     <button type={type} onClick={onClick} {...rest}>
       {children}
     </button>
   );
-}
+};
+
+export default StyledButton;

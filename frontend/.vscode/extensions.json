@@ -6,10 +6,10 @@
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "redhat.vscode-yaml",
-    "2gua.rainbow-brackets",
     "pkief.material-icon-theme",
     "mikestead.dotenv",
     "wix.vscode-import-cost",
-    "dracula-theme.theme-dracula"
+    "dracula-theme.theme-dracula",
+    "BracketPairColorDLW.bracket-pair-color-dlw"
   ]
 }

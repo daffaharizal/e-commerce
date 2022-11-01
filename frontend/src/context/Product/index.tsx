@@ -1,12 +1,15 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 
-import { IProductContext, IProductProps } from './types';
+import { IProductProps } from './types';
 
-const ProductContext = React.createContext<IProductContext | undefined>(
+const ProductContext = React.createContext<IProductProps | undefined>(
   undefined
 );
 
-const ProductProvider: React.FC<IProductProps> = ({ productId, children }) => {
+const ProductProvider: React.FC<PropsWithChildren & IProductProps> = ({
+  productId,
+  children
+}) => {
   return (
     <ProductContext.Provider value={{ productId }}>
       {children}
@@ -14,7 +17,6 @@ const ProductProvider: React.FC<IProductProps> = ({ productId, children }) => {
   );
 };
 
-const ProductConsumer = () =>
-  React.useContext(ProductContext) as IProductContext;
+const ProductConsumer = () => React.useContext(ProductContext) as IProductProps;
 
 export { ProductProvider, ProductConsumer };

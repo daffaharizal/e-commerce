@@ -12,7 +12,7 @@ import { truncate } from 'helpers';
 import { StyledButton, UserRating } from 'components/shared';
 import { IProductItemProps } from '../types';
 
-const ProductItem: React.FC<IProductItemProps> = ({
+const ProductCard: React.FC<IProductItemProps> = ({
   product,
   serverUrl,
   handleAddToCart
@@ -75,4 +75,4 @@ const ProductItem: React.FC<IProductItemProps> = ({
   );
 };
 
-export default ProductItem;
+export default ProductCard;

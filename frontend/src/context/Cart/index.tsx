@@ -1,11 +1,10 @@
-import React from 'react';
+import React, { PropsWithChildren } from 'react';
 import { cartReducer, initialCart } from 'reducer/cart';
-import { IChildrenProps } from 'types';
 import { ICartContext } from './types';
 
 const CartContext = React.createContext<ICartContext | undefined>(undefined);
 
-const CartProvider: React.FC<IChildrenProps> = ({ children }) => {
+const CartProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const CartReducer = React.useReducer(cartReducer, initialCart);
 
   return (

@@ -19,19 +19,13 @@ const withAuth =
       handleSubmit,
       formState: { errors },
       clearErrors
-    } = useForm<IFormInput>({
-      defaultValues: {
-        email: 'ajithpmohan90@gmail.com',
-        fullName: 'AJITH P MOHAN',
-        password: 'abc12345'
-      }
-    });
+    } = useForm<Partial<IFormInput>>();
 
     const { setAuthUser } = AuthConsumer();
     const navigate = useNavigate();
     const location = useLocation() as IReactRouterLocation;
 
-    const authentication = async (axiosData: IFormInput) => {
+    const authentication = async (axiosData: Partial<IFormInput>) => {
       return await axiosCreate<IAuthResponse>({
         axiosApi,
         axiosData,
@@ -48,7 +42,9 @@ const withAuth =
       void handleSubmit(handleAuthentication)();
     };
 
-    const handleAuthentication: SubmitHandler<IFormInput> = (values) => {
+    const handleAuthentication: SubmitHandler<Partial<IFormInput>> = (
+      values
+    ) => {
       mutate(values, {
         onSuccess: (user) => {
           localStorage.setItem(

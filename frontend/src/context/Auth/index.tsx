@@ -1,10 +1,9 @@
-import React from 'react';
-import { IChildrenProps } from 'types';
+import React, { PropsWithChildren } from 'react';
 import { IAuthUser, IAuthContext } from './types';
 
 const AuthContext = React.createContext<IAuthContext | undefined>(undefined);
 
-const AuthProvider: React.FC<IChildrenProps> = ({ children }) => {
+const AuthProvider: React.FC<PropsWithChildren> = ({ children }) => {
   const [authUser, setAuthUser] = React.useState<IAuthUser>(
     JSON.parse(
       localStorage.getItem('authUser') || '{"isAuth": false}'

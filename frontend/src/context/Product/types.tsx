@@ -1,7 +1,3 @@
-import { IChildrenProps } from 'types';
-
-export interface IProductContext {
+export interface IProductProps {
   productId: string;
 }
-
-export interface IProductProps extends IChildrenProps, IProductContext {}
