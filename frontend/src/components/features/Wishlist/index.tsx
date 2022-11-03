@@ -21,18 +21,16 @@ export default function WishlistPage() {
       axiosApi: '/wishlist/show-folders'
     });
 
-    const {
-      wishlist: { folders }
-    } = res as IWishListResponse;
+    const { wishlist } = res as IWishListResponse;
 
-    return folders;
+    return wishlist;
   };
 
   // Queries
   const {
-    data: folders
-    // isLoading,
-    // isError
+    data: wishlist,
+    isLoading,
+    isError
   } = useQuery(['wishlists'], fetchWishlists, {
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
@@ -42,14 +40,19 @@ export default function WishlistPage() {
     refetchOnWindowFocus: false
   });
 
+  if (isLoading) return <span>Loading...</span>;
+  if (isError) return <span>An Error Occured!</span>;
+  if (!wishlist.folders) return <span>No lists created yet!</span>;
+
   return (
     <Container>
-      <Tab.Container defaultActiveKey={folders ? folders[0].id : ''}>
+      <Tab.Container
+        defaultActiveKey={wishlist.folders ? wishlist.folders[0].id : ''}>
         <Row>
           <Col sm={3}>
             <Nav variant="pills" className="flex-column">
-              {folders &&
-                folders.map((folder) => (
+              {wishlist.folders &&
+                wishlist.folders.map((folder) => (
                   <Nav.Item key={folder.id}>
                     <Nav.Link eventKey={folder.id}>{folder.name}</Nav.Link>
                   </Nav.Item>
@@ -58,15 +61,15 @@ export default function WishlistPage() {
           </Col>
           <Col sm={9}>
             <Tab.Content>
-              {folders &&
-                folders.map((folder) => (
+              {wishlist.folders &&
+                wishlist.folders.map((folder) => (
                   <Tab.Pane eventKey={folder.id} key={folder.id}>
                     {folder.items.map((item) => (
                       <Card key={item.product.id} className="mb-3">
                         <Card.Body>
                           <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
                             <Link
-                              to={item.product.id}
+                              to={`/products/${item.product.id}`}
                               className="text-success text-decoration-none">
                               {item.product.name}
                             </Link>

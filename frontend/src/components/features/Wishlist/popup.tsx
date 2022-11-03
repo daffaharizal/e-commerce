@@ -28,7 +28,7 @@ export default function WishlistPopup({ productId }: { productId: string }) {
       axiosApi: '/wishlist/show-folders'
     });
     const { wishlist } = res as IWishListResponse;
-    return wishlist?.folders || wishlist;
+    return wishlist;
   };
 
   const addItem = async (axiosData: IWistListAddItemProps) => {
@@ -96,8 +96,8 @@ export default function WishlistPopup({ productId }: { productId: string }) {
           <Form>
             <Form.Group className="mb-3">
               {data && <Form.Label>Existing Lists</Form.Label>}
-              {data ? (
-                data.map((folder) => (
+              {data?.folders ? (
+                data.folders.map((folder) => (
                   <Form.Check
                     type="radio"
                     id={`default-${folder.id}`}
@@ -114,9 +114,7 @@ export default function WishlistPopup({ productId }: { productId: string }) {
                   />
                 ))
               ) : (
-                <Form.Text className="text-muted">
-                  No lists created yet!
-                </Form.Text>
+                <div className="text-muted">No lists created yet!</div>
               )}
             </Form.Group>
             <Form.Group className="mb-3">

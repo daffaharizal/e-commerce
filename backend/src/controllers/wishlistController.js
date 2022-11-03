@@ -124,23 +124,20 @@ const removeFolder = async (req, res) => {
 };
 
 const showFolders = async (req, res) => {
-  const wishlist = await Wishlist.findOne({
-    user: req.user.id
-  }).populate({
-    path: 'folders',
-    populate: {
-      path: 'items',
+  const wishlist =
+    (await Wishlist.findOne({
+      user: req.user.id
+    }).populate({
+      path: 'folders',
       populate: {
-        path: 'product',
-        select:
-          'id name price category company featured freeShipping inventory averageRating numOfReviews images'
+        path: 'items',
+        populate: {
+          path: 'product',
+          select:
+            'id name price category company featured freeShipping inventory averageRating numOfReviews images'
+        }
       }
-    }
-  });
-
-  // if (!wishlist) {
-  //   throw new CustomError.BadRequestError('Wishlist not found');
-  // }
+    })) || {};
 
   res.status(StatusCodes.OK).json({ wishlist });
 };
@@ -162,7 +159,7 @@ const showFolderItems = async (req, res) => {
   });
 
   if (!wishlist) {
-    throw new CustomError.BadRequestError('Wishlist not found');
+    throw new CustomError.NotFoundError('Wishlist not found');
   }
 
   const folder = wishlist.folders.find((folder) => folder.id === folderId);
