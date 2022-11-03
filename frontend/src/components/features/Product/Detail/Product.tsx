@@ -5,7 +5,7 @@ import { useQuery } from '@tanstack/react-query';
 
 import './style.css';
 
-import { WishlistPopup } from 'components/feature';
+import { WishlistPopup } from 'components/features';
 import { PureCarousel, StyledButton, UserRating } from 'components/shared';
 import { ProductProvider, CartConsumer } from 'context';
 import { axiosCreate, axiosError } from 'helpers';

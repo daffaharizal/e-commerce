@@ -1,4 +1,4 @@
-import { IProductReviews } from 'components/feature/Product/types';
+import { IProductReviews } from 'components/features/Product/types';
 
 export interface ISetReviews {
   setReviews?: React.Dispatch<React.SetStateAction<IProductReviews[]>>;

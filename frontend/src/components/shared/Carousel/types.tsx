@@ -1,4 +1,4 @@
-import { IProductImages } from 'components/feature/Product/types';
+import { IProductImages } from 'components/features/Product/types';
 
 export interface IPureCarousel {
   images: IProductImages[];

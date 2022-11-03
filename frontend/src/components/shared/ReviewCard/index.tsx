@@ -1,6 +1,6 @@
 import { FaUser } from 'react-icons/fa';
 
-import { IProductReviews } from 'components/feature/Product/types';
+import { IProductReviews } from 'components/features/Product/types';
 import { UserRating } from 'components/shared';
 
 export default function UserReviewCard({

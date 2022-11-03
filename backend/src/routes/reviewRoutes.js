@@ -17,12 +17,12 @@ const {
 router
   .route('/')
   .get([authenticateUser, authorizePermissions('admin')], getAllReviews)
-  .post(authenticateUser, createReview);
+  .post([authenticateUser, authorizePermissions('user')], createReview);
 
 router
   .route('/:id')
   .get(getSingleReview)
-  .patch(authenticateUser, updateReview)
+  .patch([authenticateUser, authorizePermissions('user')], updateReview)
   .delete(authenticateUser, deleteReview);
 
 module.exports = router;

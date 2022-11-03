@@ -1,13 +1,13 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 
-import Navigation from 'components/layout/Nav';
+import { CommerceNavbar } from 'components/layouts/NavBar';
 import { ToastAlert } from 'components/shared';
 
-const Layout: React.FC = () => {
+const CommerceLayout: React.FC = () => {
   return (
     <>
-      <Navigation />
+      <CommerceNavbar />
 
       <ToastAlert />
       <Outlet />
@@ -15,4 +15,4 @@ const Layout: React.FC = () => {
   );
 };
 
-export default Layout;
+export default CommerceLayout;

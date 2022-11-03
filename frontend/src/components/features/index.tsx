@@ -5,3 +5,5 @@ export { default as ProductPage } from './Product';
 export { default as ProfilePage } from './Profile';
 export { default as WishlistPage } from './Wishlist';
 export { default as WishlistPopup } from './Wishlist/popup';
+
+export { AdminDash } from './Admin';

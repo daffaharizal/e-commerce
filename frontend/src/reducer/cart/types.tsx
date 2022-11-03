@@ -1,4 +1,4 @@
-import { IProduct } from 'components/feature/Product/types';
+import { IProduct } from 'components/features/Product/types';
 
 export interface ILineItemId {
   itemId: string;

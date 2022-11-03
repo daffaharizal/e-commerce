@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 import './styles.css';
 import { CartConsumer } from 'context';
 import NoImage from 'assets/images/noproductimage.png';
-import { IProduct } from 'components/feature/Product/types';
+import { IProduct } from 'components/features/Product/types';
 
 export default function CartPage() {
   const [{ lineItems, subTotal, netAmount }, cartDispatch] = CartConsumer();

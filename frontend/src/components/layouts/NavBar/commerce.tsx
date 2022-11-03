@@ -2,10 +2,10 @@ import { BsBootstrap, BsSearch } from 'react-icons/bs';
 import { BiUser } from 'react-icons/bi';
 import { NavLink } from 'react-router-dom';
 
-import { LogoutPage } from 'components/feature';
+import { LogoutPage } from 'components/features';
 import { AuthConsumer } from 'context';
 
-export default function NavBar() {
+export default function CommerceNavbar() {
   const { isAuth } = AuthConsumer();
 
   return (
