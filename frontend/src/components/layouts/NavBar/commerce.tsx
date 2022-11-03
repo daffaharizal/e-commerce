@@ -1,12 +1,20 @@
-import { BsBootstrap, BsSearch } from 'react-icons/bs';
+import {
+  AiOutlineShoppingCart,
+  AiOutlineLogin,
+  AiOutlineDashboard,
+  AiOutlineUnorderedList
+} from 'react-icons/ai';
 import { BiUser } from 'react-icons/bi';
+import { BsBootstrap, BsSearch } from 'react-icons/bs';
+import { CgProfile } from 'react-icons/cg';
+import { FiSettings } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 
 import { LogoutPage } from 'components/features';
 import { AuthConsumer } from 'context';
 
 export default function CommerceNavbar() {
-  const { isAuth } = AuthConsumer();
+  const { isAuth, user } = AuthConsumer();
 
   return (
     <nav className="navbar navbar-expand-lg navbar-info border-bottom  bg-info d-flex justify-content-between align-items-center flex-nowrap mb-3">
@@ -36,6 +44,11 @@ export default function CommerceNavbar() {
           </div>
         </div>
       </form>
+      <NavLink
+        to="/cart"
+        className="d-block link-dark text-decoration-none pe-1">
+        <AiOutlineShoppingCart size={36} />
+      </NavLink>
       <div className="dropdown p-2 text-end">
         <NavLink
           to="/"
@@ -49,17 +62,26 @@ export default function CommerceNavbar() {
           aria-labelledby="navbarDropdownMenuLink">
           {isAuth ? (
             <>
-              <NavLink to="/cart" className="dropdown-item">
-                Cart
-              </NavLink>
-              <NavLink to="/wishlist" className="dropdown-item">
-                Wishlist
-              </NavLink>
-              <NavLink to="/profile" className="dropdown-item">
-                Profile
-              </NavLink>
+              {user?.role == 'user' ? (
+                <>
+                  <NavLink to="/profile" className="dropdown-item">
+                    <CgProfile size={20} />
+                    <span className="ps-2">Profile</span>
+                  </NavLink>
+                  <NavLink to="/wishlist" className="dropdown-item">
+                    <AiOutlineUnorderedList size={20} />
+                    <span className="ps-2">Wishlist</span>
+                  </NavLink>
+                </>
+              ) : (
+                <NavLink to="/admin/dash" className="dropdown-item">
+                  <AiOutlineDashboard size={20} />
+                  <span className="ps-2">Dashboard</span>
+                </NavLink>
+              )}
               <NavLink to="/settings" className="dropdown-item">
-                Settings
+                <FiSettings size={20} />
+                <span className="ps-2">Settings</span>
               </NavLink>
               <hr className="dropdown-divider" />
               <LogoutPage />
@@ -67,10 +89,8 @@ export default function CommerceNavbar() {
           ) : (
             <>
               <NavLink to="/auth" className="dropdown-item">
-                Hello, Sign In
-              </NavLink>
-              <NavLink to="/cart" className="dropdown-item">
-                Cart
+                <AiOutlineLogin size={20} />
+                <span className="ps-2">Hello, Sign In</span>
               </NavLink>
             </>
           )}

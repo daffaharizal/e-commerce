@@ -1,5 +1,6 @@
 import React from 'react';
 import axios from 'axios';
+import { AiOutlineLogout } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useMutation } from '@tanstack/react-query';
@@ -44,7 +45,8 @@ export default function LogoutPage() {
         void handleLogOut();
       }}
       className="dropdown-item">
-      Sign out
+      <AiOutlineLogout size={20} />
+      <span className="ps-2">Sign Out</span>
     </a>
   );
 }

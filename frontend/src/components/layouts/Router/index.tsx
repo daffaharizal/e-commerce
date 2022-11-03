@@ -11,15 +11,26 @@ import {
   WishlistPage,
   AdminDash
 } from 'components/features';
-import PrivateRoute from 'components/layouts/PrivateRoute';
-import ProtectedRoute from 'components/layouts/ProtectedRoute';
+import AdminRoute from './AdminRoute';
+import CommerceRoute from './CommerceRoute';
+import PrivateRoute from './PrivateRoute';
+import ProtectedRoute from './ProtectedRoute';
 
 export default function Router() {
   return (
     <Routes>
       <Route element={<AdminLayout />}>
         <Route path="admin/" element={<Navigate replace to="/admin/dash/" />} />
-        <Route path="admin/dash/" element={<AdminDash />} />
+        <Route
+          path="admin/dash/"
+          element={
+            <PrivateRoute>
+              <AdminRoute>
+                <AdminDash />
+              </AdminRoute>
+            </PrivateRoute>
+          }
+        />
       </Route>
       <Route element={<CommerceLayout />}>
         <Route path="/" element={<Navigate replace to="/products" />} />
@@ -37,7 +48,9 @@ export default function Router() {
           path="profile"
           element={
             <PrivateRoute>
-              <ProfilePage />
+              <CommerceRoute>
+                <ProfilePage />
+              </CommerceRoute>
             </PrivateRoute>
           }
         />
@@ -45,7 +58,9 @@ export default function Router() {
           path="wishlist"
           element={
             <PrivateRoute>
-              <WishlistPage />
+              <CommerceRoute>
+                <WishlistPage />
+              </CommerceRoute>
             </PrivateRoute>
           }
         />

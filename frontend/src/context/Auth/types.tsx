@@ -1,7 +1,7 @@
 export type Auth = boolean;
 
 export interface IUser {
-  user?: {
+  user: {
     email: string;
     fullName: string;
     role: string;
@@ -9,7 +9,7 @@ export interface IUser {
   };
 }
 
-export interface IAuthUser extends IUser {
+export interface IAuthUser extends Partial<IUser> {
   isAuth: Auth;
 }
 
