@@ -1,8 +1,3 @@
-import React from 'react';
-import { Rating } from 'react-simple-star-rating';
-
-import { IUserRatingProps } from './types';
-
 import {
   MdOutlineSentimentDissatisfied,
   MdOutlineSentimentNeutral,
@@ -10,6 +5,9 @@ import {
   MdOutlineSentimentVeryDissatisfied,
   MdOutlineSentimentVerySatisfied
 } from 'react-icons/md';
+import { Rating } from 'react-simple-star-rating';
+
+import { IUserRatingProps } from './types';
 
 const customIcons = [
   { icon: <MdOutlineSentimentDissatisfied size={25} /> },

@@ -1,4 +1,4 @@
-import { ICart, ILineItem, ACTIONTYPE } from './types';
+import { ACTIONTYPE, ICart, ILineItem } from './types';
 
 export const initialCart: ICart = {
   currency: 'dollar',

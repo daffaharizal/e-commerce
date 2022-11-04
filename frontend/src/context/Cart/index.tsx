@@ -1,5 +1,7 @@
 import React, { PropsWithChildren } from 'react';
+
 import { cartReducer, initialCart } from 'reducer/cart';
+
 import { ICartContext } from './types';
 
 const CartContext = React.createContext<ICartContext | undefined>(undefined);

@@ -1,11 +1,15 @@
 import React from 'react';
-import { FaPlus, FaMinus, FaTimes, FaLongArrowAltLeft } from 'react-icons/fa';
+
+import { FaLongArrowAltLeft, FaMinus, FaPlus, FaTimes } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-import './styles.css';
-import { CartConsumer } from 'context';
-import NoImage from 'assets/images/noproductimage.png';
 import { IProduct } from 'components/features/Product/types';
+
+import { CartConsumer } from 'context';
+
+import NoImage from 'assets/images/noproductimage.png';
+
+import './styles.css';
 
 export default function CartPage() {
   const [{ lineItems, subTotal, netAmount }, cartDispatch] = CartConsumer();

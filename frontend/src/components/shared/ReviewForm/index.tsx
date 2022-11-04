@@ -1,12 +1,15 @@
 import React from 'react';
-import { useForm, SubmitHandler, SubmitErrorHandler } from 'react-hook-form';
-
-import { UserRating } from 'components/shared';
-import { ProductConsumer } from 'context';
-import { IErrorResponse } from 'types';
-import { IReviewForm, IReviewFormResponse, ISetReviews } from './types';
 
 import axios from 'axios';
+import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+
+import { UserRating } from 'components/shared';
+
+import { ProductConsumer } from 'context';
+
+import { IErrorResponse } from 'types';
+
+import { IReviewForm, IReviewFormResponse, ISetReviews } from './types';
 
 export default function UserReviewForm({ setReviews }: ISetReviews) {
   const { productId } = ProductConsumer();

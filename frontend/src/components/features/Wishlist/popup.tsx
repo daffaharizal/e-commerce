@@ -1,5 +1,6 @@
 import React from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Button from 'react-bootstrap/Button';
 import Form from 'react-bootstrap/Form';
@@ -7,9 +8,13 @@ import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 
 import { StyledButton } from 'components/shared';
+
 import { QueryConsumer } from 'context';
+
 import { axiosCreate, axiosError } from 'helpers';
+
 import { IErrorResponse } from 'types';
+
 import {
   IWishListResponse,
   IWistListAddItemProps,

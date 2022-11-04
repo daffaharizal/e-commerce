@@ -1,7 +1,7 @@
 import {
-  AiOutlineShoppingCart,
-  AiOutlineLogin,
   AiOutlineDashboard,
+  AiOutlineLogin,
+  AiOutlineShoppingCart,
   AiOutlineUnorderedList
 } from 'react-icons/ai';
 import { BiUser } from 'react-icons/bi';
@@ -11,6 +11,7 @@ import { FiSettings } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
 
 import { LogoutPage } from 'components/features';
+
 import { AuthConsumer } from 'context';
 
 export default function CommerceNavbar() {

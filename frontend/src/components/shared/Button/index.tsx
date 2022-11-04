@@ -1,4 +1,5 @@
 import React, { PropsWithChildren } from 'react';
+
 import { IStyledButton } from './types';
 
 const StyledButton: React.FC<PropsWithChildren & IStyledButton> = ({

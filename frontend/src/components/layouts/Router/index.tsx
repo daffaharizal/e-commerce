@@ -1,16 +1,17 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Navigate, Route, Routes } from 'react-router-dom';
 
-import AdminLayout from 'components/layouts/Admin';
-import CommerceLayout from 'components/layouts/Commerce';
 import {
+  AdminDash,
   AuthPage,
   CartPage,
   NoMatch,
   ProductPage,
   ProfilePage,
-  WishlistPage,
-  AdminDash
+  WishlistPage
 } from 'components/features';
+import AdminLayout from 'components/layouts/Admin';
+import CommerceLayout from 'components/layouts/Commerce';
+
 import AdminRoute from './AdminRoute';
 import CommerceRoute from './CommerceRoute';
 import PrivateRoute from './PrivateRoute';

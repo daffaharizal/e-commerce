@@ -1,8 +1,9 @@
 import React from 'react';
-import { useQuery, useMutation } from '@tanstack/react-query';
+
+import { useMutation, useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import moment from 'moment';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { DatePicker } from 'react-rainbow-components';
 import { toast } from 'react-toastify';
 
@@ -10,9 +11,10 @@ import { toast } from 'react-toastify';
 import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
-import { IUserProfile, IUserProfileResponse } from './types';
 
 import styles from 'assets/css/Profile.module.css';
+
+import { IUserProfile, IUserProfileResponse } from './types';
 
 export default function ProfilePage() {
   const [dateOfBirth, setdateOfBirth] = React.useState<Date | undefined>();

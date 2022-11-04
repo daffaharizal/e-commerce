@@ -1,6 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 
 import { AuthConsumer } from 'context';
+
 import { IChildrenProps } from 'types';
 
 const ProtectedRoute: React.FC<IChildrenProps> = ({ children }) => {

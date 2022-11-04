@@ -7,5 +7,20 @@ module.exports = {
   trailingComma: 'none',
   bracketSpacing: true,
   bracketSameLine: true,
-  arrowParens: 'always'
+  arrowParens: 'always',
+  importOrder: [
+    '^react$', // Imports by "react"
+    '<THIRD_PARTY_MODULES>',
+    '^components/(.*)$',
+    '^context',
+    '^helpers',
+    '^hooks',
+    '^reducer',
+    '^types',
+    '^assets/(.*)$',
+    '^@fontsource/(.*)$',
+    '^[./]' // Other imports
+  ],
+  importOrderSeparation: true,
+  importOrderSortSpecifiers: true
 };

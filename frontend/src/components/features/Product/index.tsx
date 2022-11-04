@@ -1,10 +1,10 @@
 import React from 'react';
-import { Routes, Route, Outlet } from 'react-router-dom';
 
 import 'font-awesome/css/font-awesome.min.css';
+import { Outlet, Route, Routes } from 'react-router-dom';
 
-import { ProductListPage } from './List';
 import { ProductDetailPage } from './Detail';
+import { ProductListPage } from './List';
 
 export default function ProductPage() {
   return (

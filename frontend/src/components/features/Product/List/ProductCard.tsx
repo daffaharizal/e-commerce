@@ -2,14 +2,15 @@ import Card from 'react-bootstrap/Card';
 import Col from 'react-bootstrap/Col';
 import ListGroup from 'react-bootstrap/ListGroup';
 import { LazyLoadImage } from 'react-lazy-load-image-component';
+import 'react-lazy-load-image-component/src/effects/blur.css';
 import { Link } from 'react-router-dom';
 
-import 'react-lazy-load-image-component/src/effects/blur.css';
+import { StyledButton, UserRating } from 'components/shared';
 
-import NoImage from 'assets/images/noproductimage.png';
 import { truncate } from 'helpers';
 
-import { StyledButton, UserRating } from 'components/shared';
+import NoImage from 'assets/images/noproductimage.png';
+
 import { IProductItemProps } from '../types';
 
 const ProductCard: React.FC<IProductItemProps> = ({

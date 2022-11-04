@@ -1,3 +1,3 @@
-import { ICart, ACTIONTYPE } from 'reducer/cart/types';
+import { ACTIONTYPE, ICart } from 'reducer/cart/types';
 
 export type ICartContext = [ICart, React.Dispatch<ACTIONTYPE>];

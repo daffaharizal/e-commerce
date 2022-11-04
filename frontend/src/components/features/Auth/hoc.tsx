@@ -1,14 +1,18 @@
 import React from 'react';
+
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
 
 import { AuthConsumer } from 'context';
+
 import { axiosCreate, axiosError } from 'helpers';
+
 import { IErrorResponse, IReactRouterLocation } from 'types';
-import { IAuthResponse, IAuthProps, IFormInput } from './types';
+
+import { IAuthProps, IAuthResponse, IFormInput } from './types';
 
 const withAuth =
   (axiosApi: string) =>

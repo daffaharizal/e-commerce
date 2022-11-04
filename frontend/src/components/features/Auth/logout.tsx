@@ -1,12 +1,13 @@
-import React from 'react';
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
 import { AiOutlineLogout } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
-import { useMutation } from '@tanstack/react-query';
 
 import { AuthConsumer } from 'context';
+
 import { axiosCreate, axiosError } from 'helpers';
+
 import { IErrorResponse } from 'types';
 
 export default function LogoutPage() {

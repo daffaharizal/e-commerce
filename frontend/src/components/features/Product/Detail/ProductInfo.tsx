@@ -1,8 +1,10 @@
 import React from 'react';
 
 import { UserReviewCard, UserReviewForm } from 'components/shared';
-import { IProductReviews, IProductResponse } from '../types';
+
 import { AuthConsumer } from 'context';
+
+import { IProductResponse, IProductReviews } from '../types';
 
 const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
   const [reviews, setReviews] = React.useState<IProductReviews[]>(

@@ -1,15 +1,15 @@
-import 'pure-react-carousel/dist/react-carousel.es.css';
 import {
   CarouselProvider,
-  Slider,
-  Slide,
+  DotGroup,
   Image,
-  DotGroup
+  Slide,
+  Slider
 } from 'pure-react-carousel';
-
-import { IPureCarousel } from './types';
+import 'pure-react-carousel/dist/react-carousel.es.css';
 
 import NoImage from 'assets/images/noproductimage.png';
+
+import { IPureCarousel } from './types';
 
 export default function PureCarousel({ images }: IPureCarousel) {
   const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';

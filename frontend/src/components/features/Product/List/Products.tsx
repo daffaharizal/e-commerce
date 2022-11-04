@@ -1,23 +1,28 @@
 import React from 'react';
+
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import TabContent from 'react-bootstrap/TabContent';
 import TabPane from 'react-bootstrap/TabPane';
 import {
-  useQueryParams,
   NumberParam,
   StringParam,
+  useQueryParams,
   withDefault
 } from 'use-query-params';
-import { useQuery } from '@tanstack/react-query';
 
 import { StyledButtonPagination } from 'components/shared';
+
 import { CartConsumer, QueryConsumer } from 'context';
+
 import { axiosCreate, axiosError } from 'helpers';
+
 import { IErrorResponse } from 'types';
-import ProductCard from './ProductCard';
+
 import { IProduct, IProductsResponse } from '../types';
+import ProductCard from './ProductCard';
 
 export default function ProductListPage() {
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';

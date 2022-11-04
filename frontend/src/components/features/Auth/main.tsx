@@ -1,7 +1,7 @@
+import styles from 'assets/css/Auth.module.css';
+
 import LoginPage from './login';
 import RegisterPage from './register';
-
-import styles from 'assets/css/Auth.module.css';
 
 export default function AuthPage() {
   return (

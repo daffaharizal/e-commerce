@@ -1,4 +1,5 @@
-import { UseFormRegister, FieldErrorsImpl } from 'react-hook-form';
+import { FieldErrorsImpl, UseFormRegister } from 'react-hook-form';
+
 import { IUser } from 'context/Auth/types';
 
 export interface IAuthResponse {

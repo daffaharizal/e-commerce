@@ -1,5 +1,6 @@
 import React, { PropsWithChildren } from 'react';
-import { IAuthUser, IAuthContext } from './types';
+
+import { IAuthContext, IAuthUser } from './types';
 
 const AuthContext = React.createContext<IAuthContext | undefined>(undefined);
 

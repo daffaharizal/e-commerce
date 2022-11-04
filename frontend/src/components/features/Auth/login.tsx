@@ -1,9 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Spinner from 'react-bootstrap/Spinner';
 
-import { IAuthProps } from './types';
-import withAuth from './hoc';
 import styles from 'assets/css/Auth.module.css';
+
+import withAuth from './hoc';
+import { IAuthProps } from './types';
 
 const BaseLoginPage = ({
   isLoading,

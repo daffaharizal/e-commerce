@@ -1,8 +1,9 @@
 import axios, { AxiosResponse } from 'axios';
 import { toast } from 'react-toastify';
 
-import { IAxiosProps } from './types';
 import { IErrorResponse } from 'types';
+
+import { IAxiosProps } from './types';
 
 const axiosCreate = async <T,>({
   axiosApi,

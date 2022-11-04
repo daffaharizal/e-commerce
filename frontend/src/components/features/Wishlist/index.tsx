@@ -1,18 +1,22 @@
 import React from 'react';
+
+import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 import Card from 'react-bootstrap/Card';
-import Container from 'react-bootstrap/Container';
 import Col from 'react-bootstrap/Col';
+import Container from 'react-bootstrap/Container';
 import ListGroup from 'react-bootstrap/ListGroup';
 import Nav from 'react-bootstrap/Nav';
 import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import { Link } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
 
 import { UserRating } from 'components/shared';
+
 import { axiosCreate, axiosError } from 'helpers';
+
 import { IErrorResponse } from 'types';
+
 import { IWishListResponse } from './types';
 
 export default function WishlistPage() {
