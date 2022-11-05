@@ -35,6 +35,7 @@ module.exports = {
       }
     ],
     'no-debugger': 'off',
+    'unicorn/no-null': 0,
     'unicorn/consistent-function-scoping': 0,
     'unicorn/prevent-abbreviations': 0
   },

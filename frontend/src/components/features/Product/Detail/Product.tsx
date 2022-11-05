@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { WishlistPopup } from 'components/features';
 import { PureCarousel, StyledButton, UserRating } from 'components/shared';
 
-import { CartConsumer, ProductProvider } from 'context';
+import { AuthConsumer, CartConsumer, ProductProvider } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
 
@@ -21,6 +21,9 @@ export default function ProductDetailPage() {
   const { productId } = useParams() as {
     productId: string;
   };
+
+  const { isAuth, user } = AuthConsumer();
+
   const [cart, cartDispatch] = CartConsumer();
 
   const [quantity, setQuantity] = React.useState<number>(1);
@@ -146,7 +149,9 @@ export default function ProductDetailPage() {
                       onClick={() => handleAddToCart(product)}>
                       Add to Cart
                     </StyledButton>
-                    <WishlistPopup productId={productId} />
+                    {isAuth && user?.role === 'user' && (
+                      <WishlistPopup productId={productId} />
+                    )}
                   </div>
                 </div>
               </div>

@@ -7,13 +7,13 @@ import Form from 'react-bootstrap/Form';
 import Modal from 'react-bootstrap/Modal';
 import { toast } from 'react-toastify';
 
-import { StyledButton } from 'components/shared';
+import { SelectInput, StyledButton } from 'components/shared';
 
 import { QueryConsumer } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
 
-import { IErrorResponse } from 'types';
+import { IErrorResponse, IReactSelectOption } from 'types';
 
 import {
   IWishListResponse,
@@ -23,10 +23,9 @@ import {
 
 export default function WishlistPopup({ productId }: { productId: string }) {
   const [modalShow, setModalShow] = React.useState(false);
-  const [folderData, setFolderData] = React.useState({
-    folderId: '',
-    folderName: ''
-  });
+
+  // Access the client
+  const queryClient = QueryConsumer();
 
   const fetchFolders = async () => {
     const res = await axiosCreate<IWishListResponse>({
@@ -35,17 +34,6 @@ export default function WishlistPopup({ productId }: { productId: string }) {
     const { wishlist } = res as IWishListResponse;
     return wishlist;
   };
-
-  const addItem = async (axiosData: IWistListAddItemProps) => {
-    return await axiosCreate<IWistListAddItemResponse>({
-      axiosApi: '/wishlist/add-item',
-      axiosMethod: 'POST',
-      axiosData
-    });
-  };
-
-  // Access the client
-  const queryClient = QueryConsumer();
 
   // Queries
   const { data } = useQuery(['wishlistFolders'], fetchFolders, {
@@ -56,6 +44,14 @@ export default function WishlistPopup({ productId }: { productId: string }) {
     },
     refetchOnWindowFocus: false
   });
+
+  const addItem = async (axiosData: IWistListAddItemProps) => {
+    return await axiosCreate<IWistListAddItemResponse>({
+      axiosApi: '/wishlist/add-item',
+      axiosMethod: 'POST',
+      axiosData
+    });
+  };
 
   // Mutations
   const mutation = useMutation(addItem, {
@@ -71,14 +67,26 @@ export default function WishlistPopup({ productId }: { productId: string }) {
     }
   });
 
-  const handleSubmit = () => {
-    mutation.mutate({ ...folderData, productId });
-    setModalShow(false);
-    setFolderData({
-      folderId: '',
-      folderName: ''
-    });
+  const handleCreate = (label: string) => {
+    handleChange({ label, value: '' });
   };
+
+  const handleChange = (option: IReactSelectOption | null) => {
+    if (option) {
+      mutation.mutate({
+        folderId: option?.value || '',
+        folderName: option?.label || '',
+        productId
+      });
+      setModalShow(false);
+    }
+  };
+
+  const selectOptions =
+    data?.folders?.map(({ name: label, id: value }) => ({
+      label,
+      value
+    })) || [];
 
   return (
     <>
@@ -100,48 +108,16 @@ export default function WishlistPopup({ productId }: { productId: string }) {
         <Modal.Body>
           <Form>
             <Form.Group className="mb-3">
-              {data && <Form.Label>Existing Lists</Form.Label>}
-              {data?.folders ? (
-                data.folders.map((folder) => (
-                  <Form.Check
-                    type="radio"
-                    id={`default-${folder.id}`}
-                    label={folder.name}
-                    name="folder"
-                    value={folder.id}
-                    key={folder.id}
-                    onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                      setFolderData({
-                        folderId: e.target.value,
-                        folderName: ''
-                      })
-                    }
-                  />
-                ))
-              ) : (
-                <div className="text-muted">No lists created yet!</div>
-              )}
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Label>Create New List</Form.Label>
-              <Form.Control
-                type="text"
-                placeholder="Enter a new list name"
-                value={folderData.folderName}
-                onChange={(e: React.ChangeEvent<HTMLInputElement>): void =>
-                  setFolderData({
-                    folderId: '',
-                    folderName: e.target.value
-                  })
-                }
+              {data && <Form.Label>Wishlists</Form.Label>}
+              <SelectInput
+                options={selectOptions}
+                handleCreate={handleCreate}
+                handleChange={handleChange}
               />
             </Form.Group>
           </Form>
         </Modal.Body>
         <Modal.Footer>
-          <Button type="submit" onClick={handleSubmit}>
-            Submit
-          </Button>
           <Button onClick={() => setModalShow(false)}>Close</Button>
         </Modal.Footer>
       </Modal>

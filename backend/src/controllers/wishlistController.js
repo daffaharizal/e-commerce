@@ -38,7 +38,7 @@ const addItem = async (req, res) => {
         'This item was already in the wishlist'
       );
     }
-    folder.items.push({ product: productId });
+    folder.items.unshift({ product: productId });
     wishlist.save();
     msg = `${product.name} added to ${folder.name}`;
   } else {
@@ -60,7 +60,7 @@ const addItem = async (req, res) => {
       throw new CustomError.BadRequestError('Folder already Exist');
     }
 
-    wishlist.folders.push({
+    wishlist.folders.unshift({
       name: folderName.trim(),
       items: [{ product: productId }]
     });

@@ -16,3 +16,8 @@ export interface IReactRouterLocation {
   pathname: string;
   state?: { from: string };
 }
+
+export interface IReactSelectOption {
+  readonly label: string;
+  readonly value: string;
+}
