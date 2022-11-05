@@ -13,9 +13,9 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
 
   const { isAuth, user } = AuthConsumer();
 
-  const isCurrentUserReviewed = reviews.some(
-    (review) => review.user._id === user?.id
-  );
+  const isCommerceUser = isAuth && user?.role === 'user';
+
+  const isUserReviewed = reviews.some((review) => review.user._id === user?.id);
 
   return (
     <div className="product-info-tabs">
@@ -68,8 +68,8 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
           {reviews.length === 0 && (
             <p className="mb-4">There are no reviews yet.</p>
           )}
-          {isAuth && !isCurrentUserReviewed && (
-            <UserReviewForm setReviews={setReviews} />
+          {isCommerceUser && !isUserReviewed && (
+            <UserReviewForm setReviews={setReviews} reviewItem={product.id} />
           )}
         </div>
       </div>

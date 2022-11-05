@@ -6,16 +6,11 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import TabContent from 'react-bootstrap/TabContent';
 import TabPane from 'react-bootstrap/TabPane';
-import {
-  NumberParam,
-  StringParam,
-  useQueryParams,
-  withDefault
-} from 'use-query-params';
+import { NumberParam, useQueryParams, withDefault } from 'use-query-params';
 
-import { StyledButtonPagination } from 'components/shared';
+import { StyledPaginationButton } from 'components/shared';
 
-import { CartConsumer, QueryConsumer } from 'context';
+import { CartConsumer, QueryConsumer, SearchConsumer } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
 
@@ -27,16 +22,17 @@ import ProductCard from './ProductCard';
 export default function ProductListPage() {
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
-  // Access the client
+  // Access the react query client
   const queryClient = QueryConsumer();
 
+  const { search } = SearchConsumer();
+
   const [{ page }, setUrlQuery] = useQueryParams({
-    search: withDefault(StringParam, ''),
     page: withDefault(NumberParam, 1)
   });
 
   const [cart, cartDispatch] = CartConsumer();
-
+  console.log('Product Page searchClient', search);
   const handleAddToCart = (product: IProduct) => {
     const lineItemExist = cart.lineItems.some(
       (lineItem) => lineItem.itemId === product.id
@@ -61,20 +57,20 @@ export default function ProductListPage() {
     });
   };
 
-  const fetchProducts = async ({ limit = 15, page = 1 }) => {
+  const fetchProducts = async ({ limit = 15, page = 1, search = '' }) => {
     if (!Number.isInteger(page) || page <= 0) {
       throw Error;
     }
     const res = await axiosCreate<IProductsResponse>({
-      axiosApi: `/products?limit=${limit}&page=${page}`
+      axiosApi: `/products?search=${search}&limit=${limit}&page=${page}`
     });
     return res;
   };
 
   // Queries
   const { data, isLoading, isError, isPreviousData } = useQuery(
-    ['products', page],
-    () => fetchProducts({ page }),
+    ['products', page, search],
+    () => fetchProducts({ page, search }),
     {
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {
@@ -89,12 +85,13 @@ export default function ProductListPage() {
 
   // Prefetch the next page!
   React.useEffect(() => {
+    console.log('Update Time');
     async () => {
-      await queryClient.prefetchQuery(['projects', page], () =>
-        fetchProducts({ page })
+      await queryClient.prefetchQuery(['projects', page, search], () =>
+        fetchProducts({ page, search })
       );
     };
-  }, [page, queryClient]);
+  }, [page, queryClient, search]);
 
   if (isLoading) return <span>Loading...</span>;
   if (isError) return <span>An Error Occured!</span>;
@@ -105,7 +102,7 @@ export default function ProductListPage() {
         <TabPane active aria-labelledby="products-tab">
           <div className="d-flex justify-content-between p-3 bg-white mb-3 align-items-center">
             <span className="fw-bold text-uppercase">New Product</span>
-            <StyledButtonPagination
+            <StyledPaginationButton
               {...{
                 isPreviousData,
                 page,

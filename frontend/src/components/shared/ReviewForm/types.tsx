@@ -1,7 +1,8 @@
 import { IProductReviews } from 'components/features/Product/types';
 
 export interface ISetReviews {
-  setReviews?: React.Dispatch<React.SetStateAction<IProductReviews[]>>;
+  reviewItem: string;
+  setReviews: React.Dispatch<React.SetStateAction<IProductReviews[]>>;
 }
 
 export interface IReviewForm {

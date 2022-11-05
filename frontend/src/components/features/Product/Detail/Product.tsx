@@ -7,7 +7,7 @@ import { useParams } from 'react-router-dom';
 import { WishlistPopup } from 'components/features';
 import { PureCarousel, StyledButton, UserRating } from 'components/shared';
 
-import { AuthConsumer, CartConsumer, ProductProvider } from 'context';
+import { AuthConsumer, CartConsumer } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
 
@@ -82,29 +82,28 @@ export default function ProductDetailPage() {
   return (
     <>
       {!!product && (
-        <ProductProvider productId={productId}>
-          <div className="container">
-            <div className="heading-section">
-              <h2>{product.name}</h2>
+        <div className="container">
+          <div className="heading-section">
+            <h2>{product.name}</h2>
+          </div>
+          <div className="row">
+            <div className="col-md-6">
+              <PureCarousel images={product.images} />
             </div>
-            <div className="row">
-              <div className="col-md-6">
-                <PureCarousel images={product.images} />
-              </div>
-              <div className="col-md-6">
-                <div className="product-dtl">
-                  <div className="product-info">
-                    <div className="product-name">{product.category}</div>
-                    <UserRating rate={product.averageRating} />
-                    <span>{product.numOfReviews} Reviews</span>
-                    <div className="product-price-discount">
-                      <span>${product.price}</span>
-                      <span className="line-through"></span>
-                    </div>
+            <div className="col-md-6">
+              <div className="product-dtl">
+                <div className="product-info">
+                  <div className="product-name">{product.category}</div>
+                  <UserRating rate={product.averageRating} />
+                  <span>{product.numOfReviews} Reviews</span>
+                  <div className="product-price-discount">
+                    <span>${product.price}</span>
+                    <span className="line-through"></span>
                   </div>
-                  <p>{product.description}</p>
-                  <div className="row">
-                    {/* <div className="col-md-6">
+                </div>
+                <p>{product.description}</p>
+                <div className="row">
+                  {/* <div className="col-md-6">
                     <label htmlFor="size">Size</label>
                     <select id="size" name="size" className="form-control">
                       <option>S</option>
@@ -113,53 +112,50 @@ export default function ProductDetailPage() {
                       <option>XL</option>
                     </select>
                   </div> */}
-                    <div className="col-md-6">
-                      <label htmlFor="color">Color</label>
-                      <select id="color" name="color" className="form-control">
-                        {product.colors.map((color, index) => (
-                          <option key={index}>{color}</option>
-                        ))}
-                      </select>
+                  <div className="col-md-6">
+                    <label htmlFor="color">Color</label>
+                    <select id="color" name="color" className="form-control">
+                      {product.colors.map((color, index) => (
+                        <option key={index}>{color}</option>
+                      ))}
+                    </select>
+                  </div>
+                </div>
+                <div className="product-count">
+                  <label htmlFor="size">Quantity</label>
+                  <form action="#" className="display-flex">
+                    <div
+                      className="qtyminus"
+                      onClick={() => handleQuantity(-1)}>
+                      -
                     </div>
-                  </div>
-                  <div className="product-count">
-                    <label htmlFor="size">Quantity</label>
-                    <form action="#" className="display-flex">
-                      <div
-                        className="qtyminus"
-                        onClick={() => handleQuantity(-1)}>
-                        -
-                      </div>
-                      <input
-                        type="text"
-                        name="quantity"
-                        value={quantity}
-                        className="qty"
-                        onChange={(e) => e.preventDefault()}
-                        disabled
-                      />
-                      <div
-                        className="qtyplus"
-                        onClick={() => handleQuantity(+1)}>
-                        +
-                      </div>
-                    </form>
-                    <StyledButton
-                      className="btn btn-dark my-3 px-5"
-                      onClick={() => handleAddToCart(product)}>
-                      Add to Cart
-                    </StyledButton>
-                    {isAuth && user?.role === 'user' && (
-                      <WishlistPopup productId={productId} />
-                    )}
-                  </div>
+                    <input
+                      type="text"
+                      name="quantity"
+                      value={quantity}
+                      className="qty"
+                      onChange={(e) => e.preventDefault()}
+                      disabled
+                    />
+                    <div className="qtyplus" onClick={() => handleQuantity(+1)}>
+                      +
+                    </div>
+                  </form>
+                  <StyledButton
+                    className="btn btn-dark my-3 px-5"
+                    onClick={() => handleAddToCart(product)}>
+                    Add to Cart
+                  </StyledButton>
+                  {isAuth && user?.role === 'user' && (
+                    <WishlistPopup productId={productId} />
+                  )}
                 </div>
               </div>
             </div>
-
-            <ProductInfo product={product} />
           </div>
-        </ProductProvider>
+
+          <ProductInfo product={product} />
+        </div>
       )}
     </>
   );

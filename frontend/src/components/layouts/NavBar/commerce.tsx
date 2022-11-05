@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   AiOutlineDashboard,
   AiOutlineLogin,
@@ -9,13 +11,27 @@ import { BsBootstrap, BsSearch } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiSettings } from 'react-icons/fi';
 import { NavLink } from 'react-router-dom';
+import { StringParam, useQueryParams, withDefault } from 'use-query-params';
 
 import { LogoutPage } from 'components/features';
 
-import { AuthConsumer } from 'context';
+import { AuthConsumer, SearchConsumer } from 'context';
 
 export default function CommerceNavbar() {
   const { isAuth, user } = AuthConsumer();
+  // const ref = React.useRef<HTMLInputElement>(null);
+
+  const searchClient = SearchConsumer();
+
+  const [urlQuery, setUrlQuery] = useQueryParams({
+    search: withDefault(StringParam, '')
+  });
+
+  const [search, setSearch] = React.useState<string>(urlQuery.search);
+
+  React.useEffect(() => {
+    searchClient.setSearch(urlQuery.search);
+  }, []);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-info border-bottom  bg-info d-flex justify-content-between align-items-center flex-nowrap mb-3">
@@ -29,15 +45,25 @@ export default function CommerceNavbar() {
           <div className="col-lg-8 col-md-10 col-sm-12">
             <div className="input-group">
               <input
+                // ref={ref}
                 className="form-control border-end-0 border rounded-pill"
                 type="search"
                 placeholder="Search"
                 aria-label="Search"
+                value={search}
+                onChange={(e) => setSearch(e.target.value)}
               />
               <span className="input-group-append">
                 <button
+                  type="button"
                   className="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
-                  type="button">
+                  onClick={() => {
+                    setUrlQuery((current) => ({
+                      ...current,
+                      search
+                    }));
+                    searchClient.setSearch(search);
+                  }}>
                   <BsSearch size={24} />
                 </button>
               </span>

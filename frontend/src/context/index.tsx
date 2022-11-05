@@ -1,4 +1,4 @@
 export { AuthProvider, AuthConsumer } from './Auth';
 export { CartProvider, CartConsumer } from './Cart';
-export { ProductProvider, ProductConsumer } from './Product';
+export { SearchProvider, SearchConsumer } from './Search';
 export { QueryProvider, QueryConsumer } from './ReactQuery';

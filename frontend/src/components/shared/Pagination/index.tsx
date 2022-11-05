@@ -28,7 +28,7 @@ export function OffsetPagination({
   );
 }
 
-export function StyledButtonPagination({
+export function StyledPaginationButton({
   hasMore,
   isPreviousData,
   page,
@@ -48,9 +48,9 @@ export function StyledButtonPagination({
         className="mx-3"
         variant="info"
         onClick={() =>
-          setUrlQuery((old) => ({
-            ...old,
-            page: Math.max(old.page - 1, 1)
+          setUrlQuery((current) => ({
+            ...current,
+            page: Math.max(current.page - 1, 1)
           }))
         }
         disabled={page <= 1 || (totalPages ? page > totalPages : true)}>
@@ -59,9 +59,9 @@ export function StyledButtonPagination({
       <Button
         variant="info"
         onClick={() =>
-          setUrlQuery((old) => ({
-            ...old,
-            page: hasMore ? old.page + 1 : old.page
+          setUrlQuery((current) => ({
+            ...current,
+            page: hasMore ? current.page + 1 : current.page
           }))
         }
         disabled={isPreviousData || !hasMore}>

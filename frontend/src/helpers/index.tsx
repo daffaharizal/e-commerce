@@ -9,7 +9,7 @@ const axiosCreate = async <T,>({
   axiosApi,
   axiosMethod = 'GET',
   axiosData = {}
-}: IAxiosProps) => {
+}: Partial<IAxiosProps>) => {
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const instance = axios.create({
@@ -24,11 +24,11 @@ const axiosCreate = async <T,>({
   let res: AxiosResponse<T>;
   switch (axiosMethod) {
     case 'GET': {
-      res = await instance.get(axiosApi);
+      res = await instance.get(axiosApi as string);
       return res.data;
     }
     case 'POST': {
-      res = await instance.post(axiosApi, axiosData);
+      res = await instance.post(axiosApi as string, axiosData);
       return res.data;
     }
     default: {

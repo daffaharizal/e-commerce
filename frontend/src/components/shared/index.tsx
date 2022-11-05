@@ -5,4 +5,4 @@ export { default as UserReviewCard } from './ReviewCard';
 export { default as UserReviewForm } from './ReviewForm';
 export { default as SelectInput } from './SelectInput';
 export { default as ToastAlert } from './ToastAlert';
-export { OffsetPagination, StyledButtonPagination } from './Pagination';
+export { OffsetPagination, StyledPaginationButton } from './Pagination';

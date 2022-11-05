@@ -5,15 +5,14 @@ import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
 
 import { UserRating } from 'components/shared';
 
-import { ProductConsumer } from 'context';
-
 import { IErrorResponse } from 'types';
 
 import { IReviewForm, IReviewFormResponse, ISetReviews } from './types';
 
-export default function UserReviewForm({ setReviews }: ISetReviews) {
-  const { productId } = ProductConsumer();
-
+export default function UserReviewForm({
+  reviewItem,
+  setReviews
+}: ISetReviews) {
   const {
     register,
     handleSubmit,
@@ -22,7 +21,7 @@ export default function UserReviewForm({ setReviews }: ISetReviews) {
     clearErrors
   } = useForm<IReviewForm>({
     defaultValues: {
-      product: productId,
+      product: reviewItem,
       rating: 0,
       title: 'Awesome',
       comment:
