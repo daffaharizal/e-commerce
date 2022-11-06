@@ -4,6 +4,8 @@ import { AiOutlineLogout } from 'react-icons/ai';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import * as ROUTES from 'constant/routes';
+
 import { AuthConsumer } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
@@ -28,7 +30,7 @@ export default function LogoutPage() {
       onSuccess: () => {
         localStorage.removeItem('authUser');
         setAuthUser({ isAuth: false });
-        navigate('/products');
+        navigate(ROUTES.PRODUCTS);
         toast('🚀 Logout Sucessfully!');
       },
       onError: (error) => {

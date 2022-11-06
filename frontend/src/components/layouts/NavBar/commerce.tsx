@@ -7,71 +7,73 @@ import {
   AiOutlineUnorderedList
 } from 'react-icons/ai';
 import { BiUser } from 'react-icons/bi';
-import { BsBootstrap, BsSearch } from 'react-icons/bs';
+import { BsBootstrap } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiSettings } from 'react-icons/fi';
-import { NavLink } from 'react-router-dom';
+import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import { StringParam, useQueryParams, withDefault } from 'use-query-params';
 
 import { LogoutPage } from 'components/features';
+import { SearchInput } from 'components/shared';
+
+import * as ROUTES from 'constant/routes';
 
 import { AuthConsumer } from 'context';
 
+import { IReactRouterLocation } from 'types';
+
 export default function CommerceNavbar() {
   const { isAuth, user } = AuthConsumer();
-  // const ref = React.useRef<HTMLInputElement>(null);
+  const navigate = useNavigate();
+  const location = useLocation() as IReactRouterLocation;
 
   const [urlQuery, setUrlQuery] = useQueryParams({
     search: withDefault(StringParam, '')
   });
 
-  const [search, setSearch] = React.useState(urlQuery.search);
+  const handleSubmit = (
+    search: string,
+    ref: React.RefObject<HTMLInputElement>
+  ) => {
+    if (!search) {
+      ref.current?.focus();
+      return;
+    }
+    if ([ROUTES.PRODUCTS, `${ROUTES.PRODUCTS}/`].includes(location.pathname)) {
+      setUrlQuery((current) => ({
+        ...current,
+        search
+      }));
+    } else {
+      navigate(`${ROUTES.PRODUCTS}?search=${search}`);
+    }
+  };
 
   return (
     <nav className="navbar navbar-expand-lg navbar-info border-bottom  bg-info d-flex justify-content-between align-items-center flex-nowrap mb-3">
       <NavLink
-        to="/products"
+        to={ROUTES.PRODUCTS}
         className="navbar-brand p-2 text-black text-decoration-none">
         <BsBootstrap size={36} />
       </NavLink>
       <form className="form-inline flex-fill">
         <div className="row justify-content-md-center">
           <div className="col-lg-8 col-md-10 col-sm-12">
-            <div className="input-group">
-              <input
-                // ref={ref}
-                className="form-control border-end-0 border rounded-pill"
-                type="search"
-                placeholder="Search"
-                aria-label="Search"
-                value={search}
-                onChange={(e) => setSearch(e.target.value)}
-              />
-              <span className="input-group-append">
-                <button
-                  type="button"
-                  className="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
-                  onClick={() => {
-                    setUrlQuery((current) => ({
-                      ...current,
-                      search
-                    }));
-                  }}>
-                  <BsSearch size={24} />
-                </button>
-              </span>
-            </div>
+            <SearchInput
+              defaultValue={urlQuery.search}
+              onSubmit={handleSubmit}
+            />
           </div>
         </div>
       </form>
       <NavLink
-        to="/cart"
+        to={ROUTES.CART}
         className="d-block link-dark text-decoration-none pe-1">
         <AiOutlineShoppingCart size={36} />
       </NavLink>
       <div className="dropdown p-2 text-end">
         <NavLink
-          to="/"
+          to={ROUTES.INDEX}
           className="d-block link-dark text-decoration-none dropdown-toggle"
           data-bs-toggle="dropdown"
           aria-expanded="false">
@@ -84,22 +86,22 @@ export default function CommerceNavbar() {
             <>
               {user?.role == 'user' ? (
                 <>
-                  <NavLink to="/profile" className="dropdown-item">
+                  <NavLink to={ROUTES.PROFILE} className="dropdown-item">
                     <CgProfile size={20} />
                     <span className="ps-2">Profile</span>
                   </NavLink>
-                  <NavLink to="/wishlist" className="dropdown-item">
+                  <NavLink to={ROUTES.WISHLIST} className="dropdown-item">
                     <AiOutlineUnorderedList size={20} />
                     <span className="ps-2">Wishlist</span>
                   </NavLink>
                 </>
               ) : (
-                <NavLink to="/admin/dash" className="dropdown-item">
+                <NavLink to={ROUTES.ADMINDASH} className="dropdown-item">
                   <AiOutlineDashboard size={20} />
                   <span className="ps-2">Dashboard</span>
                 </NavLink>
               )}
-              <NavLink to="/settings" className="dropdown-item">
+              <NavLink to={ROUTES.SETTINGS} className="dropdown-item">
                 <FiSettings size={20} />
                 <span className="ps-2">Settings</span>
               </NavLink>
@@ -108,7 +110,7 @@ export default function CommerceNavbar() {
             </>
           ) : (
             <>
-              <NavLink to="/auth" className="dropdown-item">
+              <NavLink to={ROUTES.AUTH} className="dropdown-item">
                 <AiOutlineLogin size={20} />
                 <span className="ps-2">Hello, Sign In</span>
               </NavLink>

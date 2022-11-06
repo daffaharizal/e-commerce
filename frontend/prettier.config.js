@@ -12,6 +12,7 @@ module.exports = {
     '^react$', // Imports by "react"
     '<THIRD_PARTY_MODULES>',
     '^components/(.*)$',
+    '^constant',
     '^context',
     '^helpers',
     '^hooks',

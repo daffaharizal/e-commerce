@@ -5,6 +5,8 @@ import { NavLink } from 'react-router-dom';
 
 import { IProduct } from 'components/features/Product/types';
 
+import * as ROUTES from 'constant/routes';
+
 import { CartConsumer } from 'context';
 
 import NoImage from 'assets/images/noproductimage.png';
@@ -74,7 +76,7 @@ export default function CartPage() {
                           <React.Fragment key={itemId}>
                             <div className="row mb-4 d-flex justify-content-between align-items-center">
                               <div className="col-md-2 col-lg-2 col-xl-2">
-                                <NavLink to={`/products/${itemId}`}>
+                                <NavLink to={`${ROUTES.PRODUCTS}/${itemId}`}>
                                   {item.images.length > 0 ? (
                                     <img
                                       src={
@@ -100,7 +102,7 @@ export default function CartPage() {
                                 </h6>
                                 <h6 className="text-black mb-0 text-capitalize">
                                   <NavLink
-                                    to={`/products/${itemId}`}
+                                    to={`${ROUTES.PRODUCTS}/${itemId}`}
                                     className="text-black text-decoration-none">
                                     {item.name}
                                   </NavLink>
@@ -157,7 +159,7 @@ export default function CartPage() {
 
                       <div className="pt-5">
                         <h6 className="mb-0">
-                          <NavLink to="/products" className="text-body">
+                          <NavLink to={ROUTES.PRODUCTS} className="text-body">
                             <FaLongArrowAltLeft className="me-2" size={18} />
                             Back to shop
                           </NavLink>

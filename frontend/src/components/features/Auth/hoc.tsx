@@ -6,6 +6,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
+import * as ROUTES from 'constant/routes';
+
 import { AuthConsumer } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
@@ -59,7 +61,7 @@ const withAuth =
 
           const redirectPath = location.state
             ? location.state.from
-            : '/products';
+            : ROUTES.PRODUCTS;
 
           navigate(redirectPath);
           toast('🚀 Login Sucessfully!');

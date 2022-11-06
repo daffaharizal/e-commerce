@@ -13,6 +13,8 @@ import { Link } from 'react-router-dom';
 
 import { UserRating } from 'components/shared';
 
+import * as ROUTES from 'constant/routes';
+
 import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
@@ -73,7 +75,7 @@ export default function WishlistPage() {
                         <Card.Body>
                           <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
                             <Link
-                              to={`/products/${item.product.id}`}
+                              to={`${ROUTES.PRODUCTS}/${item.product.id}`}
                               className="text-success text-decoration-none">
                               {item.product.name}
                             </Link>

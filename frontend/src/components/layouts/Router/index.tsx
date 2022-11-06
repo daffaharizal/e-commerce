@@ -12,6 +12,8 @@ import {
 import AdminLayout from 'components/layouts/Admin';
 import CommerceLayout from 'components/layouts/Commerce';
 
+import * as ROUTES from 'constant/routes';
+
 import AdminRoute from './AdminRoute';
 import CommerceRoute from './CommerceRoute';
 import PrivateRoute from './PrivateRoute';
@@ -21,9 +23,12 @@ export default function Router() {
   return (
     <Routes>
       <Route element={<AdminLayout />}>
-        <Route path="admin/" element={<Navigate replace to="/admin/dash/" />} />
         <Route
-          path="admin/dash/"
+          path={ROUTES.ADMIN}
+          element={<Navigate replace to={ROUTES.ADMINDASH} />}
+        />
+        <Route
+          path={ROUTES.ADMINDASH}
           element={
             <PrivateRoute>
               <AdminRoute>
@@ -34,11 +39,14 @@ export default function Router() {
         />
       </Route>
       <Route element={<CommerceLayout />}>
-        <Route path="/" element={<Navigate replace to="/products" />} />
-        <Route path="products/*" element={<ProductPage />} />
-        <Route path="cart" element={<CartPage />} />
         <Route
-          path="auth"
+          path={ROUTES.INDEX}
+          element={<Navigate replace to={ROUTES.PRODUCTS} />}
+        />
+        <Route path={`${ROUTES.PRODUCTS}/*`} element={<ProductPage />} />
+        <Route path={ROUTES.CART} element={<CartPage />} />
+        <Route
+          path={ROUTES.AUTH}
           element={
             <ProtectedRoute>
               <AuthPage />
@@ -46,7 +54,7 @@ export default function Router() {
           }
         />
         <Route
-          path="profile"
+          path={ROUTES.PROFILE}
           element={
             <PrivateRoute>
               <CommerceRoute>
@@ -56,7 +64,7 @@ export default function Router() {
           }
         />
         <Route
-          path="wishlist"
+          path={ROUTES.WISHLIST}
           element={
             <PrivateRoute>
               <CommerceRoute>
@@ -65,7 +73,7 @@ export default function Router() {
             </PrivateRoute>
           }
         />
-        <Route path="*" element={<NoMatch />} />
+        <Route path={ROUTES.NOMATCH} element={<NoMatch />} />
       </Route>
     </Routes>
   );

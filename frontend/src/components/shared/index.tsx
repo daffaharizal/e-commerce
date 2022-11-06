@@ -4,5 +4,6 @@ export { default as UserRating } from './Rating';
 export { default as UserReviewCard } from './ReviewCard';
 export { default as UserReviewForm } from './ReviewForm';
 export { default as SelectInput } from './SelectInput';
+export { default as SearchInput } from './SearchInput';
 export { default as ToastAlert } from './ToastAlert';
 export { OffsetPagination, StyledPaginationButton } from './Pagination';

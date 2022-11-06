@@ -1,5 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 
+import * as ROUTES from 'constant/routes';
+
 import { AuthConsumer } from 'context';
 
 import { IChildrenProps } from 'types';
@@ -10,7 +12,11 @@ const ProtectedRoute: React.FC<IChildrenProps> = ({ children }) => {
 
   if (isAuth) {
     return (
-      <Navigate to="/products" replace state={{ from: location.pathname }} />
+      <Navigate
+        to={ROUTES.PRODUCTS}
+        replace
+        state={{ from: location.pathname }}
+      />
     );
   }
 

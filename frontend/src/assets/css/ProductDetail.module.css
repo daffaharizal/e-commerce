@@ -52,10 +52,10 @@
   line-height: 16px;
   font-size: 15px;
 }
-.form-control:focus {
+/* .form-control:focus {
   outline: none;
   box-shadow: none;
-}
+} */
 .product-count {
   margin-top: 15px;
 }

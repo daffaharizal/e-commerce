@@ -1,5 +1,7 @@
 import { Navigate, useLocation } from 'react-router-dom';
 
+import * as ROUTES from 'constant/routes';
+
 import { AuthConsumer } from 'context';
 
 import { IChildrenProps } from 'types';
@@ -9,7 +11,9 @@ const PrivateRoute: React.FC<IChildrenProps> = ({ children }) => {
   const location = useLocation();
 
   if (!isAuth) {
-    return <Navigate to="/auth" replace state={{ from: location.pathname }} />;
+    return (
+      <Navigate to={ROUTES.AUTH} replace state={{ from: location.pathname }} />
+    );
   }
 
   return children;
