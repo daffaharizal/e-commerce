@@ -6,11 +6,16 @@ import Container from 'react-bootstrap/Container';
 import Row from 'react-bootstrap/Row';
 import TabContent from 'react-bootstrap/TabContent';
 import TabPane from 'react-bootstrap/TabPane';
-import { NumberParam, useQueryParams, withDefault } from 'use-query-params';
+import {
+  NumberParam,
+  StringParam,
+  useQueryParams,
+  withDefault
+} from 'use-query-params';
 
 import { StyledPaginationButton } from 'components/shared';
 
-import { CartConsumer, QueryConsumer, SearchConsumer } from 'context';
+import { CartConsumer, QueryConsumer } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
 
@@ -25,14 +30,13 @@ export default function ProductListPage() {
   // Access the react query client
   const queryClient = QueryConsumer();
 
-  const { search } = SearchConsumer();
-
-  const [{ page }, setUrlQuery] = useQueryParams({
+  const [{ search, page }, setUrlQuery] = useQueryParams({
+    search: withDefault(StringParam, ''),
     page: withDefault(NumberParam, 1)
   });
 
   const [cart, cartDispatch] = CartConsumer();
-  console.log('Product Page searchClient', search);
+
   const handleAddToCart = (product: IProduct) => {
     const lineItemExist = cart.lineItems.some(
       (lineItem) => lineItem.itemId === product.id
@@ -85,7 +89,6 @@ export default function ProductListPage() {
 
   // Prefetch the next page!
   React.useEffect(() => {
-    console.log('Update Time');
     async () => {
       await queryClient.prefetchQuery(['projects', page, search], () =>
         fetchProducts({ page, search })

@@ -15,23 +15,17 @@ import { StringParam, useQueryParams, withDefault } from 'use-query-params';
 
 import { LogoutPage } from 'components/features';
 
-import { AuthConsumer, SearchConsumer } from 'context';
+import { AuthConsumer } from 'context';
 
 export default function CommerceNavbar() {
   const { isAuth, user } = AuthConsumer();
   // const ref = React.useRef<HTMLInputElement>(null);
 
-  const searchClient = SearchConsumer();
-
   const [urlQuery, setUrlQuery] = useQueryParams({
     search: withDefault(StringParam, '')
   });
 
-  const [search, setSearch] = React.useState<string>(urlQuery.search);
-
-  React.useEffect(() => {
-    searchClient.setSearch(urlQuery.search);
-  }, []);
+  const [search, setSearch] = React.useState(urlQuery.search);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-info border-bottom  bg-info d-flex justify-content-between align-items-center flex-nowrap mb-3">
@@ -62,7 +56,6 @@ export default function CommerceNavbar() {
                       ...current,
                       search
                     }));
-                    searchClient.setSearch(search);
                   }}>
                   <BsSearch size={24} />
                 </button>
