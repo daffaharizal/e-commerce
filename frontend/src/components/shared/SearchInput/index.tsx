@@ -4,12 +4,20 @@ import { BsSearch } from 'react-icons/bs';
 
 type PropsType = {
   defaultValue: string;
-  onSubmit(value: string, ref: React.RefObject<HTMLInputElement>): void;
+  onSubmit(value: string): void;
 };
 
 export default function SearchInput({ defaultValue, onSubmit }: PropsType) {
   const ref = React.useRef<HTMLInputElement>(null);
   const [search, setSearch] = React.useState(defaultValue);
+
+  const handleSubmit = () => {
+    if (!search.trim()) {
+      ref.current?.focus();
+      return;
+    }
+    onSubmit(search.trim());
+  };
 
   return (
     <div className="input-group">
@@ -27,7 +35,7 @@ export default function SearchInput({ defaultValue, onSubmit }: PropsType) {
         <button
           type="button"
           className="btn btn-outline-secondary bg-white border-start-0 border rounded-pill ms-n3"
-          onClick={() => onSubmit(search, ref)}>
+          onClick={handleSubmit}>
           <BsSearch size={24} />
         </button>
       </span>

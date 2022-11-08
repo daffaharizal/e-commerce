@@ -37,14 +37,7 @@ export default function CommerceNavbar() {
     page: withDefault(NumberParam, 1)
   });
 
-  const handleSubmit = (
-    search: string,
-    ref: React.RefObject<HTMLInputElement>
-  ) => {
-    if (!search) {
-      ref.current?.focus();
-      return;
-    }
+  const handleSubmit = (search: string) => {
     if ([ROUTES.PRODUCTS, `${ROUTES.PRODUCTS}/`].includes(location.pathname)) {
       setUrlQuery((current) => ({
         ...current,
