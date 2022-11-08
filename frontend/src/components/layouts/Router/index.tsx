@@ -16,7 +16,7 @@ import * as ROUTES from 'constant/routes';
 
 import AdminRoute from './AdminRoute';
 import CommerceRoute from './CommerceRoute';
-import PrivateRoute from './PrivateRoute';
+import PreventedRoute from './PreventedRoute';
 import ProtectedRoute from './ProtectedRoute';
 
 export default function Router() {
@@ -30,11 +30,11 @@ export default function Router() {
         <Route
           path={ROUTES.ADMINDASH}
           element={
-            <PrivateRoute>
+            <ProtectedRoute>
               <AdminRoute>
                 <AdminDash />
               </AdminRoute>
-            </PrivateRoute>
+            </ProtectedRoute>
           }
         />
       </Route>
@@ -48,29 +48,29 @@ export default function Router() {
         <Route
           path={ROUTES.AUTH}
           element={
-            <ProtectedRoute>
+            <PreventedRoute>
               <AuthPage />
-            </ProtectedRoute>
+            </PreventedRoute>
           }
         />
         <Route
           path={ROUTES.PROFILE}
           element={
-            <PrivateRoute>
+            <ProtectedRoute>
               <CommerceRoute>
                 <ProfilePage />
               </CommerceRoute>
-            </PrivateRoute>
+            </ProtectedRoute>
           }
         />
         <Route
           path={ROUTES.WISHLIST}
           element={
-            <PrivateRoute>
+            <ProtectedRoute>
               <CommerceRoute>
                 <WishlistPage />
               </CommerceRoute>
-            </PrivateRoute>
+            </ProtectedRoute>
           }
         />
         <Route path={ROUTES.NOMATCH} element={<NoMatch />} />

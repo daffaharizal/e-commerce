@@ -6,17 +6,21 @@ import { AuthConsumer } from 'context';
 
 import { IChildrenProps } from 'types';
 
-const PrivateRoute: React.FC<IChildrenProps> = ({ children }) => {
+const PreventedRoute: React.FC<IChildrenProps> = ({ children }) => {
   const { isAuth } = AuthConsumer();
   const location = useLocation();
 
-  if (!isAuth) {
+  if (isAuth) {
     return (
-      <Navigate to={ROUTES.AUTH} replace state={{ from: location.pathname }} />
+      <Navigate
+        to={ROUTES.PRODUCTS}
+        replace
+        state={{ from: location.pathname }}
+      />
     );
   }
 
   return children;
 };
 
-export default PrivateRoute;
+export default PreventedRoute;

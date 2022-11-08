@@ -11,7 +11,12 @@ import { BsBootstrap } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiSettings } from 'react-icons/fi';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
-import { StringParam, useQueryParams, withDefault } from 'use-query-params';
+import {
+  NumberParam,
+  StringParam,
+  useQueryParams,
+  withDefault
+} from 'use-query-params';
 
 import { LogoutPage } from 'components/features';
 import { SearchInput } from 'components/shared';
@@ -28,7 +33,8 @@ export default function CommerceNavbar() {
   const location = useLocation() as IReactRouterLocation;
 
   const [urlQuery, setUrlQuery] = useQueryParams({
-    search: withDefault(StringParam, '')
+    search: withDefault(StringParam, ''),
+    page: withDefault(NumberParam, 1)
   });
 
   const handleSubmit = (
@@ -42,7 +48,8 @@ export default function CommerceNavbar() {
     if ([ROUTES.PRODUCTS, `${ROUTES.PRODUCTS}/`].includes(location.pathname)) {
       setUrlQuery((current) => ({
         ...current,
-        search
+        search,
+        page: 1
       }));
     } else {
       navigate(`${ROUTES.PRODUCTS}?search=${search}`);

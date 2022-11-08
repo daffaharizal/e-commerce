@@ -10,13 +10,9 @@ const ProtectedRoute: React.FC<IChildrenProps> = ({ children }) => {
   const { isAuth } = AuthConsumer();
   const location = useLocation();
 
-  if (isAuth) {
+  if (!isAuth) {
     return (
-      <Navigate
-        to={ROUTES.PRODUCTS}
-        replace
-        state={{ from: location.pathname }}
-      />
+      <Navigate to={ROUTES.AUTH} replace state={{ from: location.pathname }} />
     );
   }
 
