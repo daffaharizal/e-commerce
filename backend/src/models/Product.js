@@ -39,14 +39,14 @@ const ProductSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide product category'],
       enum: ['office', 'kitchen', 'bedroom', 'living']
-    },
+    }, // TODO: Change to FK
     company: {
       type: String,
       required: [true, 'Please provide company'],
       enum: {
         values: ['damro', 'godrej india', 'usha'],
         message: '{VALUE} is not supported'
-      }
+      } // TODO: Change to FK
     },
     colors: {
       type: [String],
@@ -86,6 +86,8 @@ const ProductSchema = new mongoose.Schema(
     versionKey: false
   }
 );
+
+ProductSchema.index({ name: 'text', category: 'text', company: 'text' });
 
 ProductSchema.methods.toJSON = function () {
   const obj = this.toObject();

@@ -12,13 +12,13 @@ const createProduct = async (req, res) => {
 };
 
 const getAllProducts = async (req, res) => {
-  const { limit, page: currentPage } = req.query;
+  const { search, limit, page: currentPage } = req.query;
+  const queryParam = search ? { $text: { $search: search } } : {};
 
-  const products = await Product.find()
+  const products = await Product.find(queryParam)
     .skip((currentPage - 1) * limit)
     .limit(limit);
-  const totalItems = await Product.count();
-
+  const totalItems = await Product.find(queryParam).count();
   const totalPages = Math.ceil(totalItems / limit);
 
   res.status(StatusCodes.OK).json({
