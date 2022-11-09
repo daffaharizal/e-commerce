@@ -6,7 +6,8 @@ const { attachCookiesToResponse } = require('../utils/jwt');
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({});
-  return res.status(StatusCodes.OK).json({ users });
+  const count = await User.count();
+  return res.status(StatusCodes.OK).json({ count, users });
 };
 
 const getSingleUser = async (req, res) => {
