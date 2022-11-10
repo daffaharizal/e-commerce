@@ -19,15 +19,15 @@ import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
 
-import { IWishListResponse } from './types';
+import { WishlistResponseType } from './types';
 
 export default function WishlistPage() {
   const fetchWishlists = async () => {
-    const res = await axiosCreate<IWishListResponse>({
+    const res = await axiosCreate<WishlistResponseType>({
       axiosApi: '/wishlist/show-folders'
     });
 
-    const { wishlist } = res as IWishListResponse;
+    const { wishlist } = res as WishlistResponseType;
 
     return wishlist;
   };

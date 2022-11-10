@@ -1,6 +1,6 @@
 import { IProduct } from 'components/features/Product/types';
 
-export interface IWishListResponse {
+export interface WishlistResponseType {
   wishlist: {
     folders: [
       {
@@ -14,14 +14,4 @@ export interface IWishListResponse {
       }
     ];
   };
-}
-
-export interface IWistListAddItemProps {
-  folderId: string;
-  folderName: string;
-  productId: string;
-}
-
-export interface IWistListAddItemResponse {
-  msg: string;
 }

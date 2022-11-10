@@ -10,24 +10,28 @@ import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
 
-import { IReviewForm } from './types';
-
-type ReviewFormPropsType<T> = {
+type PropsType<T> = {
   axiosApi: string;
   reviewItem: T;
+};
+
+type FormType = {
+  rating: number;
+  title: string;
+  comment: string;
 };
 
 export default function UserReviewForm<T>({
   axiosApi,
   reviewItem
-}: ReviewFormPropsType<T>) {
+}: PropsType<T>) {
   const {
     control,
     register,
     handleSubmit,
     formState: { errors },
     clearErrors
-  } = useForm<IReviewForm>({
+  } = useForm<FormType>({
     defaultValues: {
       rating: 0,
       title: 'Awesome',
@@ -53,7 +57,7 @@ export default function UserReviewForm<T>({
     }
   };
 
-  const submitReview = async (axiosData: IReviewForm) => {
+  const submitReview = async (axiosData: FormType) => {
     return await axiosCreate({
       axiosApi,
       axiosData: { ...axiosData, ...reviewItem },
@@ -70,7 +74,7 @@ export default function UserReviewForm<T>({
     void handleSubmit(handleOnSubmit)();
   };
 
-  const handleOnSubmit: SubmitHandler<IReviewForm> = (values) => {
+  const handleOnSubmit: SubmitHandler<FormType> = (values) => {
     mutate(values, {
       onError: (error) => {
         if (axios.isAxiosError(error) && error.response) {

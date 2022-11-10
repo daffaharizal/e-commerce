@@ -15,11 +15,13 @@ import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse, IReactSelectOption } from 'types';
 
-import {
-  IWishListResponse,
-  IWistListAddItemProps,
-  IWistListAddItemResponse
-} from './types';
+import { WishlistResponseType } from './types';
+
+type AddItemDataType = {
+  folderId: string;
+  folderName: string;
+  productId: string;
+};
 
 export default function WishlistPopup({ productId }: { productId: string }) {
   const [modalShow, setModalShow] = React.useState(false);
@@ -28,10 +30,10 @@ export default function WishlistPopup({ productId }: { productId: string }) {
   const queryClient = QueryConsumer();
 
   const fetchFolders = async () => {
-    const res = await axiosCreate<IWishListResponse>({
+    const res = await axiosCreate<WishlistResponseType>({
       axiosApi: '/wishlist/show-folders'
     });
-    const { wishlist } = res as IWishListResponse;
+    const { wishlist } = res as WishlistResponseType;
     return wishlist;
   };
 
@@ -45,8 +47,8 @@ export default function WishlistPopup({ productId }: { productId: string }) {
     refetchOnWindowFocus: false
   });
 
-  const addItem = async (axiosData: IWistListAddItemProps) => {
-    return await axiosCreate<IWistListAddItemResponse>({
+  const addItem = async (axiosData: AddItemDataType) => {
+    return await axiosCreate({
       axiosApi: '/wishlist/add-item',
       axiosMethod: 'POST',
       axiosData
