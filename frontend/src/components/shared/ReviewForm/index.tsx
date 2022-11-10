@@ -1,27 +1,34 @@
 import React from 'react';
 
+import { useMutation } from '@tanstack/react-query';
 import axios from 'axios';
-import { SubmitErrorHandler, SubmitHandler, useForm } from 'react-hook-form';
+import { Controller, SubmitHandler, useForm } from 'react-hook-form';
 
 import { UserRating } from 'components/shared';
 
+import { axiosCreate, axiosError } from 'helpers';
+
 import { IErrorResponse } from 'types';
 
-import { IReviewForm, IReviewFormResponse, ISetReviews } from './types';
+import { IReviewForm } from './types';
 
-export default function UserReviewForm({
-  reviewItem,
-  setReviews
-}: ISetReviews) {
+type ReviewFormPropsType<T> = {
+  axiosApi: string;
+  reviewItem: T;
+};
+
+export default function UserReviewForm<T>({
+  axiosApi,
+  reviewItem
+}: ReviewFormPropsType<T>) {
   const {
+    control,
     register,
     handleSubmit,
-    setError,
     formState: { errors },
     clearErrors
   } = useForm<IReviewForm>({
     defaultValues: {
-      product: reviewItem,
       rating: 0,
       title: 'Awesome',
       comment:
@@ -29,73 +36,70 @@ export default function UserReviewForm({
     }
   });
 
-  const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
-
-  const [data, setData] = React.useState<IReviewForm>();
-  const [rating, setRating] = React.useState<number>(0);
-
-  React.useEffect(() => {
-    const submitForm = async () => {
-      try {
-        const res: IReviewFormResponse = await axios.post(
-          `http://${serverURL}/api/v1/reviews/`,
-          data,
-          {
-            withCredentials: true,
-            headers: {
-              'Content-Type': 'application/json',
-              Accept: 'application/json'
-            }
-          }
-        );
-        setReviews && setReviews((current) => [...current, res.data.review]);
-      } catch (error) {
-        if (axios.isAxiosError(error) && error.response) {
-          const {
-            response: {
-              data: { msg }
-            }
-          } = error as IErrorResponse;
-          setError('serverError', { type: 'custom', message: msg });
-        }
-      }
-    };
-    data && submitForm();
-  }, [data]);
-
   const formOptions = {
+    rating: {
+      required: 'This field is required',
+      min: { value: 1, message: 'Please provide the overall rating' },
+      max: { value: 5, message: 'Please provide the overall rating' }
+    },
     title: {
-      required: 'This is required',
+      required: 'This field is required',
       maxLength: { value: 16, message: 'Max length is 16' }
     },
     comment: {
-      required: 'This is required',
+      required: 'This field is required',
       minLength: { value: 8, message: 'Min length is 8' },
       maxLength: { value: 2048, message: 'Max length is 2048' }
     }
   };
 
-  const handleFormSubmit: SubmitHandler<IReviewForm> = (values) => {
-    setData({ ...values, rating });
+  const submitReview = async (axiosData: IReviewForm) => {
+    return await axiosCreate({
+      axiosApi,
+      axiosData: { ...axiosData, ...reviewItem },
+      axiosMethod: 'POST'
+    });
   };
 
-  const handleFormError: SubmitErrorHandler<IReviewForm> = (errors) => {
-    console.log('Errors --', errors);
+  // Mutations
+  const { mutate, isLoading } = useMutation(submitReview);
+
+  const handleFormSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
+    clearErrors();
+    void handleSubmit(handleOnSubmit)();
+  };
+
+  const handleOnSubmit: SubmitHandler<IReviewForm> = (values) => {
+    mutate(values, {
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          axiosError(error as IErrorResponse);
+        }
+      }
+    });
   };
 
   return (
-    <form
-      className="review-form"
-      onSubmit={(...args) => {
-        clearErrors();
-        void handleSubmit(handleFormSubmit, handleFormError)(...args);
-      }}>
+    <form className="review-form" onSubmit={handleFormSubmit}>
       <div className="card mb-4">
-        <h5 className="card-header text-dark py-3">Write a Product Review</h5>
+        <h5 className="card-header text-dark py-3">Write a Review</h5>
         <div className="card-body">
           <h5 className="card-title pb-4 tex-dark">
             <label>Overall rating</label>
-            <UserRating emoji={true} readonly={false} setRating={setRating} />
+            <Controller
+              name="rating"
+              control={control}
+              rules={formOptions.rating}
+              render={({ field }) => (
+                <UserRating
+                  emoji={true}
+                  readonly={false}
+                  handleClick={field.onChange}
+                />
+              )}
+            />
+
             <p className="text-danger">{errors.rating?.message}</p>
           </h5>
           <div className="card-text">
@@ -121,8 +125,9 @@ export default function UserReviewForm({
               />
               <p className="text-danger">{errors.comment?.message}</p>
             </div>
-            <p className="text-danger">{errors.serverError?.message}</p>
-            <button className="round-black-btn">Submit Review</button>
+            <button className="round-black-btn" disabled={isLoading}>
+              Submit Review
+            </button>
           </div>
         </div>
       </div>

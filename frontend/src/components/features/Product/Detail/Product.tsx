@@ -5,15 +5,16 @@ import axios from 'axios';
 import { useParams } from 'react-router-dom';
 
 import { WishlistPopup } from 'components/features';
-import { PureCarousel, StyledButton, UserRating } from 'components/shared';
+import { PureCarousel, UserRating } from 'components/shared';
 
-import { AuthConsumer, CartConsumer } from 'context';
+import { AuthConsumer } from 'context';
 
 import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
 
-import { IProduct, IProductResponse } from '../types';
+import { IProductResponse } from '../types';
+import AddToCart from './AddToCart';
 import ProductInfo from './ProductInfo';
 import './style.css';
 
@@ -23,29 +24,6 @@ export default function ProductDetailPage() {
   };
 
   const { isAuth, user } = AuthConsumer();
-
-  const [cart, cartDispatch] = CartConsumer();
-
-  const [quantity, setQuantity] = React.useState<number>(1);
-
-  const handleAddToCart = (product: IProduct) => {
-    const lineItemExist = cart.lineItems.some(
-      (lineItem) => lineItem.itemId === product.id
-    );
-
-    const actionType = lineItemExist ? 'UPDATE_LINE_ITEM' : 'ADD_LINE_ITEM';
-
-    cartDispatch({
-      type: actionType,
-      payload: {
-        itemId: product.id,
-        item: product,
-        quantity,
-        discount: 0,
-        price: product.price
-      }
-    });
-  };
 
   const fetchProduct = async () => {
     const res = await axiosCreate<IProductResponse>({
@@ -69,12 +47,6 @@ export default function ProductDetailPage() {
     },
     refetchOnWindowFocus: false
   });
-
-  const handleQuantity = (count: number) => {
-    setQuantity((current) => {
-      return current === 1 && count < 0 ? current : count + current;
-    });
-  };
 
   if (isLoading) return <span>Loading...</span>;
   if (isError) return <span>An Error Occured!</span>;
@@ -112,40 +84,17 @@ export default function ProductDetailPage() {
                       <option>XL</option>
                     </select>
                   </div> */}
-                  <div className="col-md-6">
+                  {/* <div className="col-md-6">
                     <label htmlFor="color">Color</label>
                     <select id="color" name="color" className="form-control">
                       {product.colors.map((color, index) => (
                         <option key={index}>{color}</option>
                       ))}
                     </select>
-                  </div>
+                  </div> */}
                 </div>
                 <div className="product-count">
-                  <label htmlFor="size">Quantity</label>
-                  <form action="#" className="display-flex">
-                    <div
-                      className="qtyminus"
-                      onClick={() => handleQuantity(-1)}>
-                      -
-                    </div>
-                    <input
-                      type="text"
-                      name="quantity"
-                      value={quantity}
-                      className="qty"
-                      onChange={(e) => e.preventDefault()}
-                      disabled
-                    />
-                    <div className="qtyplus" onClick={() => handleQuantity(+1)}>
-                      +
-                    </div>
-                  </form>
-                  <StyledButton
-                    className="btn btn-dark my-3 px-5"
-                    onClick={() => handleAddToCart(product)}>
-                    Add to Cart
-                  </StyledButton>
+                  <AddToCart product={product} />
                   {isAuth && user?.role === 'user' && (
                     <WishlistPopup productId={productId} />
                   )}

@@ -23,7 +23,7 @@ const createReview = async (req, res) => {
   });
 
   if (alreadySubmitted) {
-    throw new CustomError.NotFoundError(
+    throw new CustomError.BadRequestError(
       'Already submitted review for this product'
     );
   }
@@ -104,9 +104,30 @@ const getSingleProductReviews = async (req, res) => {
     );
   }
 
-  const reviews = await Review.find({ product: productId });
+  const { limit, page: currentPage } = req.query;
+  const reviews = await Review.find({ product: productId })
+    .skip((currentPage - 1) * limit)
+    .limit(limit);
 
-  res.status(StatusCodes.OK).json({ reviews });
+  // const userReviewed = await Review.findOne({
+  //   product: productId,
+  //   user: req.user.id
+  // });
+
+  const totalItems = await Review.find({ product: productId }).count();
+  const totalPages = Math.ceil(totalItems / limit);
+
+  res.status(StatusCodes.OK).json({
+    paging: {
+      hasMore: currentPage < totalPages,
+      currentPage,
+      totalPages,
+      currentItems: reviews.length,
+      totalItems: totalItems
+    },
+    // userReviewed: Boolean(userReviewed),
+    reviews
+  });
 };
 
 const getSingleUserReviews = async (req, res) => {

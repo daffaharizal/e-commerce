@@ -1,21 +1,63 @@
 import React from 'react';
 
-import { UserReviewCard, UserReviewForm } from 'components/shared';
+import { useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-import { AuthConsumer } from 'context';
+import { StyledPaginationButton } from 'components/shared';
 
-import { IProductResponse, IProductReviews } from '../types';
+import { QueryConsumer } from 'context';
+
+import { axiosCreate, axiosError } from 'helpers';
+
+import { IErrorResponse } from 'types';
+
+import { IProductResponse, ProductReviewsResponseTypes } from '../types';
+
+const UserReviewCard = React.lazy(() => import('components/shared/ReviewCard'));
 
 const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
-  const [reviews, setReviews] = React.useState<IProductReviews[]>(
-    product.reviews
+  // Access the react query client
+  const queryClient = QueryConsumer();
+
+  const [{ page }, setUrlQuery] = React.useState({
+    page: 1
+  });
+
+  const fetchProductReviews = async ({ limit = 10, page = 1 }) => {
+    if (!Number.isInteger(page) || page <= 0) {
+      throw Error;
+    }
+    const res = await axiosCreate<ProductReviewsResponseTypes>({
+      axiosApi: `/products/${product.id}/reviews/?limit=${limit}&page=${page}`
+    });
+
+    return res;
+  };
+
+  // Queries
+  const { data, isPreviousData } = useQuery(
+    ['reviews', product.id, page],
+    () => fetchProductReviews({ page }),
+    {
+      onError: (error) => {
+        if (axios.isAxiosError(error) && error.response) {
+          axiosError(error as IErrorResponse);
+        }
+      },
+      refetchOnWindowFocus: false,
+      keepPreviousData: true,
+      staleTime: 5000
+    }
   );
 
-  const { isAuth, user } = AuthConsumer();
-
-  const isCommerceUser = isAuth && user?.role === 'user';
-
-  const isUserReviewed = reviews.some((review) => review.user._id === user?.id);
+  // Prefetch the next page!
+  React.useEffect(() => {
+    async () => {
+      await queryClient.prefetchQuery(['reviews', product.id, page], () =>
+        fetchProductReviews({ page })
+      );
+    };
+  }, [page, queryClient]);
 
   return (
     <div className="product-info-tabs">
@@ -61,16 +103,27 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
           role="tabpanel"
           aria-labelledby="review-tab">
           <h3 className="fw-bold text-dark">Top Reviews</h3>
-          {reviews.map((review, index) => (
-            <UserReviewCard review={review} key={index} />
-          ))}
-
-          {reviews.length === 0 && (
+          <React.Suspense fallback={<div>loading</div>}>
+            {data?.reviews.map((review, index) => (
+              <UserReviewCard review={review} key={index} />
+            ))}
+          </React.Suspense>
+          <StyledPaginationButton
+            {...{
+              isPreviousData,
+              page,
+              setUrlQuery,
+              hasMore: data?.paging.hasMore,
+              totalPages: data?.paging.totalPages
+            }}
+          />
+          {(!data?.reviews || data?.reviews.length === 0) && (
             <p className="mb-4">There are no reviews yet.</p>
           )}
-          {isCommerceUser && !isUserReviewed && (
-            <UserReviewForm setReviews={setReviews} reviewItem={product.id} />
-          )}
+          {/* <UserReviewForm
+            axiosApi="/reviews/"
+            reviewItem={{ product: product.id }}
+          /> */}
         </div>
       </div>
     </div>

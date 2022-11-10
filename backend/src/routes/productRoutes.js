@@ -36,6 +36,10 @@ router.post(
 
 router.get('/:id', getSingleProduct);
 
-router.get('/:id/reviews', getSingleProductReviews);
+router.get(
+  '/:id/reviews',
+  [authenticateUser, offsetPagination],
+  getSingleProductReviews
+);
 
 module.exports = router;

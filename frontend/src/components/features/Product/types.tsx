@@ -53,3 +53,14 @@ export interface IProductItemProps extends IProductResponse {
   serverUrl: string;
   handleAddToCart: (product: IProduct) => void;
 }
+
+export type ProductReviewsResponseTypes = {
+  paging: {
+    hasMore: boolean;
+    currentPage: number;
+    totalPages: number;
+    currentItems: number;
+    totalItems: number;
+  };
+  reviews: IProductReviews[];
+};

@@ -1,3 +1,5 @@
+import React from 'react';
+
 import {
   MdOutlineSentimentDissatisfied,
   MdOutlineSentimentNeutral,
@@ -23,18 +25,14 @@ export default function UserRating({
   rate = 0,
   emoji = false,
   readonly = true,
-  setRating
-}: IUserRatingProps) {
-  const handleRating = (value: number) => {
-    setRating && setRating(value);
-  };
-
+  handleClick
+}: Partial<IUserRatingProps>) {
   return (
     <div className="rate">
       <Rating
         customIcons={emoji ? customIcons : []}
         initialValue={rate}
-        onClick={handleRating}
+        onClick={handleClick}
         fillColorArray={fillColorArray}
         size={20}
         readonly={readonly}
