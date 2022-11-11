@@ -14,7 +14,15 @@ import { IErrorResponse } from 'types';
 
 import styles from 'assets/css/Profile.module.css';
 
-import { IUserProfile, IUserProfileResponse } from './types';
+type ProfileDataType = {
+  fullName: string;
+  email: string;
+  dateOfBirth: string;
+};
+
+type ProfileResponseType = {
+  user: ProfileDataType;
+};
 
 export default function ProfilePage() {
   const [dateOfBirth, setdateOfBirth] = React.useState<Date | undefined>();
@@ -25,17 +33,17 @@ export default function ProfilePage() {
     reset,
     formState: { errors },
     clearErrors
-  } = useForm<IUserProfile>({
+  } = useForm<ProfileDataType>({
     defaultValues: {}
   });
 
   const getProfile = async () => {
-    const res = await axiosCreate<IUserProfileResponse>({
+    const res = await axiosCreate<ProfileResponseType>({
       axiosApi: '/users/showme'
     });
     const {
       user: { fullName, email, dateOfBirth }
-    } = res as IUserProfileResponse;
+    } = res as ProfileResponseType;
 
     // set date state hook with fetched data
     setdateOfBirth(new Date(dateOfBirth || new Date(2009, 11, 31)));
@@ -46,8 +54,8 @@ export default function ProfilePage() {
     return { fullName, email, dateOfBirth };
   };
 
-  const updateProfile = async (axiosData: IUserProfile) => {
-    return await axiosCreate<IUserProfileResponse>({
+  const updateProfile = async (axiosData: ProfileDataType) => {
+    return await axiosCreate<ProfileResponseType>({
       axiosApi: '/users/update-user',
       axiosMethod: 'POST',
       axiosData
@@ -93,7 +101,7 @@ export default function ProfilePage() {
     void handleSubmit(handleOnSubmit)();
   };
 
-  const handleOnSubmit: SubmitHandler<IUserProfile> = (values) => {
+  const handleOnSubmit: SubmitHandler<ProfileDataType> = (values) => {
     mutation.mutate({
       ...values,
       dateOfBirth: moment(dateOfBirth).format('YYYY/MM/DD')

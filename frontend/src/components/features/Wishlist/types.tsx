@@ -1,6 +1,6 @@
 import { IProduct } from 'components/features/Product/types';
 
-export interface WishlistResponseType {
+export type WishlistResponseType = {
   wishlist: {
     folders: [
       {
@@ -14,4 +14,4 @@ export interface WishlistResponseType {
       }
     ];
   };
-}
+};
