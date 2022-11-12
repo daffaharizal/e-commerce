@@ -60,11 +60,11 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
   }, [page, queryClient]);
 
   return (
-    <div className="product-info-tabs">
+    <div className="mt-5">
       <ul className="nav nav-tabs" id="myTab" role="tablist">
         <li className="nav-item" role="presentation">
           <button
-            className="nav-link active"
+            className="nav-link link-dark active"
             id="description-tab"
             data-bs-toggle="tab"
             data-bs-target="#description"
@@ -77,7 +77,7 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
         </li>
         <li className="nav-item" role="presentation">
           <button
-            className="nav-link"
+            className="nav-link link-dark"
             id="review-tab"
             data-bs-toggle="tab"
             data-bs-target="#review"
@@ -89,7 +89,7 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
           </button>
         </li>
       </ul>
-      <div className="tab-content" id="myTabContent">
+      <div className="tab-content p-4" id="myTabContent">
         <div
           className="tab-pane fade show active"
           id="description"
@@ -108,15 +108,17 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
               <UserReviewCard review={review} key={index} />
             ))}
           </React.Suspense>
-          <StyledPaginationButton
-            {...{
-              isPreviousData,
-              page,
-              setUrlQuery,
-              hasMore: data?.paging.hasMore,
-              totalPages: data?.paging.totalPages
-            }}
-          />
+          {(!data?.reviews || data?.reviews.length !== 0) && (
+            <StyledPaginationButton
+              {...{
+                isPreviousData,
+                page,
+                setUrlQuery,
+                hasMore: data?.paging.hasMore,
+                totalPages: data?.paging.totalPages
+              }}
+            />
+          )}
           {(!data?.reviews || data?.reviews.length === 0) && (
             <p className="mb-4">There are no reviews yet.</p>
           )}

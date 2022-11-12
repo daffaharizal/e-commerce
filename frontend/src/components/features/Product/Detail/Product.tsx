@@ -13,10 +13,11 @@ import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
 
+import styles from 'assets/css/Product.module.css';
+
 import { IProductResponse } from '../types';
 import AddToCart from './AddToCart';
 import ProductInfo from './ProductInfo';
-import './style.css';
 
 export default function ProductDetailPage() {
   const { productId } = useParams() as {
@@ -55,7 +56,7 @@ export default function ProductDetailPage() {
     <>
       {!!product && (
         <div className="container">
-          <div className="heading-section">
+          <div className={styles['heading-section']}>
             <h2>{product.name}</h2>
           </div>
           <div className="row">
@@ -63,14 +64,16 @@ export default function ProductDetailPage() {
               <PureCarousel images={product.images} />
             </div>
             <div className="col-md-6">
-              <div className="product-dtl">
-                <div className="product-info">
-                  <div className="product-name">{product.category}</div>
+              <div className={styles['product-dtl']}>
+                <div className={styles['product-info']}>
+                  <div className={styles['product-name']}>
+                    {product.category}
+                  </div>
                   <UserRating rate={product.averageRating} />
                   <span>{product.numOfReviews} Reviews</span>
-                  <div className="product-price-discount">
+                  <div className={styles['product-price-discount']}>
                     <span>${product.price}</span>
-                    <span className="line-through"></span>
+                    <span className={styles['line-through']}></span>
                   </div>
                 </div>
                 <p>{product.description}</p>
@@ -93,7 +96,7 @@ export default function ProductDetailPage() {
                     </select>
                   </div> */}
                 </div>
-                <div className="product-count">
+                <div className={styles['product-count']}>
                   <AddToCart product={product} />
                   {isAuth && user?.role === 'user' && (
                     <WishlistPopup productId={productId} />

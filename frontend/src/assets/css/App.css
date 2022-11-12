@@ -30,3 +30,21 @@ body {
   float: left;
   padding: 0 10px 0 0;
 }
+
+.round-black-btn {
+  border-radius: 4px;
+  background: #212529;
+  color: #fff;
+  padding: 7px 45px;
+  display: inline-block;
+  margin-top: 20px;
+  border: solid 2px #212529;
+  transition: all 0.5s ease-in-out 0s;
+  text-decoration: none;
+}
+.round-black-btn:hover,
+.round-black-btn:focus {
+  background: transparent;
+  color: #212529;
+  text-decoration: none;
+}

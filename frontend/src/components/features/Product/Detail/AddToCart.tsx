@@ -4,6 +4,8 @@ import { StyledButton } from 'components/shared';
 
 import { CartConsumer } from 'context';
 
+import styles from 'assets/css/Product.module.css';
+
 import { IProduct } from '../types';
 
 export default function AddToCart({ product }: { product: IProduct }) {
@@ -36,19 +38,19 @@ export default function AddToCart({ product }: { product: IProduct }) {
   return (
     <>
       <label htmlFor="size">Quantity</label>
-      <form action="#" className="display-flex">
-        <div className="qtyminus" onClick={() => handleQuantity(-1)}>
+      <form action="#" className="d-flex">
+        <div className={styles['qtyminus']} onClick={() => handleQuantity(-1)}>
           -
         </div>
         <input
           type="text"
           name="quantity"
           value={quantity}
-          className="qty"
+          className={styles['qty']}
           onChange={(e) => e.preventDefault()}
           disabled
         />
-        <div className="qtyplus" onClick={() => handleQuantity(+1)}>
+        <div className={styles['qtyplus']} onClick={() => handleQuantity(+1)}>
           +
         </div>
       </form>
