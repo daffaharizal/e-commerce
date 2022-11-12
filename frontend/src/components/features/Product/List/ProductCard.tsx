@@ -65,7 +65,7 @@ const ProductCard: React.FC<IProductItemProps> = ({
         <Card.Body>
           <Card.Text as="div" className="buttons text-end">
             <StyledButton
-              className="btn btn-dark text-uppercase"
+              className="btn btn-dark text-uppercase px-4 py-2"
               onClick={() => handleAddToCart(product)}>
               Add to Cart
             </StyledButton>

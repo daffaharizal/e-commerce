@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
+import { Col, Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { WishlistPopup } from 'components/features';
@@ -55,15 +56,15 @@ export default function ProductDetailPage() {
   return (
     <>
       {!!product && (
-        <div className="container">
+        <Container>
           <div className={styles['heading-section']}>
             <h2>{product.name}</h2>
           </div>
-          <div className="row">
-            <div className="col-md-6">
+          <Row>
+            <Col md={6}>
               <PureCarousel images={product.images} />
-            </div>
-            <div className="col-md-6">
+            </Col>
+            <Col md={6}>
               <div className={styles['product-dtl']}>
                 <div className={styles['product-info']}>
                   <div className={styles['product-name']}>
@@ -77,25 +78,25 @@ export default function ProductDetailPage() {
                   </div>
                 </div>
                 <p>{product.description}</p>
-                <div className="row">
-                  {/* <div className="col-md-6">
-                    <label htmlFor="size">Size</label>
-                    <select id="size" name="size" className="form-control">
+                {/* <Row>
+                  <Col md={6}>
+                    <Form.Label htmlFor="size">Size</Form.Label>
+                    <Form.Select id="size" name="size">
                       <option>S</option>
                       <option>M</option>
                       <option>L</option>
                       <option>XL</option>
-                    </select>
-                  </div> */}
-                  {/* <div className="col-md-6">
-                    <label htmlFor="color">Color</label>
-                    <select id="color" name="color" className="form-control">
+                    </Form.Select>
+                  </Col>
+                  <Col md={6}>
+                    <Form.Label htmlFor="color">Color</Form.Label>
+                    <Form.Select id="color" name="color">
                       {product.colors.map((color, index) => (
                         <option key={index}>{color}</option>
                       ))}
-                    </select>
-                  </div> */}
-                </div>
+                    </Form.Select>
+                  </Col>
+                </Row> */}
                 <div className={styles['product-count']}>
                   <AddToCart product={product} />
                   {isAuth && user?.role === 'user' && (
@@ -103,11 +104,11 @@ export default function ProductDetailPage() {
                   )}
                 </div>
               </div>
-            </div>
-          </div>
+            </Col>
+          </Row>
 
           <ProductInfo product={product} />
-        </div>
+        </Container>
       )}
     </>
   );

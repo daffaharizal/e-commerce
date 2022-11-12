@@ -11,8 +11,6 @@ import { CartConsumer } from 'context';
 
 import NoImage from 'assets/images/noproductimage.png';
 
-import './styles.css';
-
 export default function CartPage() {
   const [{ lineItems, subTotal, netAmount }, cartDispatch] = CartConsumer();
 

@@ -1,5 +1,7 @@
 import React from 'react';
 
+import { Form } from 'react-bootstrap';
+
 import { StyledButton } from 'components/shared';
 
 import { CartConsumer } from 'context';
@@ -37,12 +39,12 @@ export default function AddToCart({ product }: { product: IProduct }) {
   };
   return (
     <>
-      <label htmlFor="size">Quantity</label>
-      <form action="#" className="d-flex">
+      <Form.Label htmlFor="size">Quantity</Form.Label>
+      <Form className="d-flex">
         <div className={styles['qtyminus']} onClick={() => handleQuantity(-1)}>
           -
         </div>
-        <input
+        <Form.Control
           type="text"
           name="quantity"
           value={quantity}
@@ -53,7 +55,7 @@ export default function AddToCart({ product }: { product: IProduct }) {
         <div className={styles['qtyplus']} onClick={() => handleQuantity(+1)}>
           +
         </div>
-      </form>
+      </Form>
       <StyledButton
         className="btn btn-dark my-3 px-5"
         onClick={() => handleAddToCart()}>
