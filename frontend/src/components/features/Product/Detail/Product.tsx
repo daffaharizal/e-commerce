@@ -6,7 +6,9 @@ import { Col, Container, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { WishlistPopup } from 'components/features';
-import { PureCarousel, UserRating } from 'components/shared';
+import { LoadingSpinner, PureCarousel, UserRating } from 'components/shared';
+
+import ROLES from 'constant/roles';
 
 import { AuthConsumer } from 'context';
 
@@ -50,7 +52,7 @@ export default function ProductDetailPage() {
     refetchOnWindowFocus: false
   });
 
-  if (isLoading) return <span>Loading...</span>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <span>An Error Occured!</span>;
 
   return (
@@ -99,7 +101,7 @@ export default function ProductDetailPage() {
                 </Row> */}
                 <div className={styles['product-count']}>
                   <AddToCart product={product} />
-                  {isAuth && user?.role === 'user' && (
+                  {isAuth && user?.role === ROLES.USER && (
                     <WishlistPopup productId={productId} />
                   )}
                 </div>

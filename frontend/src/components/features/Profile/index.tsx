@@ -7,6 +7,8 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { DatePicker } from 'react-rainbow-components';
 import { toast } from 'react-toastify';
 
+import { LoadingSpinner } from 'components/shared';
+
 // import { QueryConsumer } from 'context';
 import { axiosCreate, axiosError } from 'helpers';
 
@@ -120,7 +122,7 @@ export default function ProfilePage() {
     }
   };
 
-  if (isLoading) return <span>Loading...</span>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <span>An Error Occured!</span>;
 
   return (

@@ -6,7 +6,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import * as ROUTES from 'constant/routes';
+import ROUTES from 'constant/routes';
 
 import { AuthConsumer } from 'context';
 

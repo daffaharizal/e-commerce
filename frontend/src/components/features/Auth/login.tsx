@@ -1,5 +1,6 @@
 import Button from 'react-bootstrap/Button';
-import Spinner from 'react-bootstrap/Spinner';
+
+import { LoadingSpinner } from 'components/shared';
 
 import styles from 'assets/css/Auth.module.css';
 
@@ -54,15 +55,7 @@ const BaseLoginPage = ({
               type="submit"
               className={`${styles['btn']} mt-4`}
               disabled={isLoading}>
-              {isLoading && (
-                <Spinner
-                  as="span"
-                  animation="grow"
-                  size="sm"
-                  role="status"
-                  aria-hidden="true"
-                />
-              )}
+              {isLoading && <LoadingSpinner />}
               Login
             </Button>
           </form>

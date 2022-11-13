@@ -21,7 +21,8 @@ import {
 import { LogoutPage } from 'components/features';
 import { SearchInput } from 'components/shared';
 
-import * as ROUTES from 'constant/routes';
+import ROLES from 'constant/roles';
+import ROUTES from 'constant/routes';
 
 import { AuthConsumer } from 'context';
 
@@ -84,7 +85,7 @@ export default function CommerceNavbar() {
           aria-labelledby="navbarDropdownMenuLink">
           {isAuth ? (
             <>
-              {user?.role == 'user' ? (
+              {user?.role == ROLES.USER ? (
                 <>
                   <NavLink to={ROUTES.PROFILE} className="dropdown-item">
                     <CgProfile size={20} />

@@ -13,7 +13,7 @@ import {
   withDefault
 } from 'use-query-params';
 
-import { StyledPaginationButton } from 'components/shared';
+import { LoadingSpinner, StyledPaginationButton } from 'components/shared';
 
 import { CartConsumer, QueryConsumer } from 'context';
 
@@ -96,7 +96,7 @@ export default function ProductListPage() {
     };
   }, [page, queryClient, search]);
 
-  if (isLoading) return <span>Loading...</span>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <span>An Error Occured!</span>;
 
   return (

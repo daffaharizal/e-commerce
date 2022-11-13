@@ -12,7 +12,7 @@ import {
 import AdminLayout from 'components/layouts/Admin';
 import CommerceLayout from 'components/layouts/Commerce';
 
-import * as ROUTES from 'constant/routes';
+import ROUTES from 'constant/routes';
 
 import AdminRoute from './AdminRoute';
 import CommerceRoute from './CommerceRoute';

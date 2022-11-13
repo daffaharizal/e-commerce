@@ -3,7 +3,7 @@ import React from 'react';
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
 
-import { StyledPaginationButton } from 'components/shared';
+import { LoadingSpinner, StyledPaginationButton } from 'components/shared';
 
 import { QueryConsumer } from 'context';
 
@@ -103,7 +103,7 @@ const ProductInfo: React.FC<IProductResponse> = ({ product }) => {
           role="tabpanel"
           aria-labelledby="review-tab">
           <h3 className="fw-bold text-dark">Top Reviews</h3>
-          <React.Suspense fallback={<div>loading</div>}>
+          <React.Suspense fallback={<LoadingSpinner />}>
             {data?.reviews.map((review, index) => (
               <UserReviewCard review={review} key={index} />
             ))}

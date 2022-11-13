@@ -5,7 +5,7 @@ import { NavLink } from 'react-router-dom';
 
 import { IProduct } from 'components/features/Product/types';
 
-import * as ROUTES from 'constant/routes';
+import ROUTES from 'constant/routes';
 
 import { CartConsumer } from 'context';
 

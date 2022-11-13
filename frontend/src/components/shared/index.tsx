@@ -6,4 +6,5 @@ export { default as UserReviewForm } from './ReviewForm';
 export { default as SelectInput } from './SelectInput';
 export { default as SearchInput } from './SearchInput';
 export { default as ToastAlert } from './ToastAlert';
+export { default as LoadingSpinner } from './Loading';
 export { OffsetPagination, StyledPaginationButton } from './Pagination';

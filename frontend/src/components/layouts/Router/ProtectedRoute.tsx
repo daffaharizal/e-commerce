@@ -1,6 +1,6 @@
 import { Navigate, useLocation } from 'react-router-dom';
 
-import * as ROUTES from 'constant/routes';
+import ROUTES from 'constant/routes';
 
 import { AuthConsumer } from 'context';
 

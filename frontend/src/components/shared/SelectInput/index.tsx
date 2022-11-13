@@ -1,5 +1,3 @@
-import React from 'react';
-
 import CreatableSelect from 'react-select/creatable';
 
 import { IReactSelectOption } from 'types';

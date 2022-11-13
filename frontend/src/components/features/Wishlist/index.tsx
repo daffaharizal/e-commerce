@@ -11,9 +11,9 @@ import Row from 'react-bootstrap/Row';
 import Tab from 'react-bootstrap/Tab';
 import { Link } from 'react-router-dom';
 
-import { UserRating } from 'components/shared';
+import { LoadingSpinner, UserRating } from 'components/shared';
 
-import * as ROUTES from 'constant/routes';
+import ROUTES from 'constant/routes';
 
 import { axiosCreate, axiosError } from 'helpers';
 
@@ -46,7 +46,7 @@ export default function WishlistPage() {
     refetchOnWindowFocus: false
   });
 
-  if (isLoading) return <span>Loading...</span>;
+  if (isLoading) return <LoadingSpinner />;
   if (isError) return <span>An Error Occured!</span>;
   if (!wishlist.folders) return <span>No lists created yet!</span>;
 
