@@ -6,8 +6,8 @@ services:
       context: ./backend
       args:
         NODE_ENV: development
-    image: e-commerce-backend:1.0.0
-    container_name: e-commerce-be
+    image: ecommerce-backend:1.0.0
+    container_name: ecommerce-be
     command: yarn run dev
     ports:
       - '5200:5000'
@@ -24,8 +24,8 @@ services:
       context: ./frontend
       args:
         NODE_ENV: development
-    image: e-commerce-frontend:1.0.0
-    container_name: e-commerce-fe
+    image: ecommerce-frontend:1.0.0
+    container_name: ecommerce-fe
     volumes:
       - ./frontend:/home/app
       - /home/app/node_modules

@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ecommerce-be
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: ecommerce-be
+  template:
+    metadata:
+      labels:
+        app: ecommerce-be
+    spec:
+      containers:
+        - name: ecommerce-be
+          image: ecommerce-backend:1.0.0
+          imagePullPolicy: Never
+          resources:
+            requests:
+              memory: "400Mi"
+              cpu: "0.25"
+            limits:
+              memory: "800Mi"
+              cpu: "0.5"
+          ports:
+            - containerPort: 5000
+      restartPolicy: Always
