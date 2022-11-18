@@ -8,6 +8,7 @@ const enum ROUTES {
   PROFILE = '/profile',
   WISHLIST = '/wishlist',
   SETTINGS = '/settings',
+  SIGNUP = '/sign-up',
   NOMATCH = '*'
 }
 

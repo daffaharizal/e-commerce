@@ -7,6 +7,7 @@ import {
   NoMatch,
   ProductPage,
   ProfilePage,
+  SignUpPage,
   WishlistPage
 } from 'components/features';
 import AdminLayout from 'components/layouts/Admin';
@@ -75,6 +76,14 @@ export default function Router() {
         />
         <Route path={ROUTES.NOMATCH} element={<NoMatch />} />
       </Route>
+      <Route
+        path={ROUTES.SIGNUP}
+        element={
+          <PreventedRoute>
+            <SignUpPage />
+          </PreventedRoute>
+        }
+      />
     </Routes>
   );
 }
