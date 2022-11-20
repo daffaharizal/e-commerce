@@ -83,7 +83,8 @@ body {
 .form > input,
 .form > button {
   width: 100%;
-  height: 56px;
+  /* height: 56px; */
+  height: 45px;
   border-radius: 28px;
 }
 
@@ -102,7 +103,8 @@ body {
 .form > button {
   cursor: pointer;
   width: 100%;
-  height: 56px;
+  /* height: 56px; */
+  height: 45px;
   padding: 0 16px;
   background: #216ce7;
   color: #f9f9f9;

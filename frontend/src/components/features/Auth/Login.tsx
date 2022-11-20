@@ -62,8 +62,7 @@ const BaseLoginPage = ({
         </form>
         <footer>
           <div className="mb-2">
-            New users, register &nbsp;
-            <NavLink to={ROUTES.REGISTER}>here</NavLink>
+            Not a member? Register <NavLink to={ROUTES.REGISTER}>here</NavLink>
           </div>
           <div>
             <NavLink to={ROUTES.LOGIN}>Forgot your password?</NavLink>

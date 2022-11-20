@@ -1,5 +1,5 @@
 import Button from 'react-bootstrap/Button';
-import { BsBootstrap } from 'react-icons/bs';
+import { BsBootstrap, BsFacebook, BsGoogle, BsTwitter } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 
 import { LoadingSpinner } from 'components/shared';
@@ -73,8 +73,15 @@ const BaseRegisterPage = ({
           </Button>
         </form>
         <footer>
-          Existing users, login &nbsp;
-          <NavLink to={ROUTES.LOGIN}>here</NavLink>
+          <div className="mb-2">or sign up with:</div>
+          <div className="mb-4">
+            <BsFacebook size={24} className="me-4" />
+            <BsGoogle size={24} className="me-4" />
+            <BsTwitter size={24} />
+          </div>
+          <div>
+            Existing users, login <NavLink to={ROUTES.LOGIN}>here</NavLink>
+          </div>
         </footer>
       </div>
     </div>
