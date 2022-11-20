@@ -1,5 +1,3 @@
-import React from 'react';
-
 import {
   AiOutlineDashboard,
   AiOutlineLogin,
@@ -111,7 +109,7 @@ export default function CommerceNavbar() {
             </>
           ) : (
             <>
-              <NavLink to={ROUTES.AUTH} className="dropdown-item">
+              <NavLink to={ROUTES.LOGIN} className="dropdown-item">
                 <AiOutlineLogin size={20} />
                 <span className="ps-2">Hello, Sign In</span>
               </NavLink>

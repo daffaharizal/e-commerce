@@ -1,2 +1,3 @@
-export { default as AuthPage } from './main';
-export { default as LogoutPage } from './logout';
+export { default as LoginPage } from './Login';
+export { default as LogoutPage } from './Logout';
+export { default as RegisterPage } from './Register';
