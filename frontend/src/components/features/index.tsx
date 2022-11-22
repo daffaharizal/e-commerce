@@ -1,4 +1,4 @@
-export { AuthPage, LogoutPage } from './Auth';
+export { LoginPage, LogoutPage, RegisterPage } from './Auth';
 export { default as CartPage } from './Cart';
 export { default as NoMatch } from './NoMatch';
 export { default as ProductPage } from './Product';

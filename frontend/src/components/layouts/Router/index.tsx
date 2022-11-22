@@ -2,14 +2,16 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
   AdminDash,
-  AuthPage,
   CartPage,
+  LoginPage,
   NoMatch,
   ProductPage,
   ProfilePage,
+  RegisterPage,
   WishlistPage
 } from 'components/features';
 import AdminLayout from 'components/layouts/Admin';
+import AnonymousLayout from 'components/layouts/Anonymous';
 import CommerceLayout from 'components/layouts/Commerce';
 
 import ROUTES from 'constant/routes';
@@ -22,6 +24,24 @@ import ProtectedRoute from './ProtectedRoute';
 export default function Router() {
   return (
     <Routes>
+      <Route element={<AnonymousLayout />}>
+        <Route
+          path={ROUTES.LOGIN}
+          element={
+            <PreventedRoute>
+              <LoginPage />
+            </PreventedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.REGISTER}
+          element={
+            <PreventedRoute>
+              <RegisterPage />
+            </PreventedRoute>
+          }
+        />
+      </Route>
       <Route element={<AdminLayout />}>
         <Route
           path={ROUTES.ADMIN}
@@ -38,6 +58,7 @@ export default function Router() {
           }
         />
       </Route>
+
       <Route element={<CommerceLayout />}>
         <Route
           path={ROUTES.INDEX}
@@ -45,14 +66,6 @@ export default function Router() {
         />
         <Route path={`${ROUTES.PRODUCTS}/*`} element={<ProductPage />} />
         <Route path={ROUTES.CART} element={<CartPage />} />
-        <Route
-          path={ROUTES.AUTH}
-          element={
-            <PreventedRoute>
-              <AuthPage />
-            </PreventedRoute>
-          }
-        />
         <Route
           path={ROUTES.PROFILE}
           element={
