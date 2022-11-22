@@ -39,7 +39,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(express.json());
 app.use(cookieParser(process.env.JWT_SECRET));
-app.use('/static', express.static(path.join(__dirname, 'public')));
+app.use('/static', express.static(path.join(path.dirname(__dirname), 'public')));
 app.use(fileUpload());
 app.use(morgan('combined', { stream: winston.stream }));
 

@@ -1,3 +1,4 @@
+const fs = require('fs');
 const path = require('path');
 const sharp = require('sharp');
 
@@ -12,16 +13,16 @@ const modifyFileName = (fileName) => {
 const uploadFile = async (file, fileDir = '') => {
   const fileName = modifyFileName(file.name);
 
-  const filePath = path.join(
-    __dirname,
-    `../public/uploads/${fileDir}${fileName}`
-  );
+  const filePath = path.join(path.dirname(__dirname), `../public/uploads/${fileDir}`);
+  if (!fs.existsSync(filePath)){
+    fs.mkdirSync(filePath, { recursive: true });
+  }
 
   await sharp(file.data)
     .resize({
       width: 500
     })
-    .toFile(filePath);
+    .toFile(`${filePath}${fileName}`);
 
   // await file.mv(filePath);
 
