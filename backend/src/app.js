@@ -43,6 +43,10 @@ app.use('/static', express.static(path.join(__dirname, 'public')));
 app.use(fileUpload());
 app.use(morgan('combined', { stream: winston.stream }));
 
+app.get('/', (req, res) => {
+  res.json({message: 'alive'});
+});
+
 app.use('/api/v1/auth', authRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/orders', orderRouter);
