@@ -80,7 +80,7 @@ export default function CartPage() {
                                       src={
                                         item.images[0].isPublicUrl
                                           ? item.images[0].url
-                                          : `http://${serverUrl}${item.images[0].url}`
+                                          : `${serverUrl}${item.images[0].url}`
                                       }
                                       className="img-fluid rounded-3 text-black text-decoration-none"
                                       alt={item.images[0].name}

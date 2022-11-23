@@ -12,7 +12,7 @@ import NoImage from 'assets/images/noproductimage.png';
 import { IPureCarousel } from './types';
 
 export default function PureCarousel({ images }: IPureCarousel) {
-  const serverURL: string = process.env.REACT_APP_API_ENDPOINT || '';
+  const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   return (
     <CarouselProvider
@@ -24,7 +24,7 @@ export default function PureCarousel({ images }: IPureCarousel) {
           <Slide index={index} key={index}>
             <Image
               hasMasterSpinner
-              src={isPublicUrl ? url : `http://${serverURL}${url}`}
+              src={isPublicUrl ? url : `${serverUrl}${url}`}
               alt={name}
             />
           </Slide>

@@ -26,7 +26,7 @@ const ProductCard: React.FC<IProductItemProps> = ({
             src={
               product.images[0].isPublicUrl
                 ? product.images[0].url
-                : `http://${serverUrl}${product.images[0].url}`
+                : `${serverUrl}${product.images[0].url}`
             }
             className="card-img-top vh-35"
             effect="blur"

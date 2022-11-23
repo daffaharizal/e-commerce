@@ -13,7 +13,7 @@ const axiosCreate = async <T,>({
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const instance = axios.create({
-    baseURL: `http://${serverUrl}/api/v1`,
+    baseURL: `${serverUrl}/api/v1`,
     withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
