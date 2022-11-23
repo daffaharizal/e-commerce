@@ -1,19 +1,19 @@
-const path = require('path');
+// const path = require('path');
 const winston = require('winston');
 
 // define the custom settings for each transport (file, console)
 const options = {
-  file: {
-    level: 'warn',
-    filename: path.join(__dirname, '../logs/app.log'),
-    handleExceptions: true,
-    maxsize: 5242880, // 5MB
-    maxFiles: 5,
-    format: winston.format.combine(
-      winston.format.timestamp(),
-      winston.format.json()
-    )
-  },
+  // file: {
+  //   level: 'warn',
+  //   filename: path.join(path.dirname(__dirname), '../logs/app.log'),
+  //   handleExceptions: true,
+  //   maxsize: 5242880, // 5MB
+  //   maxFiles: 5,
+  //   format: winston.format.combine(
+  //     winston.format.timestamp(),
+  //     winston.format.json()
+  //   )
+  // },
   console: {
     level: 'debug',
     handleExceptions: true,
@@ -27,7 +27,7 @@ const options = {
 // instantiate a new Winston Logger with the settings defined above
 const logger = winston.createLogger({
   transports: [
-    new winston.transports.File(options.file),
+    // new winston.transports.File(options.file),
     new winston.transports.Console(options.console)
   ],
   exitOnError: false // do not exit on handled exceptions
