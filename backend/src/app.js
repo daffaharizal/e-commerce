@@ -15,6 +15,7 @@ const winston = require('./utils/winston');
 
 // database
 const connectDB = require('./db/connect');
+const { ENV } = require('./utils/constants');
 
 // routers
 const authRouter = require('./routes/authRoutes');
@@ -30,7 +31,7 @@ const notFound = require('./middleware/not-found');
 const errorHandlerMiddleware = require('./middleware/error-handler');
 
 const corsOptions = {
-  origin: process.env.CORS_ALLOWED_DOMAINS.split(','),
+  origin: ENV.CORS_ALLOWED_DOMAINS.split(','),
   credentials: true,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
@@ -38,13 +39,16 @@ const corsOptions = {
 // build-in middleware
 app.use(cors(corsOptions));
 app.use(express.json());
-app.use(cookieParser(process.env.JWT_SECRET));
-app.use('/static', express.static(path.join(path.dirname(__dirname), 'public')));
+app.use(cookieParser(ENV.JWT_SECRET));
+app.use(
+  '/static',
+  express.static(path.join(path.dirname(__dirname), 'public'))
+);
 app.use(fileUpload());
 app.use(morgan('combined', { stream: winston.stream }));
 
 app.get('/', (req, res) => {
-  res.json({message: 'alive'});
+  res.json({ message: 'alive' });
 });
 
 app.use('/api/v1/auth', authRouter);
@@ -60,11 +64,11 @@ app.use(errorHandlerMiddleware);
 
 app.enable('trust proxy');
 
-const port = process.env.PORT || 5000;
+const port = ENV.PORT || 5000;
 
 const start = async () => {
   try {
-    await connectDB(process.env.MONGODB_URI);
+    await connectDB(ENV.MONGODB_URI);
 
     app.listen(port, () => {
       console.log(`Server is listening on port ${port}...`);

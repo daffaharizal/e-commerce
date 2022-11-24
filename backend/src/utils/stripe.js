@@ -1,9 +1,11 @@
-const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+const { ENV } = require('./constants');
+
+const stripe = require('stripe')(ENV.STRIPE_SECRET_KEY);
 
 // Create a PaymentIntent with the order amount and currency
 const createPaymentIntent = async ({
   amount,
-  currency = process.env.STRIPE_CURRENCY
+  currency = ENV.STRIPE_CURRENCY
 }) =>
   stripe.paymentIntents.create({
     amount,

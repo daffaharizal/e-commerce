@@ -2,6 +2,9 @@ const { StatusCodes } = require('http-status-codes');
 
 const User = require('../models/User');
 const CustomError = require('../errors');
+const { ENV } = require('../utils/constants');
+const { rand } = require('../utils/functions');
+const Email = require('../utils/mail');
 const { attachCookiesToResponse } = require('../utils/jwt');
 
 const register = async (req, res) => {
@@ -47,4 +50,27 @@ const logout = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
 
-module.exports = { register, login, logout };
+const forgetPassword = async (req, res) => {
+  const { email } = req.body;
+  const user = await User.findOne({ email: email });
+  if (!user) {
+    throw new CustomError.BadRequestError(
+      'No account found with this email address'
+    );
+  }
+
+  const randomCode = rand();
+
+  await Email({
+    recipientAddress: user.email,
+    recipientName: user.fullName,
+    templateId: ENV.SG_PASSWORD_RESET_TEMPLATE_ID,
+    templateData: {
+      username: user.fullName,
+      resetUrl: `${ENV.SG_PASSWORD_RESET_URL}${randomCode}`
+    }
+  }).sendMails();
+  res.status(StatusCodes.OK).json({ msg: 'Email sent Successfully.' });
+};
+
+module.exports = { register, login, logout, forgetPassword };
