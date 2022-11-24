@@ -50,7 +50,7 @@ const logout = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
 
-const forgetPassword = async (req, res) => {
+const forgotPassword = async (req, res) => {
   const { email } = req.body;
   const user = await User.findOne({ email: email });
   if (!user) {
@@ -73,4 +73,4 @@ const forgetPassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Email sent Successfully.' });
 };
 
-module.exports = { register, login, logout, forgetPassword };
+module.exports = { register, login, logout, forgotPassword };

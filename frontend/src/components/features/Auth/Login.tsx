@@ -65,7 +65,7 @@ const BaseLoginPage = ({
             Not a member? Register <NavLink to={ROUTES.REGISTER}>here</NavLink>
           </div>
           <div>
-            <NavLink to={ROUTES.LOGIN}>Forgot your password?</NavLink>
+            <NavLink to={ROUTES.FORGOTPASSWORD}>Forgot your password?</NavLink>
           </div>
         </footer>
       </div>

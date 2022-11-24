@@ -3,6 +3,7 @@ import { Navigate, Route, Routes } from 'react-router-dom';
 import {
   AdminDash,
   CartPage,
+  ForgotPasswordPage,
   LoginPage,
   NoMatch,
   ProductPage,
@@ -38,6 +39,14 @@ export default function Router() {
           element={
             <PreventedRoute>
               <RegisterPage />
+            </PreventedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.FORGOTPASSWORD}
+          element={
+            <PreventedRoute>
+              <ForgotPasswordPage />
             </PreventedRoute>
           }
         />

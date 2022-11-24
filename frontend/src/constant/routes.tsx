@@ -4,6 +4,8 @@ const enum ROUTES {
   ADMINDASH = '/admin/dash',
   LOGIN = '/login',
   REGISTER = '/register',
+  FORGOTPASSWORD = '/forgot-password',
+  RESETPASSWORD = '/reset-password',
   CART = '/cart',
   PRODUCTS = '/products',
   PROFILE = '/profile',
