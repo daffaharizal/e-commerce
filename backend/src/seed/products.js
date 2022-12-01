@@ -7,7 +7,7 @@ const createRandomProducts = async () => {
   const PRODUCTS = [];
   const user = await User.findOne({ role: 'admin' });
   user &&
-    Array.from({ length: 10000 }).forEach(() => {
+    Array.from({ length: 50 }).forEach(() => {
       PRODUCTS.push({
         name: faker.commerce.productName(),
         price: faker.commerce.price(200, 2000, 0),

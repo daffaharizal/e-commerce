@@ -2,6 +2,7 @@ export {
   ForgotPasswordPage,
   LoginPage,
   LogoutPage,
+  PasswordResetPage,
   RegisterPage
 } from './Auth';
 export { default as CartPage } from './Cart';

@@ -10,7 +10,8 @@ const createRandomUsers = async () => {
       email: faker.internet.email(),
       dateOfBirth: faker.date.birthdate(),
       password: 'abc12345',
-      role: 'user'
+      role: 'user',
+      isVerified: true
       // password: faker.internet.password(),
       // avatar: faker.image.avatar(),
       // role: faker.helpers.arrayElement(['admin', 'user'])

@@ -6,6 +6,7 @@ import {
   ForgotPasswordPage,
   LoginPage,
   NoMatch,
+  PasswordResetPage,
   ProductPage,
   ProfilePage,
   RegisterPage,
@@ -25,6 +26,7 @@ import ProtectedRoute from './ProtectedRoute';
 export default function Router() {
   return (
     <Routes>
+      {/* Anonymous Routers */}
       <Route element={<AnonymousLayout />}>
         <Route
           path={ROUTES.LOGIN}
@@ -50,7 +52,17 @@ export default function Router() {
             </PreventedRoute>
           }
         />
+        <Route
+          path={ROUTES.PASSWORDRESET}
+          element={
+            <PreventedRoute>
+              <PasswordResetPage />
+            </PreventedRoute>
+          }
+        />
       </Route>
+
+      {/* Admin Routers */}
       <Route element={<AdminLayout />}>
         <Route
           path={ROUTES.ADMIN}
@@ -68,6 +80,7 @@ export default function Router() {
         />
       </Route>
 
+      {/* Commerce Routers */}
       <Route element={<CommerceLayout />}>
         <Route
           path={ROUTES.INDEX}

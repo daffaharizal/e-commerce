@@ -5,7 +5,7 @@ const enum ROUTES {
   LOGIN = '/login',
   REGISTER = '/register',
   FORGOTPASSWORD = '/forgot-password',
-  RESETPASSWORD = '/reset-password',
+  PASSWORDRESET = '/password-reset/:userId/:code',
   CART = '/cart',
   PRODUCTS = '/products',
   PROFILE = '/profile',

@@ -32,12 +32,16 @@ const userSchema = new mongoose.Schema(
       type: String,
       required: [true, 'Please provide password'],
       minLength: 6,
-      maxlength: 16
+      maxlength: 128
     },
     role: {
       type: String,
       enum: ['admin', 'user'],
       default: 'user'
+    },
+    isVerified: {
+      type: Boolean,
+      default: false
     }
   },
   {
