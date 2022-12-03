@@ -1,37 +1,43 @@
-require('dotenv').config();
-require('express-async-errors');
+import dotenv from 'dotenv';
+import 'express-async-errors';
+
+dotenv.config();
 
 // express
-const express = require('express');
-const cors = require('cors');
+import express from 'express';
+import cors from 'cors';
 const app = express();
 
 // rest of the packages
-const cookieParser = require('cookie-parser');
-const fileUpload = require('express-fileupload');
-const morgan = require('morgan');
-const path = require('path');
-const winston = require('./utils/winston');
+import cookieParser from 'cookie-parser';
+import fileUpload from 'express-fileupload';
+import morgan from 'morgan';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+import winstonLogger from './utils/winston';
 
 // database
-const connectDB = require('./db/connect');
-const { ENV } = require('./utils/constants');
+import connectDB from './db/connect';
+import ENV from './utils/constants';
 
 // routers
-const authRouter = require('./routes/authRoutes');
-const productRouter = require('./routes/productRoutes');
-const orderRouter = require('./routes/orderRoutes');
-const reviewRouter = require('./routes/reviewRoutes');
-const stripeRouter = require('./routes/stripeRoutes');
-const userRouter = require('./routes/userRoutes');
-const wishlistRouter = require('./routes/wishlistRoutes');
+import authRouter from './routes/authRoutes';
+import productRouter from './routes/productRoutes';
+import orderRouter from './routes/orderRoutes';
+import reviewRouter from './routes/reviewRoutes';
+import stripeRouter from './routes/stripeRoutes';
+import userRouter from './routes/userRoutes';
+import wishlistRouter from './routes/wishlistRoutes';
+
+const __filename = fileURLToPath(import.meta.url);
 
 // middleware
-const notFound = require('./middleware/not-found');
-const errorHandlerMiddleware = require('./middleware/error-handler');
+import notFound from './middleware/not-found';
+import errorHandlerMiddleware from './middleware/error-handler';
 
 const corsOptions = {
-  origin: ENV.CORS_ALLOWED_DOMAINS.split(','),
+  origin: ENV.CORS_ALLOWED_DOMAINS?.split(',') || 'http://localhost:3000',
   credentials: true,
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 };
@@ -42,10 +48,11 @@ app.use(express.json());
 app.use(cookieParser(ENV.JWT_SECRET));
 app.use(
   '/static',
-  express.static(path.join(path.dirname(__dirname), 'public'))
+  // express.static(path.join(path.dirname(__dirname), 'public'))
+  express.static(path.join(path.dirname(__filename), 'public'))
 );
 app.use(fileUpload());
-app.use(morgan('combined', { stream: winston.stream }));
+app.use(morgan('combined', { stream: winstonLogger.stream }));
 
 app.get('/', (req, res) => {
   res.json({ message: 'alive' });
@@ -80,4 +87,4 @@ const start = async () => {
 
 start();
 
-module.exports = app;
+export default app;

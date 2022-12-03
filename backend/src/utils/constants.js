@@ -30,4 +30,4 @@ const ENV = {
   SG_PASSWORD_RESET_TEMPLATE_ID
 };
 
-module.exports = { ENV };
+export default ENV;

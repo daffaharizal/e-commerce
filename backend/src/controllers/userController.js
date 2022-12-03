@@ -1,8 +1,8 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
 
-const User = require('../models/User');
-const CustomError = require('../errors');
-const { attachCookiesToResponse } = require('../utils/jwt');
+import User from '../models/User';
+import * as CustomError from '../errors';
+import { attachCookiesToResponse } from '../utils/jwt';
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({});
@@ -85,7 +85,7 @@ const updatePassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Password Successfully Updated.' });
 };
 
-module.exports = {
+export {
   getAllUsers,
   getSingleUser,
   getCurrentUser,

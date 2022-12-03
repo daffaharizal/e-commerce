@@ -1,6 +1,7 @@
-const { ENV } = require('./constants');
+import ENV from './constants';
 
-const stripe = require('stripe')(ENV.STRIPE_SECRET_KEY);
+import stripe from 'stripe';
+stripe(ENV.STRIPE_SECRET_KEY); // Check import later
 
 // Create a PaymentIntent with the order amount and currency
 const createPaymentIntent = async ({
@@ -23,8 +24,4 @@ const updatePaymentIntent = async ({ paymentIntentId, orderId }) =>
 const stripeEventListener = ({ req, signature, endpointSecret }) =>
   stripe.webhooks.constructEvent(req.body, signature, endpointSecret);
 
-module.exports = {
-  createPaymentIntent,
-  updatePaymentIntent,
-  stripeEventListener
-};
+export { createPaymentIntent, updatePaymentIntent, stripeEventListener };

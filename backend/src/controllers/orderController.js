@@ -1,11 +1,10 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
+import Product from '../models/Product';
+import Order from '../models/Order';
+import * as CustomError from '../errors';
+import checkPermission from '../utils/permissions';
 
-const Product = require('../models/Product');
-const Order = require('../models/Order');
-const CustomError = require('../errors');
-const checkPermission = require('../utils/permissions');
-
-const stripe = require('../utils/stripe');
+import * as stripe from '../utils/stripe';
 
 const calculateOrderAmount = ({ subTotal, shippingFee, tax }) =>
   subTotal + tax + shippingFee;
@@ -130,9 +129,4 @@ const getCurrentUserOrders = async (req, res) => {
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
 
-module.exports = {
-  createOrder,
-  getAllOrder,
-  getSingleOrder,
-  getCurrentUserOrders
-};
+export { createOrder, getAllOrder, getSingleOrder, getCurrentUserOrders };

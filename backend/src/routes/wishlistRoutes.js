@@ -1,18 +1,18 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
 
-const {
+import {
   addItem,
   removeItem,
   removeFolder,
   showFolders,
   showFolderItems
-} = require('../controllers/wishlistController');
+} from '../controllers/wishlistController';
 
 router.post(
   '/add-item',
@@ -44,4 +44,4 @@ router.get(
   showFolderItems
 );
 
-module.exports = router;
+export default router;

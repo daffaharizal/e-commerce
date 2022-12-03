@@ -1,4 +1,4 @@
-const CustomError = require('../errors');
+import * as CustomError from '../errors';
 
 const checkPermission = ({
   requestUser,
@@ -10,4 +10,4 @@ const checkPermission = ({
   throw new CustomError.UnAthorizedError('Not authorized to access this route');
 };
 
-module.exports = checkPermission;
+export default checkPermission;

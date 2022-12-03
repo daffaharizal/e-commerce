@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const ReviewSchema = new mongoose.Schema(
   {
@@ -81,4 +81,4 @@ ReviewSchema.post(['save', 'remove'], async function () {
   await this.constructor.CalculateAvgRating(this.product);
 });
 
-module.exports = mongoose.model('Review', ReviewSchema);
+export default mongoose.model('Review', ReviewSchema);

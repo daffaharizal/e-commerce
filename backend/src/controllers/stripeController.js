@@ -1,9 +1,8 @@
-const { StatusCodes } = require('http-status-codes');
-
-const CustomError = require('../errors');
-const Order = require('../models/Order');
-const { ENV } = require('../utils/constants');
-const { stripeEventListener } = require('../utils/stripe');
+import { StatusCodes } from 'http-status-codes';
+import * as CustomError from '../errors';
+import Order from '../models/Order';
+import ENV from '../utils/constants';
+import { stripeEventListener } from '../utils/stripe';
 
 const getStripeConfig = (req, res) => {
   res
@@ -60,4 +59,4 @@ const stripeWebhook = async (req, res) => {
   res.send();
 };
 
-module.exports = { getStripeConfig, stripeWebhook };
+export { getStripeConfig, stripeWebhook };

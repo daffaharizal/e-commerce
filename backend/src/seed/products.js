@@ -1,7 +1,7 @@
-const { faker } = require('@faker-js/faker');
+import { faker } from '@faker-js/faker';
 
-const Product = require('../models/Product');
-const User = require('../models/User');
+import Product from '../models/Product';
+import User from '../models/User';
 
 const createRandomProducts = async () => {
   const PRODUCTS = [];
@@ -37,4 +37,4 @@ const createRandomProducts = async () => {
   return PRODUCTS;
 };
 
-module.exports = createRandomProducts;
+export default createRandomProducts;

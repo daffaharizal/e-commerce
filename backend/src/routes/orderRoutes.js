@@ -1,17 +1,17 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const {
+import {
   createOrder,
   getAllOrder,
   getSingleOrder,
   getCurrentUserOrders
-} = require('../controllers/orderController');
+} from '../controllers/orderController';
 
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
 
 router
   .route('/')
@@ -22,4 +22,4 @@ router.route('/me').get(authenticateUser, getCurrentUserOrders);
 
 router.route('/:id').get(authenticateUser, getSingleOrder);
 
-module.exports = router;
+export default router;

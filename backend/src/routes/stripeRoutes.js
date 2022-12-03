@@ -1,10 +1,10 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const {
+import {
   getStripeConfig,
   stripeWebhook
-} = require('../controllers/stripeController');
+} from '../controllers/stripeController';
 
 router.get('/config', getStripeConfig);
 
@@ -15,4 +15,4 @@ router.post(
   stripeWebhook
 );
 
-module.exports = router;
+export default router;

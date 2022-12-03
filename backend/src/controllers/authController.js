@@ -1,12 +1,12 @@
-const CryptoJS = require('crypto-js');
-const { StatusCodes } = require('http-status-codes');
+import CryptoJS from 'crypto-js';
+import { StatusCodes } from 'http-status-codes';
 
-const User = require('../models/User');
-const Token = require('../models/Token');
-const CustomError = require('../errors');
-const { ENV } = require('../utils/constants');
-const Email = require('../utils/mail');
-const { attachCookiesToResponse } = require('../utils/jwt');
+import User from '../models/User';
+import Token from '../models/Token';
+import * as CustomError from '../errors';
+import ENV from '../utils/constants';
+import Email from '../utils/mail';
+import { attachCookiesToResponse } from '../utils/jwt';
 
 const register = async (req, res) => {
   const { email } = req.body;
@@ -124,7 +124,7 @@ const passwordReset = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Password Reset Successfully.' });
 };
 
-module.exports = {
+export {
   register,
   login,
   logout,

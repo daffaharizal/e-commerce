@@ -1,22 +1,22 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const {
+import {
   createProduct,
   getAllProducts,
   getSingleProduct,
   updateProduct,
   uploadProductImage
-} = require('../controllers/productController.js');
+} from '../controllers/productController.js';
 
-const { getSingleProductReviews } = require('../controllers/reviewController');
+import { getSingleProductReviews } from '../controllers/reviewController';
 
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
 
-const { offsetPagination } = require('../middleware/pagination');
+import { offsetPagination } from '../middleware/pagination';
 
 router
   .route('/')
@@ -42,4 +42,4 @@ router.get(
   getSingleProductReviews
 );
 
-module.exports = router;
+export default router;

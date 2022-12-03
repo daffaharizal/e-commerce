@@ -1,20 +1,20 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const {
+import {
   getAllUsers,
   getSingleUser,
   getCurrentUser,
   updateUser,
   updatePassword
-} = require('../controllers/userController');
+} from '../controllers/userController';
 
-const { getSingleUserReviews } = require('../controllers/reviewController');
+import { getSingleUserReviews } from '../controllers/reviewController';
 
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
 
 router.get('/', [authenticateUser, authorizePermissions('admin')], getAllUsers);
 
@@ -36,4 +36,4 @@ router.get(
   getSingleUserReviews
 );
 
-module.exports = router;
+export default router;

@@ -1,9 +1,7 @@
-const { StatusCodes } = require('http-status-codes');
-
-const { uploadFile } = require('../utils/functions');
-
-const Product = require('../models/Product');
-const CustomError = require('../errors');
+import { StatusCodes } from 'http-status-codes';
+import { uploadFile } from '../utils/functions';
+import Product from '../models/Product';
+import * as CustomError from '../errors';
 
 const createProduct = async (req, res) => {
   req.body.user = req.user.id;
@@ -93,7 +91,7 @@ const uploadProductImage = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Images Successfully Updated' });
 };
 
-module.exports = {
+export {
   createProduct,
   getAllProducts,
   getSingleProduct,

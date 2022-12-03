@@ -1,18 +1,18 @@
-const express = require('express');
+import express from 'express';
 const router = express.Router();
 
-const {
+import {
   createReview,
   getAllReviews,
   getSingleReview,
   updateReview,
   deleteReview
-} = require('../controllers/reviewController');
+} from '../controllers/reviewController';
 
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
 
 router
   .route('/')
@@ -25,4 +25,4 @@ router
   .patch([authenticateUser, authorizePermissions('user')], updateReview)
   .delete(authenticateUser, deleteReview);
 
-module.exports = router;
+export default router;

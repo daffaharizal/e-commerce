@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const WishlistItemSchema = new mongoose.Schema({
   product: {
@@ -61,4 +61,4 @@ WishlistSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
   });
 });
 
-module.exports = mongoose.model('Wishlist', WishlistSchema);
+export default mongoose.model('Wishlist', WishlistSchema);

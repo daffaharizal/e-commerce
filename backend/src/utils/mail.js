@@ -1,5 +1,5 @@
-const sgMail = require('@sendgrid/mail');
-const { ENV } = require('./constants');
+import sgMail from '@sendgrid/mail';
+import ENV from './constants';
 
 sgMail.setApiKey(ENV.SG_API_KEY);
 
@@ -37,4 +37,4 @@ const email = ({
   templateData = {}
 }) => new Email(recipientAddress, recipientName, templateId, templateData);
 
-module.exports = email;
+export default email;
