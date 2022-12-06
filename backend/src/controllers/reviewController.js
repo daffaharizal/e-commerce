@@ -1,10 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 
-import * as CustomError from '../errors';
 import Product from '../models/Product';
 import Review from '../models/Review';
 import User from '../models/User';
+
 import checkPermission from '../utils/permissions';
+
+import * as CustomError from '../errors';
 
 const createReview = async (req, res) => {
   const { product: productId } = req.body;

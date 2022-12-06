@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken';
+
 import ENV from './constants';
 
 const createJWT = ({ payload }) => {

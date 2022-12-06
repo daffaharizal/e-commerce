@@ -1,8 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 
 import User from '../models/User';
-import * as CustomError from '../errors';
+
 import { attachCookiesToResponse } from '../utils/jwt';
+
+import * as CustomError from '../errors';
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({});

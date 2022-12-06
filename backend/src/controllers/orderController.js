@@ -1,10 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
-import Product from '../models/Product';
-import Order from '../models/Order';
-import * as CustomError from '../errors';
-import checkPermission from '../utils/permissions';
 
+import Order from '../models/Order';
+import Product from '../models/Product';
+
+import checkPermission from '../utils/permissions';
 import * as stripe from '../utils/stripe';
+
+import * as CustomError from '../errors';
 
 const calculateOrderAmount = ({ subTotal, shippingFee, tax }) =>
   subTotal + tax + shippingFee;

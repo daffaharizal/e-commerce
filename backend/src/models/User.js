@@ -1,9 +1,36 @@
-import mongoose from 'mongoose';
-import validator from 'validator';
 import bcrypt from 'bcryptjs';
 import moment from 'moment';
+import mongoose from 'mongoose';
+import validator from 'validator';
 
-const userSchema = new mongoose.Schema(
+import ImageSchema from './Image';
+
+const AddressSchema = new mongoose.Schema({
+  country: {
+    type: String,
+    required: [true, 'Please provide country']
+  },
+  province: {
+    type: String
+  },
+  city: {
+    type: String,
+    required: [true, 'Please provide city']
+  },
+  street1: {
+    type: String,
+    required: [true, 'Please provide city']
+  },
+  street2: {
+    type: String
+  },
+  zip: {
+    type: String,
+    required: [true, 'Please provide zip code']
+  }
+});
+
+const UserSchema = new mongoose.Schema(
   {
     fullName: {
       type: String,
@@ -22,12 +49,7 @@ const userSchema = new mongoose.Schema(
     },
     dateOfBirth: {
       type: Date
-      // validate: {
-      //   validator: validator.Date,
-      //   message: 'Please provide a valid date'
-      // }
     },
-
     password: {
       type: String,
       required: [true, 'Please provide password'],
@@ -39,10 +61,13 @@ const userSchema = new mongoose.Schema(
       enum: ['admin', 'user'],
       default: 'user'
     },
-    isVerified: {
+    isAccountVerified: {
       type: Boolean,
       default: false
-    }
+    },
+    avatar: ImageSchema,
+    billingAddress: [AddressSchema],
+    shippingAddress: [AddressSchema]
   },
   {
     timestamps: true,
@@ -50,17 +75,26 @@ const userSchema = new mongoose.Schema(
   }
 );
 
-userSchema.pre('save', async function () {
+UserSchema.pre('save', async function () {
   if (!this.isModified('password')) return;
   const salt = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
-userSchema.methods.comparePassword = async function (currentPassword) {
+// Error Handling Middleware
+UserSchema.post('save', function ({ errors }, doc, next) {
+  if (!!errors.dateOfBirth) {
+    next(new Error('Provide a valid date of birth'));
+  } else {
+    next();
+  }
+});
+
+UserSchema.methods.comparePassword = async function (currentPassword) {
   return await bcrypt.compare(currentPassword, this.password);
 };
 
-userSchema.methods.toJSON = function () {
+UserSchema.methods.toJSON = function () {
   const obj = this.toObject();
   obj.id = obj._id;
   // delete obj._id;
@@ -70,4 +104,4 @@ userSchema.methods.toJSON = function () {
   return obj;
 };
 
-export default mongoose.model('User', userSchema);
+export default mongoose.model('User', UserSchema);

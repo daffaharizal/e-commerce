@@ -1,8 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
-import * as CustomError from '../errors';
+
 import Order from '../models/Order';
+
 import ENV from '../utils/constants';
 import { stripeEventListener } from '../utils/stripe';
+
+import * as CustomError from '../errors';
 
 const getStripeConfig = (req, res) => {
   res

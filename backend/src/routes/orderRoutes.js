@@ -1,25 +1,24 @@
 import express from 'express';
-const router = express.Router();
-
-import {
-  createOrder,
-  getAllOrder,
-  getSingleOrder,
-  getCurrentUserOrders
-} from '../controllers/orderController';
 
 import {
   authenticateUser,
   authorizePermissions
 } from '../middleware/authentication';
 
+import * as orderController from '../controllers/orderController';
+
+const router = express.Router();
+
 router
   .route('/')
-  .post(authenticateUser, createOrder)
-  .get([authenticateUser, authorizePermissions('admin')], getAllOrder);
+  .post(authenticateUser, orderController.createOrder)
+  .get(
+    [authenticateUser, authorizePermissions('admin')],
+    orderController.getAllOrder
+  );
 
-router.route('/me').get(authenticateUser, getCurrentUserOrders);
+router.route('/me').get(authenticateUser, orderController.getCurrentUserOrders);
 
-router.route('/:id').get(authenticateUser, getSingleOrder);
+router.route('/:id').get(authenticateUser, orderController.getSingleOrder);
 
 export default router;

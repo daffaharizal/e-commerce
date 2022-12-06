@@ -1,5 +1,7 @@
 import mongoose from 'mongoose';
 
+import ImageSchema from './Image';
+
 const ProductSchema = new mongoose.Schema(
   {
     name: {
@@ -8,50 +10,37 @@ const ProductSchema = new mongoose.Schema(
       required: [true, 'Please provide product name'],
       maxlength: [100, 'Name can not be more than 100 characters']
     },
-    price: {
-      type: Number,
-      required: [true, 'Please provide product price'],
-      default: 0
-    },
     description: {
       type: String,
       required: [true, 'Please provide product description'],
       maxlength: [1000, 'Description can not be more than 1000 characters']
     },
-    images: [
-      {
-        name: {
-          type: String,
-          required: [true, 'Please provide image name'],
-          maxlength: [64, 'Name can not be more than 64 characters']
-        },
-        url: {
-          type: String,
-          required: [true, 'Please provide image url']
-        },
-        isPublicUrl: {
-          type: Boolean,
-          default: false
-        }
-      }
-    ],
     category: {
-      type: String,
-      required: [true, 'Please provide product category'],
-      enum: ['office', 'kitchen', 'bedroom', 'living']
-    }, // TODO: Change to FK
-    company: {
-      type: String,
-      required: [true, 'Please provide company'],
-      enum: {
-        values: ['damro', 'godrej india', 'usha'],
-        message: '{VALUE} is not supported'
-      } // TODO: Change to FK
+      type: mongoose.Types.ObjectId,
+      ref: 'Category'
     },
-    colors: {
-      type: [String],
-      required: true
-    },
+    skus: [
+      new mongoose.Schema({
+        sku: {
+          type: String,
+          required: [true, 'Please provide sku']
+        },
+        type: { type: String, required: true },
+        price: {
+          type: Number,
+          required: [true, 'Please provide product price'],
+          default: 0
+        },
+        stock: {
+          type: Number,
+          required: true,
+          default: 5
+        },
+        features: [{ type: String }],
+        varients: [{ type: String }],
+        images: [ImageSchema]
+      })
+    ],
     featured: {
       type: Boolean,
       default: false
@@ -59,11 +48,6 @@ const ProductSchema = new mongoose.Schema(
     freeShipping: {
       type: Boolean,
       default: false
-    },
-    inventory: {
-      type: Number,
-      required: true,
-      default: 15
     },
     averageRating: {
       type: Number,

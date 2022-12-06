@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
-import * as CustomError from '../errors';
-
 import mongoose from 'mongoose';
 
 import Product from '../models/Product';
 import Wishlist from '../models/Wishlist';
+
+import * as CustomError from '../errors';
 
 const addItem = async (req, res) => {
   const { folderName, folderId, productId } = req.body;

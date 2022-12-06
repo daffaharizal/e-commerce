@@ -1,40 +1,40 @@
-import dotenv from 'dotenv';
-import 'express-async-errors';
-
-dotenv.config();
-
 // express
 import express from 'express';
-import cors from 'cors';
-const app = express();
 
 // rest of the packages
 import cookieParser from 'cookie-parser';
+import cors from 'cors';
+import dotenv from 'dotenv';
+import 'express-async-errors';
 import fileUpload from 'express-fileupload';
 import morgan from 'morgan';
 import path from 'path';
 import { fileURLToPath } from 'url';
 
-import winstonLogger from './utils/winston';
-
 // database
 import connectDB from './db/connect';
-import ENV from './utils/constants';
+
+// middleware
+import errorHandlerMiddleware from './middleware/error-handler';
+import notFound from './middleware/not-found';
 
 // routers
 import authRouter from './routes/authRoutes';
-import productRouter from './routes/productRoutes';
 import orderRouter from './routes/orderRoutes';
+import productRouter from './routes/productRoutes';
 import reviewRouter from './routes/reviewRoutes';
 import stripeRouter from './routes/stripeRoutes';
 import userRouter from './routes/userRoutes';
 import wishlistRouter from './routes/wishlistRoutes';
 
-const __filename = fileURLToPath(import.meta.url);
+import ENV from './utils/constants';
+import winstonLogger from './utils/winston';
 
-// middleware
-import notFound from './middleware/not-found';
-import errorHandlerMiddleware from './middleware/error-handler';
+dotenv.config();
+
+const app = express();
+
+const __filename = fileURLToPath(import.meta.url);
 
 const corsOptions = {
   origin: ENV.CORS_ALLOWED_DOMAINS?.split(',') || 'http://localhost:3000',
@@ -48,7 +48,6 @@ app.use(express.json());
 app.use(cookieParser(ENV.JWT_SECRET));
 app.use(
   '/static',
-  // express.static(path.join(path.dirname(__dirname), 'public'))
   express.static(path.join(path.dirname(__filename), 'public'))
 );
 app.use(fileUpload());

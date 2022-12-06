@@ -1,6 +1,7 @@
+import stripe from 'stripe';
+
 import ENV from './constants';
 
-import stripe from 'stripe';
 stripe(ENV.STRIPE_SECRET_KEY); // Check import later
 
 // Create a PaymentIntent with the order amount and currency

@@ -7,5 +7,19 @@
   "trailingComma": "none",
   "bracketSpacing": true,
   "bracketSameLine": true,
-  "arrowParens": "always"
+  "arrowParens": "always",
+  "importOrder": [
+    "^express$",
+    "<THIRD_PARTY_MODULES>",
+    "^(.*)/db/(.*)$",
+    "^(.*)/models/(.*)$",
+    "^(.*)/middleware/(.*)$",
+    "^(.*)/controllers/(.*)$",
+    "^(.*)/routes/(.*)$",
+    "^(.*)/errors/(.*)$",
+    "^(.*)/utils/(.*)$",
+    "^[./]"
+  ],
+  "importOrderSeparation": true,
+  "importOrderSortSpecifiers": true
 }

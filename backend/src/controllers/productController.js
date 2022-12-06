@@ -1,6 +1,9 @@
 import { StatusCodes } from 'http-status-codes';
-import { uploadFile } from '../utils/functions';
+
 import Product from '../models/Product';
+
+import { uploadFile } from '../utils/functions';
+
 import * as CustomError from '../errors';
 
 const createProduct = async (req, res) => {

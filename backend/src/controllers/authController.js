@@ -1,23 +1,30 @@
 import CryptoJS from 'crypto-js';
 import { StatusCodes } from 'http-status-codes';
 
-import User from '../models/User';
 import Token from '../models/Token';
-import * as CustomError from '../errors';
+import User from '../models/User';
+
 import ENV from '../utils/constants';
-import Email from '../utils/mail';
 import { attachCookiesToResponse } from '../utils/jwt';
+import Email from '../utils/mail';
+
+import * as CustomError from '../errors';
 
 const register = async (req, res) => {
-  const { email } = req.body;
+  // will skip other datas
+  const { email, fullName, password } = req.body;
+
   const emailAlreadyExists = await User.countDocuments({ email });
   if (emailAlreadyExists) {
     throw new CustomError.BadRequestError('Email already exists');
   }
   const user = await User.create({
-    ...req.body,
+    email,
+    fullName,
+    password,
     role: 'user'
   });
+
   const payload = { email, id: user._id, role: user.role };
 
   attachCookiesToResponse({ res, payload });
