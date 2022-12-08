@@ -4,7 +4,7 @@ import User from '../models/User';
 
 const createRandomUsers = async () => {
   const USERS = [];
-  Array.from({ length: 25 }).forEach(() => {
+  Array.from({ length: 10 }).forEach(() => {
     USERS.push({
       fullName: faker.name.fullName(),
       email: faker.internet.email(),

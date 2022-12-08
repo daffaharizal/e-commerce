@@ -22,7 +22,7 @@ const createRandomProducts = async () => {
   const user = await User.findOne({ role: 'admin' });
   const category = await Category.findOne();
   user &&
-    Array.from({ length: 2 }).forEach(() => {
+    Array.from({ length: 10 }).forEach(() => {
       PRODUCTS.push({
         name: faker.commerce.productName(),
         description: faker.commerce.productDescription(),

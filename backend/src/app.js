@@ -20,6 +20,7 @@ import notFound from './middleware/not-found';
 
 // routers
 import authRouter from './routes/authRoutes';
+import categoryRouter from './routes/categoryRoutes';
 import orderRouter from './routes/orderRoutes';
 import productRouter from './routes/productRoutes';
 import reviewRouter from './routes/reviewRoutes';
@@ -29,6 +30,9 @@ import wishlistRouter from './routes/wishlistRoutes';
 
 import ENV from './utils/constants';
 import winstonLogger from './utils/winston';
+
+import createRandomProducts from './seed/products';
+import createRandomUsers from './seed/users';
 
 dotenv.config();
 
@@ -58,6 +62,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api/v1/auth', authRouter);
+app.use('/api/v1/category', categoryRouter);
 app.use('/api/v1/products', productRouter);
 app.use('/api/v1/orders', orderRouter);
 app.use('/api/v1/reviews', reviewRouter);
@@ -77,6 +82,8 @@ const start = async () => {
     await connectDB(ENV.MONGODB_URI);
 
     app.listen(port, () => {
+      // createRandomUsers();
+      // createRandomProducts();
       console.log(`Server is listening on port ${port}...`);
     });
   } catch (error) {

@@ -2,6 +2,44 @@ import mongoose from 'mongoose';
 
 import ImageSchema from './Image';
 
+const ProductSkuSchema = new mongoose.Schema(
+  {
+    sku: {
+      type: String,
+      trim: true,
+      required: [true, 'Please provide sku']
+    },
+    price: {
+      type: Number,
+      required: [true, 'Please provide product price'],
+      default: 0,
+      validate: {
+        validator: (v) => {
+          return v > 0;
+        },
+        message: '{VALUE} is not a positive number'
+      }
+    },
+    stock: {
+      type: Number,
+      required: true,
+      default: 5,
+      validate: {
+        validator: Number.isInteger,
+        message: '{VALUE} is not an integer value'
+      }
+    },
+    features: [{ type: String }],
+    varients: [{ type: String }],
+    images: [ImageSchema]
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    versionKey: false
+  }
+);
+
 const ProductSchema = new mongoose.Schema(
   {
     name: {
@@ -19,28 +57,8 @@ const ProductSchema = new mongoose.Schema(
       type: mongoose.Types.ObjectId,
       ref: 'Category'
     },
-    skus: [
-      new mongoose.Schema({
-        sku: {
-          type: String,
-          required: [true, 'Please provide sku']
-        },
-        type: { type: String, required: true },
-        price: {
-          type: Number,
-          required: [true, 'Please provide product price'],
-          default: 0
-        },
-        stock: {
-          type: Number,
-          required: true,
-          default: 5
-        },
-        features: [{ type: String }],
-        varients: [{ type: String }],
-        images: [ImageSchema]
-      })
-    ],
+    skuType: { type: String, required: true, trim: true },
+    skus: [ProductSkuSchema],
     featured: {
       type: Boolean,
       default: false
@@ -73,12 +91,12 @@ const ProductSchema = new mongoose.Schema(
 
 ProductSchema.index({ name: 'text', category: 'text', company: 'text' });
 
-ProductSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  obj.id = obj._id;
-  delete obj._id;
-  return obj;
-};
+// ProductSchema.methods.toJSON = function () {
+//   const obj = this.toObject();
+//   obj.id = obj._id;
+//   delete obj._id;
+//   return obj;
+// };
 
 ProductSchema.virtual('reviews', {
   ref: 'Review',
@@ -87,11 +105,12 @@ ProductSchema.virtual('reviews', {
   justOne: false
 });
 
-// ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
-//   this.populate({
-//     path: 'user',
-//     select: 'fullName'
-//   }).populate('reviews');
-// });
+ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
+  // this.populate({
+  //   path: 'user',
+  //   select: 'fullName'
+  // }).populate('reviews');
+  this.populate('category');
+});
 
 export default mongoose.model('Product', ProductSchema);

@@ -25,7 +25,7 @@ router.patch(
   productController.updateProduct
 );
 router.post(
-  '/upload-image/:id',
+  '/upload-image/:productId/sku/:skuId',
   [authenticateUser, authorizePermissions('admin')],
   productController.uploadProductImage
 );
