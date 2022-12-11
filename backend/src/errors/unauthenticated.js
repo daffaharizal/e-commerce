@@ -1,5 +1,6 @@
-const { StatusCodes } = require('http-status-codes');
-const CustomAPIError = require('./custom-api');
+import { StatusCodes } from 'http-status-codes';
+
+import CustomAPIError from './custom-api';
 
 class UnAuthenticatedError extends CustomAPIError {
   constructor(message) {
@@ -8,4 +9,4 @@ class UnAuthenticatedError extends CustomAPIError {
   }
 }
 
-module.exports = UnAuthenticatedError;
+export default UnAuthenticatedError;

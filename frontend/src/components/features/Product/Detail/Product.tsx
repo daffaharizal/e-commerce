@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import axios from 'axios';
-import { Col, Container, Row } from 'react-bootstrap';
+import { Col, Container, Form, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { WishlistPopup } from 'components/features';
@@ -21,10 +21,12 @@ import styles from 'assets/css/Product.module.css';
 import { IProductResponse } from '../types';
 import AddToCart from './AddToCart';
 import ProductInfo from './ProductInfo';
+import ProductSkus from './ProductSkus';
 
 export default function ProductDetailPage() {
-  const { productId } = useParams() as {
+  const { productId, skuId } = useParams() as {
     productId: string;
+    skuId: string;
   };
 
   const { isAuth, user } = AuthConsumer();
@@ -59,57 +61,60 @@ export default function ProductDetailPage() {
     <>
       {!!product && (
         <Container>
-          <div className={styles['heading-section']}>
-            <h2>{product.name}</h2>
-          </div>
-          <Row>
-            <Col md={6}>
-              <PureCarousel images={product.images} />
-            </Col>
-            <Col md={6}>
-              <div className={styles['product-dtl']}>
-                <div className={styles['product-info']}>
-                  <div className={styles['product-name']}>
-                    {product.category}
+          <>
+            {product.skus
+              .filter((sku) => sku.id === skuId)
+              .map((sku, index) => (
+                <React.Fragment key={index}>
+                  <div className={styles['heading-section']}>
+                    <h2>
+                      {product.name} - {sku.sku}
+                    </h2>
                   </div>
-                  <UserRating rate={product.averageRating} />
-                  <span>{product.numOfReviews} Reviews</span>
-                  <div className={styles['product-price-discount']}>
-                    <span>${product.price}</span>
-                    <span className={styles['line-through']}></span>
-                  </div>
-                </div>
-                <p>{product.description}</p>
-                {/* <Row>
-                  <Col md={6}>
-                    <Form.Label htmlFor="size">Size</Form.Label>
-                    <Form.Select id="size" name="size">
-                      <option>S</option>
-                      <option>M</option>
-                      <option>L</option>
-                      <option>XL</option>
-                    </Form.Select>
-                  </Col>
-                  <Col md={6}>
-                    <Form.Label htmlFor="color">Color</Form.Label>
-                    <Form.Select id="color" name="color">
-                      {product.colors.map((color, index) => (
-                        <option key={index}>{color}</option>
-                      ))}
-                    </Form.Select>
-                  </Col>
-                </Row> */}
-                <div className={styles['product-count']}>
-                  <AddToCart product={product} />
-                  {isAuth && user?.role === ROLES.USER && (
-                    <WishlistPopup productId={productId} />
-                  )}
-                </div>
-              </div>
-            </Col>
-          </Row>
+                  <Row key={skuId}>
+                    <Col md={6}>
+                      <PureCarousel images={sku.images} />
+                    </Col>
+                    <Col md={6}>
+                      <div className={styles['product-dtl']}>
+                        <div className={styles['product-info']}>
+                          <div className={styles['product-name']}>
+                            {product.category.name}
+                          </div>
+                          <UserRating rate={product.averageRating} />
+                          <span>{product.numOfReviews} Reviews</span>
+                          <div className={styles['product-price-discount']}>
+                            <span>${sku.price}</span>
+                            <span className={styles['line-through']}></span>
+                          </div>
+                        </div>
+                        <p>{product.description}</p>
+                        <Row>
+                          <Col md={6}>
+                            <Form.Label htmlFor="size">Varients</Form.Label>
+                            <Form.Select id="size" name="size">
+                              {sku.varients.map((varient, index) => (
+                                <option key={index}>{varient}</option>
+                              ))}
+                            </Form.Select>
+                          </Col>
+                        </Row>
+                        <div className={styles['product-count']}>
+                          <AddToCart product={product} sku={sku} />
+                          {isAuth && user?.role === ROLES.USER && (
+                            <WishlistPopup productId={productId} />
+                          )}
+                        </div>
+                      </div>
+                    </Col>
+                  </Row>
+                </React.Fragment>
+              ))}
 
-          <ProductInfo product={product} />
+            <ProductSkus product={product} />
+
+            <ProductInfo product={product} />
+          </>
         </Container>
       )}
     </>

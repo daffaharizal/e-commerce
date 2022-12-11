@@ -1,4 +1,4 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
 
 const WishlistItemSchema = new mongoose.Schema({
   product: {
@@ -35,7 +35,6 @@ const WishlistSchema = new mongoose.Schema(
 
 WishlistItemSchema.set('toJSON', {
   transform: function (doc, ret) {
-    // ret.id = ret._id;
     delete ret._id;
   }
 });
@@ -61,4 +60,4 @@ WishlistSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
   });
 });
 
-module.exports = mongoose.model('Wishlist', WishlistSchema);
+export default mongoose.model('Wishlist', WishlistSchema);

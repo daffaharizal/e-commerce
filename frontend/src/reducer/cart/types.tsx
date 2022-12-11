@@ -1,13 +1,16 @@
-import { IProduct } from 'components/features/Product/types';
+import { SkuType } from 'components/features/Product/types';
 
 export interface ILineItemId {
-  itemId: string;
+  productId: string;
+  skuId: string;
 }
 export interface ILineItem extends ILineItemId {
-  item: IProduct;
+  productName: string;
+  productCategory: string;
+  sku: SkuType;
+  price: number;
   quantity: number;
   discount: number;
-  price: number;
 }
 
 export interface ICart {

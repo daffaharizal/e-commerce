@@ -7,7 +7,8 @@ module.exports = {
   extends: 'eslint:recommended',
   globals: {},
   parserOptions: {
-    ecmaVersion: 2018
+    ecmaVersion: 2018,
+    sourceType: 'module'
   },
   rules: {
     'linebreak-style': ['error', 'unix'],

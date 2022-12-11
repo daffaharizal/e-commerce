@@ -1,10 +1,10 @@
-const { StatusCodes } = require('http-status-codes');
-const CustomError = require('../errors');
+import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
 
-const mongoose = require('mongoose');
+import Product from '../models/Product';
+import Wishlist from '../models/Wishlist';
 
-const Product = require('../models/Product');
-const Wishlist = require('../models/Wishlist');
+import * as CustomError from '../errors';
 
 const addItem = async (req, res) => {
   const { folderName, folderId, productId } = req.body;
@@ -170,10 +170,4 @@ const showFolderItems = async (req, res) => {
   res.status(StatusCodes.OK).json({ folder });
 };
 
-module.exports = {
-  addItem,
-  removeItem,
-  removeFolder,
-  showFolders,
-  showFolderItems
-};
+export { addItem, removeItem, removeFolder, showFolders, showFolderItems };

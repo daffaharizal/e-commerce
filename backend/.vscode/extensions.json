@@ -2,6 +2,7 @@
   "recommendations": [
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
+    "rome.rome",
     "redhat.vscode-yaml",
     "2gua.rainbow-brackets",
     "pkief.material-icon-theme",

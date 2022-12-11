@@ -1,13 +1,36 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
 
-const { uploadFile } = require('../utils/functions');
+import Category from '../models/Category';
+import Product from '../models/Product';
 
-const Product = require('../models/Product');
-const CustomError = require('../errors');
+import { uploadFile } from '../utils/functions';
+
+import * as CustomError from '../errors';
 
 const createProduct = async (req, res) => {
-  req.body.user = req.user.id;
-  const product = await Product.create(req.body);
+  // any other values in the body not needed
+  const { name, description, category, skuType, skus, featured, freeShipping } =
+    req.body;
+
+  if (!skus.length) {
+    throw new CustomError.BadRequestError('No SKU added');
+  }
+
+  const categoryExist = await Category.countDocuments({ _id: category });
+  if (!categoryExist) {
+    throw new CustomError.NotFoundError('No Category with given ID found');
+  }
+
+  const product = await Product.create({
+    name,
+    description,
+    category,
+    skuType,
+    skus,
+    featured,
+    freeShipping,
+    user: req.user.id
+  });
   res.status(StatusCodes.CREATED).json({ product });
 };
 
@@ -43,15 +66,48 @@ const getSingleProduct = async (req, res) => {
 };
 
 const updateProduct = async (req, res) => {
+  const {
+    name,
+    description,
+    category,
+    skuType,
+    skus = [],
+    newSkus = [],
+    featured,
+    freeShipping
+  } = req.body;
+
+  // Updating existing Sku's
+  skus.map(async (sku) => {
+    await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      { $set: { 'skus.$[elem]': sku } },
+      {
+        arrayFilters: [{ 'elem._id': sku._id }]
+        // new: true,
+        // runValidators: true
+      }
+    );
+  });
+
+  // Adding new Sku's
+  newSkus.map(async (sku) => {
+    await Product.findOneAndUpdate(
+      { _id: req.params.id },
+      { $push: { skus: sku } }
+    );
+  });
+
   const product = await Product.findOneAndUpdate(
     { _id: req.params.id },
-    req.body,
+    { name, description, category, skuType, featured, freeShipping },
     { new: true, runValidators: true }
   );
 
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
   }
+
   res.status(StatusCodes.OK).json({ product });
 };
 
@@ -63,7 +119,11 @@ const uploadProductImage = async (req, res) => {
 
   const maxSize = 1024 * 1024;
 
-  const product = await Product.findById(req.params.id);
+  const product = await Product.findOne({
+    _id: req.params.productId,
+    'skus._id': req.params.skuId
+  });
+
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
   }
@@ -84,16 +144,20 @@ const uploadProductImage = async (req, res) => {
     const url = await uploadFile(image, 'products/');
 
     await Product.findOneAndUpdate(
-      { _id: req.params.id },
-      { $push: { images: { name: image.name, url } } },
-      { new: true, runValidators: true }
+      { _id: req.params.productId, 'skus._id': req.params.skuId },
+      { $push: { 'skus.$[elem].images': { name: image.name, url } } },
+      {
+        arrayFilters: [{ 'elem._id': req.params.skuId }],
+        new: true,
+        runValidators: true
+      }
     );
   });
 
   res.status(StatusCodes.OK).json({ msg: 'Images Successfully Updated' });
 };
 
-module.exports = {
+export {
   createProduct,
   getAllProducts,
   getSingleProduct,

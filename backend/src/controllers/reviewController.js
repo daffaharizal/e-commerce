@@ -1,10 +1,12 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
 
-const CustomError = require('../errors');
-const Product = require('../models/Product');
-const Review = require('../models/Review');
-const User = require('../models/User');
-const checkPermission = require('../utils/permissions');
+import Product from '../models/Product';
+import Review from '../models/Review';
+import User from '../models/User';
+
+import checkPermission from '../utils/permissions';
+
+import * as CustomError from '../errors';
 
 const createReview = async (req, res) => {
   const { product: productId } = req.body;
@@ -146,7 +148,7 @@ const getSingleUserReviews = async (req, res) => {
   res.status(StatusCodes.OK).json({ reviews });
 };
 
-module.exports = {
+export {
   createReview,
   getAllReviews,
   getSingleReview,

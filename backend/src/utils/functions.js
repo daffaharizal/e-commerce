@@ -1,6 +1,9 @@
-const fs = require('fs');
-const path = require('path');
-const sharp = require('sharp');
+import fs from 'fs';
+import path from 'path';
+import sharp from 'sharp';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
 
 const rand = () => Math.random().toString(36).substring(2, 12);
 
@@ -13,8 +16,12 @@ const modifyFileName = (fileName) => {
 const uploadFile = async (file, fileDir = '') => {
   const fileName = modifyFileName(file.name);
 
-  const filePath = path.join(path.dirname(__dirname), `../public/uploads/${fileDir}`);
-  if (!fs.existsSync(filePath)){
+  const filePath = path.join(
+    // path.dirname(__dirname),
+    path.dirname(__filename),
+    `../public/uploads/${fileDir}`
+  );
+  if (!fs.existsSync(filePath)) {
     fs.mkdirSync(filePath, { recursive: true });
   }
 
@@ -29,4 +36,4 @@ const uploadFile = async (file, fileDir = '') => {
   return `/static/uploads/${fileDir}${fileName}`;
 };
 
-module.exports = { rand, modifyFileName, uploadFile };
+export { rand, modifyFileName, uploadFile };

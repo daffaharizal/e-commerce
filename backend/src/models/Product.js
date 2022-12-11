@@ -1,4 +1,44 @@
-const mongoose = require('mongoose');
+import mongoose from 'mongoose';
+
+import ImageSchema from './Image';
+
+const ProductSkuSchema = new mongoose.Schema(
+  {
+    sku: {
+      type: String,
+      trim: true,
+      required: [true, 'Please provide sku']
+    },
+    price: {
+      type: Number,
+      required: [true, 'Please provide product price'],
+      default: 0,
+      validate: {
+        validator: (v) => {
+          return v > 0;
+        },
+        message: '{VALUE} is not a positive number'
+      }
+    },
+    stock: {
+      type: Number,
+      required: true,
+      default: 5,
+      validate: {
+        validator: Number.isInteger,
+        message: '{VALUE} is not an integer value'
+      }
+    },
+    features: [{ type: String }],
+    varients: [{ type: String }],
+    images: [ImageSchema]
+  },
+  {
+    toJSON: { virtuals: true },
+    toObject: { virtuals: true },
+    versionKey: false
+  }
+);
 
 const ProductSchema = new mongoose.Schema(
   {
@@ -8,50 +48,17 @@ const ProductSchema = new mongoose.Schema(
       required: [true, 'Please provide product name'],
       maxlength: [100, 'Name can not be more than 100 characters']
     },
-    price: {
-      type: Number,
-      required: [true, 'Please provide product price'],
-      default: 0
-    },
     description: {
       type: String,
       required: [true, 'Please provide product description'],
       maxlength: [1000, 'Description can not be more than 1000 characters']
     },
-    images: [
-      {
-        name: {
-          type: String,
-          required: [true, 'Please provide image name'],
-          maxlength: [64, 'Name can not be more than 64 characters']
-        },
-        url: {
-          type: String,
-          required: [true, 'Please provide image url']
-        },
-        isPublicUrl: {
-          type: Boolean,
-          default: false
-        }
-      }
-    ],
     category: {
-      type: String,
-      required: [true, 'Please provide product category'],
-      enum: ['office', 'kitchen', 'bedroom', 'living']
-    }, // TODO: Change to FK
-    company: {
-      type: String,
-      required: [true, 'Please provide company'],
-      enum: {
-        values: ['damro', 'godrej india', 'usha'],
-        message: '{VALUE} is not supported'
-      } // TODO: Change to FK
+      type: mongoose.Types.ObjectId,
+      ref: 'Category'
     },
-    colors: {
-      type: [String],
-      required: true
-    },
+    skuType: { type: String, required: true, trim: true },
+    skus: [ProductSkuSchema],
     featured: {
       type: Boolean,
       default: false
@@ -59,11 +66,6 @@ const ProductSchema = new mongoose.Schema(
     freeShipping: {
       type: Boolean,
       default: false
-    },
-    inventory: {
-      type: Number,
-      required: true,
-      default: 15
     },
     averageRating: {
       type: Number,
@@ -89,12 +91,12 @@ const ProductSchema = new mongoose.Schema(
 
 ProductSchema.index({ name: 'text', category: 'text', company: 'text' });
 
-ProductSchema.methods.toJSON = function () {
-  const obj = this.toObject();
-  obj.id = obj._id;
-  delete obj._id;
-  return obj;
-};
+// ProductSchema.methods.toJSON = function () {
+//   const obj = this.toObject();
+//   obj.id = obj._id;
+//   delete obj._id;
+//   return obj;
+// };
 
 ProductSchema.virtual('reviews', {
   ref: 'Review',
@@ -103,11 +105,12 @@ ProductSchema.virtual('reviews', {
   justOne: false
 });
 
-// ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
-//   this.populate({
-//     path: 'user',
-//     select: 'fullName'
-//   }).populate('reviews');
-// });
+ProductSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
+  // this.populate({
+  //   path: 'user',
+  //   select: 'fullName'
+  // }).populate('reviews');
+  this.populate('category');
+});
 
-module.exports = mongoose.model('Product', ProductSchema);
+export default mongoose.model('Product', ProductSchema);

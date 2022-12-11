@@ -1,23 +1,56 @@
-const { faker } = require('@faker-js/faker');
+import { faker } from '@faker-js/faker';
 
-const User = require('../models/User');
+import User from '../models/User';
 
 const createRandomUsers = async () => {
   const USERS = [];
-  Array.from({ length: 25 }).forEach(() => {
+  Array.from({ length: 10 }).forEach(() => {
     USERS.push({
       fullName: faker.name.fullName(),
       email: faker.internet.email(),
       dateOfBirth: faker.date.birthdate(),
       password: 'abc12345',
-      role: 'user'
       // password: faker.internet.password(),
-      // avatar: faker.image.avatar(),
+      role: 'user',
       // role: faker.helpers.arrayElement(['admin', 'user'])
+      isAccountVerified: true,
+      avatar: {
+        name: faker.word.adjective(),
+        url: faker.image.avatar(),
+        isPublicUrl: true
+      },
+      billingAddress: [
+        {
+          country: faker.address.country(),
+          province: faker.address.state(),
+          city: faker.address.cityName(),
+          street1: faker.address.streetAddress(),
+          street2: faker.address.street(),
+          zip: faker.address.zipCode()
+        }
+      ],
+      shippingAddress: [
+        {
+          country: faker.address.country(),
+          province: faker.address.state(),
+          city: faker.address.cityName(),
+          street1: faker.address.streetAddress(),
+          street2: faker.address.street(),
+          zip: faker.address.zipCode()
+        },
+        {
+          country: faker.address.country(),
+          province: faker.address.state(),
+          city: faker.address.cityName(),
+          street1: faker.address.streetAddress(),
+          street2: faker.address.street(),
+          zip: faker.address.zipCode()
+        }
+      ]
     });
   });
   await User.create(...USERS);
   return USERS;
 };
 
-module.exports = createRandomUsers;
+export default createRandomUsers;

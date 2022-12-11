@@ -1,5 +1,5 @@
-// const path = require('path');
-const winston = require('winston');
+// import  path from 'path';
+import winston from 'winston';
 
 // define the custom settings for each transport (file, console)
 const options = {
@@ -25,7 +25,7 @@ const options = {
 };
 
 // instantiate a new Winston Logger with the settings defined above
-const logger = winston.createLogger({
+const winstonLogger = winston.createLogger({
   transports: [
     // new winston.transports.File(options.file),
     new winston.transports.Console(options.console)
@@ -34,12 +34,12 @@ const logger = winston.createLogger({
 });
 
 // create a stream object with a 'write' function that will be used by `morgan`
-logger.stream = {
+winstonLogger.stream = {
   write: function (message) {
     // use the 'info' log level so the output will be picked up by both
     // transports (file and console)
-    logger.info(message);
+    winstonLogger.info(message);
   }
 };
 
-module.exports = logger;
+export default winstonLogger;

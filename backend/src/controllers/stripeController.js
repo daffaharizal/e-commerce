@@ -1,13 +1,16 @@
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
 
-const CustomError = require('../errors');
-const Order = require('../models/Order');
-const { stripeEventListener } = require('../utils/stripe');
+import Order from '../models/Order';
+
+import ENV from '../utils/constants';
+import { stripeEventListener } from '../utils/stripe';
+
+import * as CustomError from '../errors';
 
 const getStripeConfig = (req, res) => {
   res
     .status(StatusCodes.OK)
-    .json({ publishableKey: process.env.STRIPE_PUBLISHABLE_KEY });
+    .json({ publishableKey: ENV.STRIPE_PUBLISHABLE_KEY });
 };
 
 const stripeWebhook = async (req, res) => {
@@ -15,9 +18,9 @@ const stripeWebhook = async (req, res) => {
 
   // Only verify the event if you have an endpoint secret defined.
   // Otherwise use the basic event deserialized with JSON.parse
-  const endpointSecret = process.env.STRIPE_WEBHOOK_ENDPOINT_SECRET;
+  const endpointSecret = ENV.STRIPE_WEBHOOK_ENDPOINT_SECRET;
 
-  const NODE_ENV = process.env.NODE_ENV;
+  const NODE_ENV = ENV.NODE_ENV;
 
   if (endpointSecret && NODE_ENV === 'production') {
     // Get the signature sent by Stripe
@@ -33,6 +36,7 @@ const stripeWebhook = async (req, res) => {
   switch (event.type) {
     case 'payment_intent.succeeded':
       const paymentIntent = event.data.object;
+
       const {
         metadata: { order_id: orderId }
       } = paymentIntent;
@@ -58,4 +62,4 @@ const stripeWebhook = async (req, res) => {
   res.send();
 };
 
-module.exports = { getStripeConfig, stripeWebhook };
+export { getStripeConfig, stripeWebhook };

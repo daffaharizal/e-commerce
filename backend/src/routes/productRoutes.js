@@ -1,45 +1,41 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const {
-  createProduct,
-  getAllProducts,
-  getSingleProduct,
-  updateProduct,
-  uploadProductImage
-} = require('../controllers/productController.js');
-
-const { getSingleProductReviews } = require('../controllers/reviewController');
-
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
+import { offsetPagination } from '../middleware/pagination';
 
-const { offsetPagination } = require('../middleware/pagination');
+import * as productController from '../controllers/productController';
+import * as reviewController from '../controllers/reviewController';
+
+const router = express.Router();
 
 router
   .route('/')
-  .get([offsetPagination], getAllProducts)
-  .post([authenticateUser, authorizePermissions('admin')], createProduct);
+  .get([offsetPagination], productController.getAllProducts)
+  .post(
+    [authenticateUser, authorizePermissions('admin')],
+    productController.createProduct
+  );
 
 router.patch(
   '/update/:id',
   [authenticateUser, authorizePermissions('admin')],
-  updateProduct
+  productController.updateProduct
 );
 router.post(
-  '/upload-image/:id',
+  '/upload-image/:productId/sku/:skuId',
   [authenticateUser, authorizePermissions('admin')],
-  uploadProductImage
+  productController.uploadProductImage
 );
 
-router.get('/:id', getSingleProduct);
+router.get('/:id', productController.getSingleProduct);
 
 router.get(
   '/:id/reviews',
   [authenticateUser, offsetPagination],
-  getSingleProductReviews
+  reviewController.getSingleProductReviews
 );
 
-module.exports = router;
+export default router;

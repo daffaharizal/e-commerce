@@ -1,5 +1,6 @@
-const CustomError = require('../errors');
-const { validateToken } = require('../utils/jwt');
+import { validateToken } from '../utils/jwt';
+
+import * as CustomError from '../errors';
 
 const authenticateUser = (req, res, next) => {
   const token = req.signedCookies.token;
@@ -27,4 +28,4 @@ const authorizePermissions = (...roles) => {
   };
 };
 
-module.exports = { authenticateUser, authorizePermissions };
+export { authenticateUser, authorizePermissions };

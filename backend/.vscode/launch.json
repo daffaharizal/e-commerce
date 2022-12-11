@@ -7,9 +7,7 @@
       "request": "attach",
       "restart": true,
       "port": 9229,
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
+      "skipFiles": ["<node_internals>/**"],
       "address": "localhost",
       "localRoot": "${workspaceFolder}",
       "remoteRoot": "/app",

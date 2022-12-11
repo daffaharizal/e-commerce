@@ -1,4 +1,4 @@
-const CustomError = require('../errors');
+import * as CustomError from '../errors';
 
 const offsetPagination = (req, res, next) => {
   if (isNaN(Math.floor(req.query.limit)) || isNaN(Math.floor(req.query.page))) {
@@ -12,4 +12,4 @@ const offsetPagination = (req, res, next) => {
   next();
 };
 
-module.exports = { offsetPagination };
+export { offsetPagination };

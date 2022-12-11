@@ -1,8 +1,8 @@
-const { faker } = require('@faker-js/faker');
+import { faker } from '@faker-js/faker';
 
-const Product = require('../models/Product');
-const Review = require('../models/Review');
-const User = require('../models/User');
+import Product from '../models/Product';
+import Review from '../models/Review';
+import User from '../models/User';
 
 const createRandomReviews = async () => {
   const REVIEWS = [];
@@ -24,4 +24,4 @@ const createRandomReviews = async () => {
   return REVIEWS;
 };
 
-module.exports = createRandomReviews;
+export default createRandomReviews;

@@ -1,13 +1,14 @@
-const CustomAPIError = require('../errors/custom-api');
-const { StatusCodes } = require('http-status-codes');
+import { StatusCodes } from 'http-status-codes';
+
+import * as CustomAPIError from '../errors/custom-api';
 
 const errorHandlerMiddleware = (err, req, res, next) => {
-  if (err instanceof CustomAPIError) {
-    return res.status(err.statusCode).json({ msg: err.message });
-  }
+  // if (err instanceof CustomAPIError) {
+  //   return res.status(err.statusCode).json({ msg: err.message });
+  // }
   return res
     .status(StatusCodes.INTERNAL_SERVER_ERROR)
     .json({ msg: err.message });
 };
 
-module.exports = errorHandlerMiddleware;
+export default errorHandlerMiddleware;

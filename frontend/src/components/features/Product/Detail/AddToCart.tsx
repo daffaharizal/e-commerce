@@ -8,15 +8,22 @@ import { CartConsumer } from 'context';
 
 import styles from 'assets/css/Product.module.css';
 
-import { IProduct } from '../types';
+import { IProduct, SkuType } from '../types';
 
-export default function AddToCart({ product }: { product: IProduct }) {
+export default function AddToCart({
+  product,
+  sku
+}: {
+  product: IProduct;
+  sku: SkuType;
+}) {
   const [cart, cartDispatch] = CartConsumer();
   const [quantity, setQuantity] = React.useState<number>(1);
 
   const handleAddToCart = () => {
     const lineItemExist = cart.lineItems.some(
-      (lineItem) => lineItem.itemId === product.id
+      (lineItem) =>
+        lineItem.productId === product.id && lineItem.skuId === sku.id
     );
 
     const actionType = lineItemExist ? 'UPDATE_LINE_ITEM' : 'ADD_LINE_ITEM';
@@ -24,11 +31,14 @@ export default function AddToCart({ product }: { product: IProduct }) {
     cartDispatch({
       type: actionType,
       payload: {
-        itemId: product.id,
-        item: product,
+        productId: product.id,
+        productName: product.name,
+        productCategory: product.category.name,
+        skuId: sku.id,
+        sku,
+        price: sku.price,
         quantity,
-        discount: 0,
-        price: product.price
+        discount: 0
       }
     });
   };

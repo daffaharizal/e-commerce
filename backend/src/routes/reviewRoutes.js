@@ -1,28 +1,32 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const {
-  createReview,
-  getAllReviews,
-  getSingleReview,
-  updateReview,
-  deleteReview
-} = require('../controllers/reviewController');
-
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
+
+import * as reviewController from '../controllers/reviewController';
+
+const router = express.Router();
 
 router
   .route('/')
-  .get([authenticateUser, authorizePermissions('admin')], getAllReviews)
-  .post([authenticateUser, authorizePermissions('user')], createReview);
+  .get(
+    [authenticateUser, authorizePermissions('admin')],
+    reviewController.getAllReviews
+  )
+  .post(
+    [authenticateUser, authorizePermissions('user')],
+    reviewController.createReview
+  );
 
 router
   .route('/:id')
-  .get(getSingleReview)
-  .patch([authenticateUser, authorizePermissions('user')], updateReview)
-  .delete(authenticateUser, deleteReview);
+  .get(reviewController.getSingleReview)
+  .patch(
+    [authenticateUser, authorizePermissions('user')],
+    reviewController.updateReview
+  )
+  .delete(authenticateUser, reviewController.deleteReview);
 
-module.exports = router;
+export default router;

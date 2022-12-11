@@ -1,39 +1,41 @@
-const express = require('express');
-const router = express.Router();
+import express from 'express';
 
-const {
-  getAllUsers,
-  getSingleUser,
-  getCurrentUser,
-  updateUser,
-  updatePassword
-} = require('../controllers/userController');
-
-const { getSingleUserReviews } = require('../controllers/reviewController');
-
-const {
+import {
   authenticateUser,
   authorizePermissions
-} = require('../middleware/authentication');
+} from '../middleware/authentication';
 
-router.get('/', [authenticateUser, authorizePermissions('admin')], getAllUsers);
+import * as reviewController from '../controllers/reviewController';
+import * as userController from '../controllers/userController';
 
-router.get('/showme', authenticateUser, getCurrentUser);
+const router = express.Router();
 
-router.post('/update-user', authenticateUser, updateUser);
+router.get(
+  '/',
+  [authenticateUser, authorizePermissions('admin')],
+  userController.getAllUsers
+);
 
-router.post('/update-password', authenticateUser, updatePassword);
+router.get('/showme', authenticateUser, userController.getCurrentUser);
+
+router.post('/update-user', authenticateUser, userController.updateUser);
+
+router.post(
+  '/update-password',
+  authenticateUser,
+  userController.updatePassword
+);
 
 router.get(
   '/:id',
   [authenticateUser, authorizePermissions('admin')],
-  getSingleUser
+  userController.getSingleUser
 );
 
 router.get(
   '/:id/product-reviews',
   [authenticateUser, authorizePermissions('admin', 'user')],
-  getSingleUserReviews
+  reviewController.getSingleUserReviews
 );
 
-module.exports = router;
+export default router;

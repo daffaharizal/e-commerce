@@ -1,14 +1,16 @@
-const jwt = require('jsonwebtoken');
+import jwt from 'jsonwebtoken';
+
+import ENV from './constants';
 
 const createJWT = ({ payload }) => {
-  const token = jwt.sign(payload, process.env.JWT_SECRET, {
-    expiresIn: process.env.JWT_LIFETIME
+  const token = jwt.sign(payload, ENV.JWT_SECRET, {
+    expiresIn: ENV.JWT_LIFETIME
   });
   return token;
 };
 
 const validateToken = ({ token }) => {
-  return jwt.verify(token, process.env.JWT_SECRET);
+  return jwt.verify(token, ENV.JWT_SECRET);
 };
 
 const attachCookiesToResponse = ({ res, payload }) => {
@@ -19,9 +21,9 @@ const attachCookiesToResponse = ({ res, payload }) => {
   res.cookie('token', token, {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
-    secure: process.env.NODE_ENV === 'production',
+    secure: ENV.NODE_ENV === 'production',
     signed: true
   });
 };
 
-module.exports = { createJWT, validateToken, attachCookiesToResponse };
+export { createJWT, validateToken, attachCookiesToResponse };

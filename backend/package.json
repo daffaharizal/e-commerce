@@ -4,37 +4,44 @@
   "description": "E-Commerce backend build using Node & Express.js",
   "author": "AJITH P MOHAN <ajithpmohan90@gmail.com>",
   "license": "MIT",
+  "type": "module",
   "scripts": {
-    "start": "node src/app.js",
-    "dev": "nodemon --inspect=0.0.0.0:9229 src/app.js",
-    "format": "prettier --config prettier.config.js './**/*.{js,jsx}' --write"
+    "start": "node -r dotenv/config --es-module-specifier-resolution=node src/app.js",
+    "dev": "nodemon -r dotenv/config --experimental-specifier-resolution=node --inspect=0.0.0.0:9229 src/app.js",
+    "format:prettier": "prettier --config .prettierrc.json './**/*.{js,jsx}' --write",
+    "format:rome": "yarn rome format src/ --write"
   },
   "dependencies": {
+    "@sendgrid/mail": "^7.7.0",
     "bcryptjs": "^2.4.3",
     "cookie-parser": "^1.4.6",
     "cors": "^2.8.5",
+    "crypto-js": "^4.1.1",
     "dotenv": "^16.0.3",
     "express": "^4.18.2",
     "express-async-errors": "^3.1.1",
     "express-fileupload": "^1.4.0",
+    "express-validator": "^6.14.2",
     "http-status-codes": "^2.2.0",
     "jsonwebtoken": "^8.5.1",
     "moment": "^2.29.4",
-    "mongoose": "^6.6.5",
+    "mongoose": "^6.7.5",
     "morgan": "^1.10.0",
-    "sharp": "^0.31.1",
-    "stripe": "^10.14.0",
+    "sharp": "^0.31.2",
+    "stripe": "^11.1.0",
     "validator": "^13.7.0",
     "winston": "^3.8.2"
   },
   "devDependencies": {
     "@faker-js/faker": "^7.6.0",
-    "eslint": "^8.25.0",
+    "@trivago/prettier-plugin-sort-imports": "^4.0.0",
+    "eslint": "^8.29.0",
     "eslint-config-standard": "^17.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-node": "^11.1.0",
-    "eslint-plugin-promise": "^6.1.0",
+    "eslint-plugin-promise": "^6.1.1",
     "nodemon": "^2.0.20",
-    "prettier": "^2.7.1"
+    "prettier": "^2.8.0",
+    "rome": "^10.0.1"
   }
 }
