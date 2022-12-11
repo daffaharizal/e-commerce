@@ -21,7 +21,7 @@ import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
 
-import { IProduct, IProductsResponse } from '../types';
+import { IProduct, IProductsResponse, SkuType } from '../types';
 import ProductCard from './ProductCard';
 
 export default function ProductListPage() {
@@ -37,26 +37,33 @@ export default function ProductListPage() {
 
   const [cart, cartDispatch] = CartConsumer();
 
-  const handleAddToCart = (product: IProduct) => {
+  const handleAddToCart = (product: IProduct, sku: SkuType) => {
     const lineItemExist = cart.lineItems.some(
-      (lineItem) => lineItem.itemId === product.id
+      (lineItem) =>
+        lineItem.productId === product.id && lineItem.skuId === sku.id
     );
 
     const actionType = lineItemExist ? 'UPDATE_LINE_ITEM' : 'ADD_LINE_ITEM';
     const quantity = lineItemExist
       ? cart.lineItems
-          .filter((lineItem) => lineItem.itemId === product.id)
+          .filter(
+            (lineItem) =>
+              lineItem.productId === product.id && lineItem.skuId === sku.id
+          )
           .reduce((accumulator, lineItem) => accumulator + lineItem.quantity, 1)
       : 1;
 
     cartDispatch({
       type: actionType,
       payload: {
-        itemId: product.id,
-        item: product,
+        productId: product.id,
+        productName: product.name,
+        productCategory: product.category.name,
+        skuId: sku.id,
+        sku,
+        price: sku.price,
         quantity,
-        discount: 0,
-        price: product.price
+        discount: 0
       }
     });
   };
@@ -123,6 +130,7 @@ export default function ProductListPage() {
           <ProductCard
             key={product.id}
             product={product}
+            sku={product.skus[0]}
             serverUrl={serverUrl}
             handleAddToCart={handleAddToCart}
           />

@@ -11,7 +11,7 @@ export default function ProductPage() {
     <div>
       <Routes>
         <Route index element={<ProductListPage />} />
-        <Route path=":productId" element={<ProductDetailPage />} />
+        <Route path=":productId/sku/:skuId" element={<ProductDetailPage />} />
       </Routes>
 
       <Outlet />

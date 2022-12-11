@@ -80,7 +80,7 @@ export default function WishlistPage() {
                               {item.product.name}
                             </Link>
                             <span className="fw-bold text-danger">
-                              ${item.product.price}
+                              {/* ${item.product.price} */}
                             </span>
                           </Card.Title>
                           <ListGroup as="ul" variant="flush">
@@ -92,10 +92,7 @@ export default function WishlistPage() {
                                 <span>{item.product.numOfReviews} Reviews</span>
                               </div>
                               <Card.Text>
-                                Category: {item.product.category}
-                              </Card.Text>
-                              <Card.Text>
-                                Company: {item.product.company}
+                                Category: {item.product.category.name}
                               </Card.Text>
                             </ListGroup.Item>
                           </ListGroup>

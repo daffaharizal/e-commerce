@@ -3,7 +3,7 @@ import React from 'react';
 import { FaLongArrowAltLeft, FaMinus, FaPlus, FaTimes } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-import { IProduct } from 'components/features/Product/types';
+import { SkuType } from 'components/features/Product/types';
 
 import ROUTES from 'constant/routes';
 
@@ -11,29 +11,38 @@ import { CartConsumer } from 'context';
 
 import NoImage from 'assets/images/noproductimage.png';
 
+type updateSkuQtyTypes = {
+  count: number;
+  productId: string;
+  productName: string;
+  productCategory: string;
+  sku: SkuType;
+  quantity: number;
+};
+
 export default function CartPage() {
   const [{ lineItems, subTotal, netAmount }, cartDispatch] = CartConsumer();
 
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
-  const removeItem = (itemId: string) => {
+  const removeItem = (productId: string, skuId: string) => {
     cartDispatch({
       type: 'REMOVE_LINE_ITEM',
       payload: {
-        itemId
+        productId,
+        skuId
       }
     });
   };
 
-  const updateItemQty = ({
+  const updateSkuQty = ({
     count,
-    item,
+    productId,
+    productName,
+    productCategory,
+    sku,
     quantity
-  }: {
-    count: number;
-    item: IProduct;
-    quantity: number;
-  }) => {
+  }: updateSkuQtyTypes) => {
     if (count < 0 && quantity === 1) {
       return;
     }
@@ -41,11 +50,14 @@ export default function CartPage() {
     cartDispatch({
       type: 'UPDATE_LINE_ITEM',
       payload: {
-        itemId: item.id,
-        item,
+        productId,
+        productName,
+        productCategory,
+        skuId: sku.id,
+        sku,
+        price: sku.price,
         quantity: count < 0 ? quantity - 1 : quantity + 1,
-        discount: 0,
-        price: item.price
+        discount: 0
       }
     });
   };
@@ -70,90 +82,108 @@ export default function CartPage() {
                       </div>
                       <hr className="my-4" />
                       {lineItems.length > 0 &&
-                        lineItems.map(({ itemId, item, quantity, price }) => (
-                          <React.Fragment key={itemId}>
-                            <div className="row mb-4 d-flex justify-content-between align-items-center">
-                              <div className="col-md-2 col-lg-2 col-xl-2">
-                                <NavLink to={`${ROUTES.PRODUCTS}/${itemId}`}>
-                                  {item.images.length > 0 ? (
-                                    <img
-                                      src={
-                                        item.images[0].isPublicUrl
-                                          ? item.images[0].url
-                                          : `${serverUrl}${item.images[0].url}`
-                                      }
-                                      className="img-fluid rounded-3 text-black text-decoration-none"
-                                      alt={item.images[0].name}
-                                    />
-                                  ) : (
-                                    <img
-                                      src={NoImage}
-                                      className="img-fluid rounded-3 text-black text-decoration-none"
-                                      alt="noimage"
-                                    />
-                                  )}
-                                </NavLink>
-                              </div>
-                              <div className="col-md-3 col-lg-3 col-xl-3">
-                                <h6 className="text-muted text-capitalize">
-                                  {item.category}
-                                </h6>
-                                <h6 className="text-black mb-0 text-capitalize">
+                        lineItems.map(
+                          ({
+                            productId,
+                            productName,
+                            productCategory,
+                            sku,
+                            quantity,
+                            price
+                          }) => (
+                            <React.Fragment key={sku.id}>
+                              <div className="row mb-4 d-flex justify-content-between align-items-center">
+                                <div className="col-md-2 col-lg-2 col-xl-2">
                                   <NavLink
-                                    to={`${ROUTES.PRODUCTS}/${itemId}`}
-                                    className="text-black text-decoration-none">
-                                    {item.name}
+                                    to={`${ROUTES.PRODUCTS}/${productId}`}>
+                                    {sku.images.length > 0 ? (
+                                      <img
+                                        src={
+                                          sku.images[0].isPublicUrl
+                                            ? sku.images[0].url
+                                            : `${serverUrl}${sku.images[0].url}`
+                                        }
+                                        className="img-fluid rounded-3 text-black text-decoration-none"
+                                        alt={sku.images[0].name}
+                                      />
+                                    ) : (
+                                      <img
+                                        src={NoImage}
+                                        className="img-fluid rounded-3 text-black text-decoration-none"
+                                        alt="noimage"
+                                      />
+                                    )}
                                   </NavLink>
-                                </h6>
-                              </div>
-                              <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
-                                <button
-                                  className="btn btn-link px-2"
-                                  onClick={() =>
-                                    updateItemQty({
-                                      count: -1,
-                                      item,
-                                      quantity
-                                    })
-                                  }>
-                                  <FaMinus size={13} />
-                                </button>
+                                </div>
+                                <div className="col-md-3 col-lg-3 col-xl-3">
+                                  <h6 className="text-muted text-capitalize">
+                                    {productCategory}
+                                  </h6>
+                                  <h6 className="text-black mb-0 text-capitalize">
+                                    <NavLink
+                                      to={`${ROUTES.PRODUCTS}/${productId}/sku/${sku.id}`}
+                                      className="text-black text-decoration-none">
+                                      {productName} - {sku.sku}
+                                    </NavLink>
+                                  </h6>
+                                </div>
+                                <div className="col-md-3 col-lg-3 col-xl-2 d-flex">
+                                  <button
+                                    className="btn btn-link px-2"
+                                    onClick={() =>
+                                      updateSkuQty({
+                                        count: -1,
+                                        productId,
+                                        productName,
+                                        productCategory,
+                                        sku,
+                                        quantity
+                                      })
+                                    }>
+                                    <FaMinus size={13} />
+                                  </button>
 
-                                <input
-                                  type="text"
-                                  name="quantity"
-                                  className="form-control form-control-sm qty"
-                                  value={quantity}
-                                  onChange={(e) => e.preventDefault()}
-                                  disabled
-                                />
+                                  <input
+                                    type="text"
+                                    name="quantity"
+                                    className="form-control form-control-sm qty"
+                                    value={quantity}
+                                    onChange={(e) => e.preventDefault()}
+                                    disabled
+                                  />
 
-                                <button
-                                  className="btn btn-link px-2"
-                                  onClick={() =>
-                                    updateItemQty({
-                                      count: +1,
-                                      item,
-                                      quantity
-                                    })
-                                  }>
-                                  <FaPlus size={13} />
-                                </button>
+                                  <button
+                                    className="btn btn-link px-2"
+                                    onClick={() =>
+                                      updateSkuQty({
+                                        count: +1,
+                                        productId,
+                                        productName,
+                                        productCategory,
+                                        sku,
+                                        quantity
+                                      })
+                                    }>
+                                    <FaPlus size={13} />
+                                  </button>
+                                </div>
+                                <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
+                                  <h6 className="mb-0">€ {price}</h6>
+                                </div>
+                                <div className="col-md-1 col-lg-1 col-xl-1 text-end">
+                                  <a
+                                    className="text-muted"
+                                    onClick={() =>
+                                      removeItem(productId, sku.id)
+                                    }>
+                                    <FaTimes size={13} />
+                                  </a>
+                                </div>
                               </div>
-                              <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                <h6 className="mb-0">€ {price}</h6>
-                              </div>
-                              <div className="col-md-1 col-lg-1 col-xl-1 text-end">
-                                <a
-                                  className="text-muted"
-                                  onClick={() => removeItem(itemId)}>
-                                  <FaTimes size={13} />
-                                </a>
-                              </div>
-                            </div>
-                            <hr className="my-4" />
-                          </React.Fragment>
-                        ))}
+                              <hr className="my-4" />
+                            </React.Fragment>
+                          )
+                        )}
 
                       <div className="pt-5">
                         <h6 className="mb-0">

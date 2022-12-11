@@ -36,8 +36,8 @@ export function cartReducer(state: ICart, action: ACTIONTYPE) {
     }
     case 'UPDATE_LINE_ITEM': {
       const lineItems = state.lineItems.map((lineItem) => {
-        const { itemId, quantity } = payload as ILineItem;
-        if (lineItem.itemId === itemId) {
+        const { productId, skuId, quantity } = payload as ILineItem;
+        if (lineItem.productId === productId && lineItem.skuId === skuId) {
           return {
             ...lineItem,
             quantity
@@ -45,7 +45,6 @@ export function cartReducer(state: ICart, action: ACTIONTYPE) {
         }
         return lineItem;
       });
-
       return {
         ...state,
         lineItems,
@@ -56,7 +55,7 @@ export function cartReducer(state: ICart, action: ACTIONTYPE) {
     }
     case 'REMOVE_LINE_ITEM': {
       const lineItems = state.lineItems.filter(
-        (lineItem) => lineItem.itemId !== payload.itemId
+        (lineItem) => lineItem.skuId !== payload.skuId
       );
       return {
         ...state,

@@ -1,38 +1,48 @@
-export interface IUser {
+export type IUser = {
   _id: string;
   fullName: string;
-}
+};
 
-export interface IProductImages {
+export type IProductImages = {
   name: string;
   url: string;
   isPublicUrl: boolean;
-}
+};
 
-export interface IProductReviews {
+export type IProductReviews = {
   id: string;
   rating: number;
   title: string;
   comment: string;
   user: IUser;
-}
+};
 
-export interface IProduct {
+export type SkuType = {
+  id: string;
+  sku: string;
+  price: number;
+  stock: number;
+  features: string[];
+  varients: string[];
+  images: IProductImages[];
+};
+
+export type IProduct = {
   id: string;
   name: string;
-  category: string;
-  company: string;
   description: string;
-  colors: string[];
-  price: number;
-  inventory: number;
-  averageRating: number;
-  numOfReviews: number;
-  images: IProductImages[];
-  reviews: IProductReviews[];
+  category: {
+    _id: string;
+    name: string;
+  };
+  skuType: string;
+  skus: SkuType[];
   featured: boolean;
   freeShipping: boolean;
-}
+  averageRating: number;
+  numOfReviews: number;
+  reviews: IProductReviews[];
+};
 
 export interface IProductsResponse {
   products: IProduct[];
@@ -49,9 +59,11 @@ export interface IProductResponse {
   product: IProduct;
 }
 
-export interface IProductItemProps extends IProductResponse {
+export interface ProductCardPropsType {
+  product: IProduct;
+  sku: SkuType;
   serverUrl: string;
-  handleAddToCart: (product: IProduct) => void;
+  handleAddToCart: (product: IProduct, sku: SkuType) => void;
 }
 
 export type ProductReviewsResponseTypes = {
