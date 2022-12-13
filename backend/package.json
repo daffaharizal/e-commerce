@@ -6,8 +6,8 @@
   "license": "MIT",
   "type": "module",
   "scripts": {
-    "start": "node -r dotenv/config --es-module-specifier-resolution=node src/app.js",
-    "dev": "nodemon -r dotenv/config --experimental-specifier-resolution=node --inspect=0.0.0.0:9229 src/app.js",
+    "start": "node -r dotenv/config src/app.js",
+    "dev": "nodemon -r dotenv/config --inspect=0.0.0.0:9229 src/app.js",
     "format:prettier": "prettier --config .prettierrc.json './**/*.{js,jsx}' --write",
     "format:rome": "yarn rome format src/ --write"
   },

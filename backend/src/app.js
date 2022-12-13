@@ -12,27 +12,24 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 // database
-import connectDB from './db/connect';
+import connectDB from './db/connect.js';
 
 // middleware
-import errorHandlerMiddleware from './middleware/error-handler';
-import notFound from './middleware/not-found';
+import errorHandlerMiddleware from './middleware/error-handler.js';
+import notFound from './middleware/not-found.js';
 
 // routers
-import authRouter from './routes/authRoutes';
-import categoryRouter from './routes/categoryRoutes';
-import orderRouter from './routes/orderRoutes';
-import productRouter from './routes/productRoutes';
-import reviewRouter from './routes/reviewRoutes';
-import stripeRouter from './routes/stripeRoutes';
-import userRouter from './routes/userRoutes';
-import wishlistRouter from './routes/wishlistRoutes';
+import authRouter from './routes/authRoutes.js';
+import categoryRouter from './routes/categoryRoutes.js';
+import orderRouter from './routes/orderRoutes.js';
+import productRouter from './routes/productRoutes.js';
+import reviewRouter from './routes/reviewRoutes.js';
+import stripeRouter from './routes/stripeRoutes.js';
+import userRouter from './routes/userRoutes.js';
+import wishlistRouter from './routes/wishlistRoutes.js';
 
-import ENV from './utils/constants';
-import winstonLogger from './utils/winston';
-
-import createRandomProducts from './seed/products';
-import createRandomUsers from './seed/users';
+import ENV from './utils/constants.js';
+import winstonLogger from './utils/winston.js';
 
 dotenv.config();
 
@@ -82,8 +79,6 @@ const start = async () => {
     await connectDB(ENV.MONGODB_URI);
 
     app.listen(port, () => {
-      // createRandomUsers();
-      // createRandomProducts();
       console.log(`Server is listening on port ${port}...`);
     });
   } catch (error) {

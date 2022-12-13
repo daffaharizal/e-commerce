@@ -3,10 +3,10 @@ import express from 'express';
 import {
   authenticateUser,
   authorizePermissions
-} from '../middleware/authentication';
-import { offsetPagination } from '../middleware/pagination';
+} from '../middleware/authentication.js';
+import { offsetPagination } from '../middleware/pagination.js';
 
-import * as categoryController from '../controllers/categoryController';
+import * as categoryController from '../controllers/categoryController.js';
 
 const router = express.Router();
 

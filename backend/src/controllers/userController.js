@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes';
 
-import User from '../models/User';
+import User from '../models/User.js';
 
-import { attachCookiesToResponse } from '../utils/jwt';
+import * as CustomError from '../errors/index.js';
 
-import * as CustomError from '../errors';
+import { attachCookiesToResponse } from '../utils/jwt.js';
 
 const getAllUsers = async (req, res) => {
   const users = await User.find({});
@@ -31,7 +31,7 @@ const updateUser = async (req, res) => {
   } = req;
 
   const { email, fullName, dateOfBirth } = req.body;
-  if (!email || !fullName) {
+  if (!(email || fullName)) {
     throw new CustomError.BadRequestError('Please provide Email & Full Name');
   }
 
@@ -62,7 +62,7 @@ const updatePassword = async (req, res) => {
   oldPassword = oldPassword.trim();
   newPassword = newPassword.trim();
 
-  if (!oldPassword || !newPassword) {
+  if (!(oldPassword || newPassword)) {
     throw new CustomError.BadRequestError(
       'Please provide Old Password & New Password values'
     );

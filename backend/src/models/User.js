@@ -3,7 +3,7 @@ import moment from 'moment';
 import mongoose from 'mongoose';
 import validator from 'validator';
 
-import ImageSchema from './Image';
+import ImageSchema from './Image.js';
 
 const AddressSchema = new mongoose.Schema({
   country: {
@@ -76,14 +76,16 @@ const UserSchema = new mongoose.Schema(
 );
 
 UserSchema.pre('save', async function () {
-  if (!this.isModified('password')) return;
+  if (!this.isModified('password')) {
+    return;
+  }
   const salt = await bcrypt.genSalt(12);
   this.password = await bcrypt.hash(this.password, salt);
 });
 
 // Error Handling Middleware
 UserSchema.post('save', function ({ errors }, doc, next) {
-  if (!!errors.dateOfBirth) {
+  if (errors.dateOfBirth) {
     next(new Error('Provide a valid date of birth'));
   } else {
     next();

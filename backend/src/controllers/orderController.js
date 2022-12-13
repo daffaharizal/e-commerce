@@ -1,12 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 
-import Order from '../models/Order';
-import Product from '../models/Product';
+import Order from '../models/Order.js';
+import Product from '../models/Product.js';
 
-import checkPermission from '../utils/permissions';
-import * as stripe from '../utils/stripe';
+import * as CustomError from '../errors/index.js';
 
-import * as CustomError from '../errors';
+import checkPermission from '../utils/permissions.js';
+import * as stripe from '../utils/stripe.js';
 
 const calculateOrderAmount = ({ subTotal, shippingFee, tax }) =>
   subTotal + tax + shippingFee;
@@ -18,7 +18,7 @@ const createOrder = async (req, res) => {
     throw new CustomError.NotFoundError('No Products Found');
   }
 
-  if (!tax || !shippingFee) {
+  if (!(tax || shippingFee)) {
     throw new CustomError.BadRequestError(
       'Please provide tax and shipping fee'
     );
@@ -30,7 +30,7 @@ const createOrder = async (req, res) => {
   for (const item of cartItems) {
     const { productId, quantity } = item;
 
-    if (!productId || !quantity) {
+    if (!(productId || quantity)) {
       throw new CustomError.BadRequestError('Please add valid products');
     }
 

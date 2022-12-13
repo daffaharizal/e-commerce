@@ -1,12 +1,12 @@
 import { StatusCodes } from 'http-status-codes';
 
-import Product from '../models/Product';
-import Review from '../models/Review';
-import User from '../models/User';
+import Product from '../models/Product.js';
+import Review from '../models/Review.js';
+import User from '../models/User.js';
 
-import checkPermission from '../utils/permissions';
+import * as CustomError from '../errors/index.js';
 
-import * as CustomError from '../errors';
+import checkPermission from '../utils/permissions.js';
 
 const createReview = async (req, res) => {
   const { product: productId } = req.body;

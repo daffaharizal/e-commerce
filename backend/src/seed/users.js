@@ -1,6 +1,6 @@
 import { faker } from '@faker-js/faker';
 
-import User from '../models/User';
+import User from '../models/User.js';
 
 const createRandomUsers = async () => {
   const USERS = [];

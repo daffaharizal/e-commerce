@@ -3,9 +3,9 @@ import express from 'express';
 import {
   authenticateUser,
   authorizePermissions
-} from '../middleware/authentication';
+} from '../middleware/authentication.js';
 
-import * as wishlistController from '../controllers/wishlistController';
+import * as wishlistController from '../controllers/wishlistController.js';
 
 const router = express.Router();
 

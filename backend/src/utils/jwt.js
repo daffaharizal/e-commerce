@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 
-import ENV from './constants';
+import ENV from './constants.js';
 
 const createJWT = ({ payload }) => {
   const token = jwt.sign(payload, ENV.JWT_SECRET, {

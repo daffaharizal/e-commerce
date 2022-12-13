@@ -3,9 +3,9 @@ import express from 'express';
 import {
   authenticateUser,
   authorizePermissions
-} from '../middleware/authentication';
+} from '../middleware/authentication.js';
 
-import * as orderController from '../controllers/orderController';
+import * as orderController from '../controllers/orderController.js';
 
 const router = express.Router();
 

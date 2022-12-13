@@ -1,6 +1,6 @@
-import { validateToken } from '../utils/jwt';
+import * as CustomError from '../errors/index.js';
 
-import * as CustomError from '../errors';
+import { validateToken } from '../utils/jwt.js';
 
 const authenticateUser = (req, res, next) => {
   const token = req.signedCookies.token;

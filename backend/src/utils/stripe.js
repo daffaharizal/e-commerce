@@ -1,6 +1,6 @@
 import stripe from 'stripe';
 
-import ENV from './constants';
+import ENV from './constants.js';
 
 stripe(ENV.STRIPE_SECRET_KEY); // Check import later
 

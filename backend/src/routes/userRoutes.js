@@ -3,10 +3,10 @@ import express from 'express';
 import {
   authenticateUser,
   authorizePermissions
-} from '../middleware/authentication';
+} from '../middleware/authentication.js';
 
-import * as reviewController from '../controllers/reviewController';
-import * as userController from '../controllers/userController';
+import * as reviewController from '../controllers/reviewController.js';
+import * as userController from '../controllers/userController.js';
 
 const router = express.Router();
 

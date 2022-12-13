@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
-import Product from '../models/Product';
-import Review from '../models/Review';
-import User from '../models/User';
+import Product from '../models/Product.js';
+import Review from '../models/Review.js';
+import User from '../models/User.js';
 
 const createRandomReviews = async () => {
   const REVIEWS = [];

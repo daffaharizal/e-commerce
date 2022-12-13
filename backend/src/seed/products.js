@@ -1,8 +1,8 @@
 import { faker } from '@faker-js/faker';
 
-import Category from '../models/Category';
-import Product from '../models/Product';
-import User from '../models/User';
+import Category from '../models/Category.js';
+import Product from '../models/Product.js';
+import User from '../models/User.js';
 
 const createRandomProducts = async () => {
   const CATEGORIES = [];

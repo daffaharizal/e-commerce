@@ -1,14 +1,14 @@
 import CryptoJS from 'crypto-js';
 import { StatusCodes } from 'http-status-codes';
 
-import Token from '../models/Token';
-import User from '../models/User';
+import Token from '../models/Token.js';
+import User from '../models/User.js';
 
-import ENV from '../utils/constants';
-import { attachCookiesToResponse } from '../utils/jwt';
-import Email from '../utils/mail';
+import * as CustomError from '../errors/index.js';
 
-import * as CustomError from '../errors';
+import ENV from '../utils/constants.js';
+import { attachCookiesToResponse } from '../utils/jwt.js';
+import Email from '../utils/mail.js';
 
 const register = async (req, res) => {
   // will skip other datas
@@ -33,7 +33,7 @@ const register = async (req, res) => {
 
 const login = async (req, res) => {
   const { email, password } = req.body;
-  if (!email || !password) {
+  if (!(email || password)) {
     throw new CustomError.BadRequestError('Please provide email and password');
   }
   const user = await User.findOne({ email });
@@ -94,13 +94,13 @@ const VerifyPasswordResetLink = async (req, res) => {
   const { code, userId } = req.body;
 
   const user = await User.findById(userId);
-  if (!user)
+  if (!user) {
     throw new CustomError.NotFoundError('Password Reset Link Expired.');
-
+  }
   const token = await Token.find({ user, code });
-  if (token.length === 0)
+  if (token.length === 0) {
     throw new CustomError.BadRequestError('Password Reset Link Expired.');
-
+  }
   res.status(StatusCodes.OK).json({ msg: 'Valid Password Reset Link.' });
 };
 
@@ -114,13 +114,13 @@ const passwordReset = async (req, res) => {
   }
 
   const user = await User.findById(userId);
-  if (!user)
+  if (!user) {
     throw new CustomError.NotFoundError('Password Reset Link Expired.');
-
+  }
   const token = await Token.find({ user, code });
-  if (token.length === 0)
+  if (token.length === 0) {
     throw new CustomError.BadRequestError('Password Reset Link Expired.');
-
+  }
   user.password = newPassword;
   user.isVerified = true;
   await user.save();

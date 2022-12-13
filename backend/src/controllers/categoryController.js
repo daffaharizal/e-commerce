@@ -1,8 +1,8 @@
 import { StatusCodes } from 'http-status-codes';
 
-import Category from '../models/Category';
+import Category from '../models/Category.js';
 
-import * as CustomError from '../errors';
+import * as CustomError from '../errors/index.js';
 
 const createCategory = async (req, res) => {
   const { name } = req.body;

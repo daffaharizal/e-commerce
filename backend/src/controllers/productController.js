@@ -1,11 +1,11 @@
 import { StatusCodes } from 'http-status-codes';
 
-import Category from '../models/Category';
-import Product from '../models/Product';
+import Category from '../models/Category.js';
+import Product from '../models/Product.js';
 
-import { uploadFile } from '../utils/functions';
+import * as CustomError from '../errors/index.js';
 
-import * as CustomError from '../errors';
+import { uploadFile } from '../utils/functions.js';
 
 const createProduct = async (req, res) => {
   // any other values in the body not needed

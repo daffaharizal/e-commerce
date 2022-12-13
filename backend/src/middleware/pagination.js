@@ -1,4 +1,4 @@
-import * as CustomError from '../errors';
+import * as CustomError from '../errors/index.js';
 
 const offsetPagination = (req, res, next) => {
   if (isNaN(Math.floor(req.query.limit)) || isNaN(Math.floor(req.query.page))) {
