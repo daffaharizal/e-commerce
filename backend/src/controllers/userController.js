@@ -4,6 +4,7 @@ import User from '../models/User.js';
 
 import * as CustomError from '../errors/index.js';
 
+import { uploadToCloudinary } from '../utils/cloudinary.js';
 import { attachCookiesToResponse } from '../utils/jwt.js';
 
 const getAllUsers = async (req, res) => {
@@ -26,25 +27,39 @@ const getCurrentUser = async (req, res) => {
 };
 
 const updateUser = async (req, res) => {
-  const {
-    user: { id: userID }
-  } = req;
-
   const { email, fullName, dateOfBirth } = req.body;
+  const { avatar } = req.files || {};
+
   if (!(email || fullName)) {
     throw new CustomError.BadRequestError('Please provide Email & Full Name');
   }
 
   const validateNewEmail = await User.findOne({ email });
 
-  if (!!validateNewEmail && validateNewEmail.id !== userID) {
+  if (!!validateNewEmail && validateNewEmail.id !== req.user.id) {
     throw new CustomError.BadRequestError(
       'Another user with same email exist. Please provide another email.'
     );
   }
+
+  let cloudFile;
+  if (avatar) {
+    // call below func after passing all validation
+    cloudFile = await uploadToCloudinary({
+      file: avatar.tempFilePath,
+      path: 'avatar'
+    });
+  }
   const user = await User.findOneAndUpdate(
-    { _id: userID },
-    { email, fullName, dateOfBirth },
+    { _id: req.user.id },
+    {
+      email,
+      fullName,
+      dateOfBirth,
+      ...(avatar && {
+        avatar: { name: avatar.name, url: cloudFile.url, isPublicUrl: true }
+      })
+    },
     {
       new: true,
       runValidators: true

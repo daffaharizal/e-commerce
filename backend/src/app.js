@@ -51,7 +51,11 @@ app.use(
   '/static',
   express.static(path.join(path.dirname(__filename), 'public'))
 );
-app.use(fileUpload());
+app.use(
+  fileUpload({
+    useTempFiles: true
+  })
+);
 app.use(morgan('combined', { stream: winstonLogger.stream }));
 
 app.get('/', (req, res) => {
