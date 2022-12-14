@@ -5,7 +5,7 @@ import Product from '../models/Product.js';
 
 import * as CustomError from '../errors/index.js';
 
-import { uploadFile } from '../utils/functions.js';
+import { uploadFile } from '../utils/helpers.js';
 
 const createProduct = async (req, res) => {
   // any other values in the body not needed

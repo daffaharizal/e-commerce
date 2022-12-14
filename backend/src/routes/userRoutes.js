@@ -38,4 +38,17 @@ router.get(
   reviewController.getSingleUserReviews
 );
 
+// address endpoints
+router.post(
+  '/create-address',
+  [authenticateUser, authorizePermissions('user')],
+  userController.createAddress
+);
+
+router.post(
+  '/update-address',
+  [authenticateUser, authorizePermissions('user')],
+  userController.updateAddress
+);
+
 export default router;

@@ -87,10 +87,124 @@ const updatePassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Password Successfully Updated.' });
 };
 
+// Address API's
+const createAddress = async (req, res) => {
+  const {
+    country,
+    province,
+    city,
+    street1,
+    street2,
+    zip,
+    isBilling,
+    isShipping
+  } = req.body;
+
+  if (!(isBilling || isShipping)) {
+    throw new CustomError.BadRequestError('Invalid Request');
+  }
+  let user;
+
+  if (isBilling) {
+    user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: {
+          billingAddress: { country, province, city, street1, street2, zip }
+        }
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+  }
+
+  if (isShipping) {
+    user = await User.findOneAndUpdate(
+      { _id: req.user.id },
+      {
+        $push: {
+          shippingAddress: { country, province, city, street1, street2, zip }
+        }
+      },
+      {
+        new: true,
+        runValidators: true
+      }
+    );
+  }
+  res.status(StatusCodes.OK).json({ user });
+};
+
+const updateAddress = async (req, res) => {
+  const {
+    country,
+    province,
+    city,
+    street1,
+    street2,
+    zip,
+    id: addressId
+  } = req.body;
+
+  if (!addressId) {
+    throw new CustomError.BadRequestError('Invalid Request');
+  }
+
+  let user = await User.findOneAndUpdate(
+    { _id: req.user.id },
+    {
+      $set: {
+        'billingAddress.$[elem]': {
+          _id: addressId,
+          country,
+          province,
+          city,
+          street1,
+          street2,
+          zip
+        }
+      }
+    },
+    {
+      arrayFilters: [{ 'elem._id': addressId }],
+      new: true,
+      runValidators: true
+    }
+  );
+
+  user = await User.findOneAndUpdate(
+    { _id: req.user.id },
+    {
+      $set: {
+        'shippingAddress.$[elem]': {
+          _id: addressId,
+          country,
+          province,
+          city,
+          street1,
+          street2,
+          zip
+        }
+      }
+    },
+    {
+      arrayFilters: [{ 'elem._id': addressId }],
+      new: true,
+      runValidators: true
+    }
+  );
+
+  res.status(StatusCodes.OK).json({ user });
+};
+
 export {
   getAllUsers,
   getSingleUser,
   getCurrentUser,
   updateUser,
-  updatePassword
+  updatePassword,
+  createAddress,
+  updateAddress
 };
