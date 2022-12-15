@@ -5,7 +5,7 @@ import { validateToken } from '../utils/jwt.js';
 const authenticateUser = (req, res, next) => {
   const token = req.signedCookies.token;
   if (!token) {
-    throw new CustomError.UnAuthenticatedError('Authentication Invalid');
+    throw new CustomError.UnAuthenticatedError('Authentication Invalid - Token missing');
   }
 
   try {
@@ -13,7 +13,7 @@ const authenticateUser = (req, res, next) => {
     req.user = { email, id, role };
     next();
   } catch (error) {
-    throw new CustomError.UnAuthenticatedError('Authentication Invalid');
+    throw new CustomError.UnAuthenticatedError('Authentication Invalid - Invalid Token');
   }
 };
 
