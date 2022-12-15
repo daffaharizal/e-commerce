@@ -8,17 +8,18 @@ import { IAxiosProps } from './types';
 const axiosCreate = async <T,>({
   axiosApi,
   axiosMethod = 'GET',
-  axiosData = {}
+  axiosData = {},
+  headers = {
+    'Content-Type': 'application/json',
+    Accept: 'application/json'
+  }
 }: Partial<IAxiosProps>) => {
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
   const instance = axios.create({
     baseURL: `${serverUrl}/api/v1`,
     withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-      Accept: 'application/json'
-    }
+    headers
   });
 
   let res: AxiosResponse<T>;

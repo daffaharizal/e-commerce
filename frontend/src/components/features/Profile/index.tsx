@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { DatePicker } from 'react-rainbow-components';
 import { toast } from 'react-toastify';
 
-import { LoadingSpinner } from 'components/shared';
+import { Avatar, LoadingSpinner } from 'components/shared';
 
 // import { QueryConsumer } from 'context';
 import { axiosCreate, axiosError } from 'helpers';
@@ -20,6 +20,11 @@ type ProfileDataType = {
   fullName: string;
   email: string;
   dateOfBirth: string;
+  avatar?: {
+    name: string;
+    url: string;
+    isPublicUrl: string;
+  };
 };
 
 type ProfileResponseType = {
@@ -28,6 +33,7 @@ type ProfileResponseType = {
 
 export default function ProfilePage() {
   const [dateOfBirth, setdateOfBirth] = React.useState<Date | undefined>();
+  const [file, setFile] = React.useState<File | null>(null);
 
   const {
     register,
@@ -44,7 +50,7 @@ export default function ProfilePage() {
       axiosApi: '/users/showme'
     });
     const {
-      user: { fullName, email, dateOfBirth }
+      user: { fullName, email, dateOfBirth, avatar }
     } = res as ProfileResponseType;
 
     // set date state hook with fetched data
@@ -53,14 +59,18 @@ export default function ProfilePage() {
     // set react-hook-form with fetched data
     reset({ fullName, email });
 
-    return { fullName, email, dateOfBirth };
+    return { fullName, email, dateOfBirth, avatar };
   };
 
-  const updateProfile = async (axiosData: ProfileDataType) => {
+  const updateProfile = async (axiosData: FormData) => {
     return await axiosCreate<ProfileResponseType>({
       axiosApi: '/users/update-user',
       axiosMethod: 'POST',
-      axiosData
+      axiosData,
+      headers: {
+        'Content-Type': 'multipart/form-data',
+        Accept: 'application/json'
+      }
     });
   };
 
@@ -68,7 +78,11 @@ export default function ProfilePage() {
   // const queryClient = QueryConsumer();
 
   // Queries
-  const { isLoading, isError } = useQuery(['profile'], getProfile, {
+  const {
+    data,
+    isLoading: isQueryLoading,
+    isError
+  } = useQuery(['profile'], getProfile, {
     onError: (error) => {
       if (axios.isAxiosError(error) && error.response) {
         axiosError(error as IErrorResponse);
@@ -80,7 +94,7 @@ export default function ProfilePage() {
   });
 
   // Mutations
-  const mutation = useMutation(updateProfile, {
+  const { mutate, isLoading: isSubmitting } = useMutation(updateProfile, {
     onSuccess: () => {
       // Invalidate and refetch
       // await queryClient.invalidateQueries(['profile']);
@@ -103,11 +117,17 @@ export default function ProfilePage() {
     void handleSubmit(handleOnSubmit)();
   };
 
-  const handleOnSubmit: SubmitHandler<ProfileDataType> = (values) => {
-    mutation.mutate({
-      ...values,
-      dateOfBirth: moment(dateOfBirth).format('YYYY/MM/DD')
-    });
+  const handleOnSubmit: SubmitHandler<ProfileDataType> = ({
+    fullName,
+    email
+  }) => {
+    const formData = new FormData();
+    formData.append('fullName', fullName);
+    formData.append('email', email);
+    formData.append('dateOfBirth', moment(dateOfBirth).format('YYYY/MM/DD'));
+    file && formData.append('avatar', file);
+
+    mutate(formData);
   };
 
   const formOptions = {
@@ -122,7 +142,7 @@ export default function ProfilePage() {
     }
   };
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isQueryLoading) return <LoadingSpinner />;
   if (isError) return <span>An Error Occured!</span>;
 
   return (
@@ -138,6 +158,9 @@ export default function ProfilePage() {
           </div>
           <div className="modal-body p-5 pt-0">
             <form onSubmit={onSubmit} noValidate>
+              <div className="form-floating mb-3">
+                <Avatar pic={data?.avatar} setFile={setFile} />
+              </div>
               <div className="form-floating mb-3">
                 <input
                   type="text"
@@ -172,8 +195,10 @@ export default function ProfilePage() {
               </div>
 
               <button
+                type="submit"
                 className="w-100 mb-2 btn btn-lg rounded-3 btn-primary mt-3"
-                type="submit">
+                disabled={isSubmitting}>
+                {isSubmitting && <LoadingSpinner />}
                 Update Profile
               </button>
             </form>

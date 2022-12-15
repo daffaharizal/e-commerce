@@ -1,3 +1,4 @@
+export { default as Avatar } from './Avatar';
 export { default as StyledButton } from './Button';
 export { default as PureCarousel } from './Carousel';
 export { default as UserRating } from './Rating';

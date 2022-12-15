@@ -1,0 +1,55 @@
+
+.input_wrapper{
+  display: flex;
+  /* height: 100vh; */
+  justify-content: center;
+  align-items: center;
+}
+.img_wrapper{
+  position: relative;
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  gap:8px
+}
+.img_wrapper input[type="file"] {
+  opacity: 0;
+  position: absolute;
+  font-size: 20px;
+  cursor: pointer;
+  top:35%
+}
+.img_upload{
+  width: 250px;
+  height: 250px;
+  border:2px dotted gray;
+  border-radius: 5px;
+  display: flex;
+  align-items:center;
+  justify-content:center;
+  overflow: hidden;
+  font-family:Verdana, Geneva, Tahoma, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 20px;
+}
+.img_wrapper button{
+  width:100%;
+  border:0;
+  padding-block:10px;
+  border-radius:5px;
+  background-color:#31E1F7;
+  color: white;
+  font-size:16px;
+  cursor: pointer;
+  font-weight:500;
+  font-family:Verdana, Geneva, Tahoma, sans-serif
+}
+.pic {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}

@@ -8,6 +8,7 @@ import { BiUser } from 'react-icons/bi';
 import { BsBootstrap } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
 import { FiSettings } from 'react-icons/fi';
+import { MdAccountBalance } from 'react-icons/md';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
 import {
   NumberParam,
@@ -85,6 +86,10 @@ export default function CommerceNavbar() {
             <>
               {user?.role == ROLES.USER ? (
                 <>
+                  <NavLink to={ROUTES.ACCOUNT} className="dropdown-item">
+                    <MdAccountBalance size={20} />
+                    <span className="ps-2">Account</span>
+                  </NavLink>
                   <NavLink to={ROUTES.PROFILE} className="dropdown-item">
                     <CgProfile size={20} />
                     <span className="ps-2">Profile</span>

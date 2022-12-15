@@ -8,6 +8,7 @@ const enum ROUTES {
   PASSWORDRESET = '/password-reset/:userId/:code',
   CART = '/cart',
   PRODUCTS = '/products',
+  ACCOUNT = '/my-account',
   PROFILE = '/profile',
   WISHLIST = '/wishlist',
   SETTINGS = '/settings',
