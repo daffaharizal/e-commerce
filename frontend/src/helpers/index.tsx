@@ -18,8 +18,8 @@ const axiosCreate = async <T,>({
 
   const instance = axios.create({
     baseURL: `${serverUrl}/api/v1`,
-    withCredentials: true,
-    headers
+    headers,
+    withCredentials: true
   });
 
   let res: AxiosResponse<T>;

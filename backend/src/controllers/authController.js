@@ -25,10 +25,24 @@ const register = async (req, res) => {
     role: 'user'
   });
 
-  const payload = { email, id: user._id, role: user.role };
+  const randomToken = CryptoJS.lib.WordArray.random(256 / 8);
 
-  attachCookiesToResponse({ res, payload });
-  res.status(StatusCodes.CREATED).json({ user });
+  await Email({
+    recipientAddress: email,
+    recipientName: fullName,
+    templateId: ENV.SG_USER_VERIFICATION_TEMPLATE_ID,
+    templateData: {
+      username: fullName,
+      verifyUrl: `${ENV.SG_USER_VERIFICATION_URL}/${user.id}/${randomToken}`
+    }
+  }).sendMails();
+
+  // const payload = { email, id: user._id, role: user.role };
+  // attachCookiesToResponse({ res, payload });
+
+  res
+    .status(StatusCodes.OK)
+    .json({ msg: 'Verification Email sent Successfully.' });
 };
 
 const login = async (req, res) => {
@@ -36,14 +50,35 @@ const login = async (req, res) => {
   if (!(email || password)) {
     throw new CustomError.BadRequestError('Please provide email and password');
   }
+
   const user = await User.findOne({ email });
   if (!user) {
     throw new CustomError.UnAuthenticatedError('Invalid Credentials');
   }
+
   const isPasswordCorrect = await user.comparePassword(password);
   if (!isPasswordCorrect) {
     throw new CustomError.UnAuthenticatedError('Invalid Credentials');
   }
+
+  if (!user.isAccountVerified) {
+    const randomToken = CryptoJS.lib.WordArray.random(256 / 8);
+
+    await Email({
+      recipientAddress: email,
+      recipientName: user.fullName,
+      templateId: ENV.SG_USER_VERIFICATION_TEMPLATE_ID,
+      templateData: {
+        username: user.fullName,
+        verifyUrl: `${ENV.SG_USER_VERIFICATION_URL}/${user.id}/${randomToken}`
+      }
+    }).sendMails();
+
+    throw new CustomError.UnAuthenticatedError(
+      'Account is not verified. Please check your mail.'
+    );
+  }
+
   const payload = { email, id: user._id, role: user.role };
   attachCookiesToResponse({ res, payload });
 
@@ -53,7 +88,9 @@ const login = async (req, res) => {
 const logout = async (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
-    expires: new Date(Date.now())
+    expires: new Date(Date.now()),
+    secure: true,
+    sameSite: 'none'
   });
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };
@@ -84,7 +121,7 @@ const forgotPassword = async (req, res) => {
     }
   }).sendMails();
 
-  user.isVerified = false;
+  user.isAccountVerified = false;
   await user.save();
 
   res.status(StatusCodes.OK).json({ msg: 'Email sent Successfully.' });
@@ -122,7 +159,7 @@ const passwordReset = async (req, res) => {
     throw new CustomError.BadRequestError('Password Reset Link Expired.');
   }
   user.password = newPassword;
-  user.isVerified = true;
+  user.isAccountVerified = true;
   await user.save();
 
   // delete token
