@@ -6,7 +6,7 @@ import { Col, Container, Form, Row } from 'react-bootstrap';
 import { useParams } from 'react-router-dom';
 
 import { WishlistPopup } from 'components/features';
-import { LoadingSpinner, PureCarousel, UserRating } from 'components/shared';
+import { PureCarousel, Spinner, UserRating } from 'components/shared';
 
 import ROLES from 'constant/roles';
 
@@ -54,7 +54,7 @@ export default function ProductDetailPage() {
     refetchOnWindowFocus: false
   });
 
-  if (isLoading) return <LoadingSpinner />;
+  if (isLoading) return <Spinner />;
   if (isError) return <span>An Error Occured!</span>;
 
   return (

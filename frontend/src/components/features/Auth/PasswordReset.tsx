@@ -8,7 +8,7 @@ import { BsBootstrap } from 'react-icons/bs';
 import { NavLink, useNavigate, useParams } from 'react-router-dom';
 import { toast } from 'react-toastify';
 
-import { LoadingSpinner } from 'components/shared';
+import { Spinner } from 'components/shared';
 
 import ROUTES from 'constant/routes';
 
@@ -117,7 +117,7 @@ const PasswordResetPage = () => {
 
   return (
     <>
-      {checkingResetLink && <LoadingSpinner />}
+      {checkingResetLink && <Spinner />}
       {isResetLinkValid && (
         <div className="container">
           <div className={styles.background}></div>
@@ -139,7 +139,7 @@ const PasswordResetPage = () => {
                 type="submit"
                 className="mt-3 text-uppercase"
                 disabled={isLoading}>
-                {isLoading && <LoadingSpinner />}
+                {isLoading && <Spinner />}
                 Submit
               </Button>
             </form>

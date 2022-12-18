@@ -7,7 +7,7 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { DatePicker } from 'react-rainbow-components';
 import { toast } from 'react-toastify';
 
-import { Avatar, LoadingSpinner } from 'components/shared';
+import { Avatar, Spinner } from 'components/shared';
 
 // import { QueryConsumer } from 'context';
 import { axiosCreate, axiosError } from 'helpers';
@@ -142,7 +142,7 @@ export default function ProfilePage() {
     }
   };
 
-  if (isQueryLoading) return <LoadingSpinner />;
+  if (isQueryLoading) return <Spinner />;
   if (isError) return <span>An Error Occured!</span>;
 
   return (
@@ -198,7 +198,7 @@ export default function ProfilePage() {
                 type="submit"
                 className="w-100 mb-2 btn btn-lg rounded-3 btn-primary mt-3"
                 disabled={isSubmitting}>
-                {isSubmitting && <LoadingSpinner />}
+                {isSubmitting && <Spinner />}
                 Update Profile
               </button>
             </form>

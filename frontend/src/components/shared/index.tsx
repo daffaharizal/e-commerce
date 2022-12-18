@@ -8,4 +8,5 @@ export { default as SelectInput } from './SelectInput';
 export { default as SearchInput } from './SearchInput';
 export { default as ToastAlert } from './ToastAlert';
 export { default as LoadingSpinner } from './Loading';
+export { default as Spinner } from './Spinner';
 export { OffsetPagination, StyledPaginationButton } from './Pagination';

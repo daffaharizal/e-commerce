@@ -89,8 +89,8 @@ const logout = async (req, res) => {
   res.cookie('token', '', {
     httpOnly: true,
     expires: new Date(Date.now()),
-    secure: true,
-    sameSite: 'none'
+    secure: ENV.NODE_ENV === 'production',
+    sameSite: ENV.NODE_ENV === 'production' ? 'none' : 'Lax'
   });
   res.status(StatusCodes.OK).json({ msg: 'user logged out!' });
 };

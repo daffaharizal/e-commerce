@@ -22,9 +22,8 @@ const attachCookiesToResponse = ({ res, payload }) => {
     httpOnly: true,
     expires: new Date(Date.now() + oneDay),
     signed: true,
-    // secure: ENV.NODE_ENV === 'production',
-    secure: true,
-    sameSite: 'none'
+    secure: ENV.NODE_ENV === 'production',
+    sameSite: ENV.NODE_ENV === 'production' ? 'none' : 'Lax'
   });
 };
 

@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import { BsBootstrap } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 
-import { LoadingSpinner } from 'components/shared';
+import { Spinner } from 'components/shared';
 
 import ROUTES from 'constant/routes';
 
@@ -57,7 +57,7 @@ const BaseLoginPage = ({
             type="submit"
             className="mt-3 text-uppercase"
             disabled={isLoading}>
-            {isLoading && <LoadingSpinner />} Login
+            {isLoading && <Spinner />} Login
           </Button>
         </form>
         <footer>

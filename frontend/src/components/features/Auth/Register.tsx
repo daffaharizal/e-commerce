@@ -2,7 +2,7 @@ import Button from 'react-bootstrap/Button';
 import { BsBootstrap, BsFacebook, BsGoogle, BsTwitter } from 'react-icons/bs';
 import { NavLink } from 'react-router-dom';
 
-import { LoadingSpinner } from 'components/shared';
+import { Spinner } from 'components/shared';
 
 import ROUTES from 'constant/routes';
 
@@ -68,7 +68,7 @@ const BaseRegisterPage = ({
             type="submit"
             className="mt-3 text-uppercase"
             disabled={isLoading}>
-            {isLoading && <LoadingSpinner />}
+            {isLoading && <Spinner />}
             Register
           </Button>
         </form>
