@@ -29,9 +29,12 @@ import userRouter from './routes/userRoutes.js';
 import wishlistRouter from './routes/wishlistRoutes.js';
 
 import ENV from './utils/constants.js';
+import redisClient from './utils/redis.js';
 import winstonLogger from './utils/winston.js';
 
 dotenv.config();
+
+await redisClient.connect();
 
 const app = express();
 

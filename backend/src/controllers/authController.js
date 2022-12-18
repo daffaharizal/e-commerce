@@ -1,7 +1,6 @@
 import CryptoJS from 'crypto-js';
 import { StatusCodes } from 'http-status-codes';
 
-import Token from '../models/Token.js';
 import User from '../models/User.js';
 
 import * as CustomError from '../errors/index.js';
@@ -9,9 +8,10 @@ import * as CustomError from '../errors/index.js';
 import ENV from '../utils/constants.js';
 import { attachCookiesToResponse } from '../utils/jwt.js';
 import Email from '../utils/mail.js';
+import redisClient from '../utils/redis.js';
 
 const register = async (req, res) => {
-  // will skip other datas
+  // skipping other data's
   const { email, fullName, password } = req.body;
 
   const emailAlreadyExists = await User.countDocuments({ email });
@@ -25,7 +25,9 @@ const register = async (req, res) => {
     role: 'user'
   });
 
-  const randomToken = CryptoJS.lib.WordArray.random(256 / 8);
+  const randomToken = CryptoJS.lib.WordArray.random(32);
+
+  await redisClient.hSet('UserVerification', user.id, randomToken.toString());
 
   await Email({
     recipientAddress: email,
@@ -33,7 +35,9 @@ const register = async (req, res) => {
     templateId: ENV.SG_USER_VERIFICATION_TEMPLATE_ID,
     templateData: {
       username: fullName,
-      verifyUrl: `${ENV.SG_USER_VERIFICATION_URL}/${user.id}/${randomToken}`
+      verifyUrl: `${ENV.SG_USER_VERIFICATION_URL}/${
+        user.id
+      }/${randomToken.toString()}`
     }
   }).sendMails();
 
@@ -43,6 +47,26 @@ const register = async (req, res) => {
   res
     .status(StatusCodes.OK)
     .json({ msg: 'Verification Email sent Successfully.' });
+};
+
+const verifyUserAccount = async (req, res) => {
+  const { code, userId } = req.body;
+
+  const user = await User.findById(userId);
+  if (!user) {
+    throw new CustomError.NotFoundError('Account Verification Link Expired.');
+  }
+
+  const notVerifiedAccounts = await redisClient.hGetAll('UserVerification');
+
+  if (notVerifiedAccounts[userId] !== code) {
+    throw new CustomError.BadRequestError('Account Verification Link Expired.');
+  }
+
+  user.isAccountVerified = true;
+  await user.save();
+
+  res.status(StatusCodes.OK).json({ msg: 'Account Verified. Please Login.' });
 };
 
 const login = async (req, res) => {
@@ -62,7 +86,9 @@ const login = async (req, res) => {
   }
 
   if (!user.isAccountVerified) {
-    const randomToken = CryptoJS.lib.WordArray.random(256 / 8);
+    const randomToken = CryptoJS.lib.WordArray.random(32);
+
+    await redisClient.hSet('UserVerification', user.id, randomToken.toString());
 
     await Email({
       recipientAddress: email,
@@ -104,12 +130,9 @@ const forgotPassword = async (req, res) => {
     );
   }
 
-  const randomToken = CryptoJS.lib.WordArray.random(256 / 8);
+  const randomToken = CryptoJS.lib.WordArray.random(32);
 
-  await Token.create({
-    user,
-    code: randomToken
-  });
+  await redisClient.hSet('PasswordReset', user.id, randomToken.toString());
 
   await Email({
     recipientAddress: user.email,
@@ -117,7 +140,9 @@ const forgotPassword = async (req, res) => {
     templateId: ENV.SG_PASSWORD_RESET_TEMPLATE_ID,
     templateData: {
       username: user.fullName,
-      resetUrl: `${ENV.SG_PASSWORD_RESET_URL}/${user.id}/${randomToken}`
+      resetUrl: `${ENV.SG_PASSWORD_RESET_URL}/${
+        user.id
+      }/${randomToken.toString()}`
     }
   }).sendMails();
 
@@ -127,17 +152,21 @@ const forgotPassword = async (req, res) => {
   res.status(StatusCodes.OK).json({ msg: 'Email sent Successfully.' });
 };
 
-const VerifyPasswordResetLink = async (req, res) => {
+const verifyPasswordResetLink = async (req, res) => {
   const { code, userId } = req.body;
 
   const user = await User.findById(userId);
+
   if (!user) {
     throw new CustomError.NotFoundError('Password Reset Link Expired.');
   }
-  const token = await Token.find({ user, code });
-  if (token.length === 0) {
+
+  const passwordResetAccounts = await redisClient.hGetAll('PasswordReset');
+
+  if (passwordResetAccounts[userId] !== code) {
     throw new CustomError.BadRequestError('Password Reset Link Expired.');
   }
+
   res.status(StatusCodes.OK).json({ msg: 'Valid Password Reset Link.' });
 };
 
@@ -151,28 +180,30 @@ const passwordReset = async (req, res) => {
   }
 
   const user = await User.findById(userId);
+
   if (!user) {
     throw new CustomError.NotFoundError('Password Reset Link Expired.');
   }
-  const token = await Token.find({ user, code });
-  if (token.length === 0) {
+
+  const passwordResetAccounts = await redisClient.hGetAll('PasswordReset');
+
+  if (passwordResetAccounts[userId] !== code) {
     throw new CustomError.BadRequestError('Password Reset Link Expired.');
   }
+
   user.password = newPassword;
   user.isAccountVerified = true;
   await user.save();
-
-  // delete token
-  await Token.deleteOne({ user, code });
 
   res.status(StatusCodes.OK).json({ msg: 'Password Reset Successfully.' });
 };
 
 export {
   register,
+  verifyUserAccount,
   login,
   logout,
   forgotPassword,
-  VerifyPasswordResetLink,
+  verifyPasswordResetLink,
   passwordReset
 };
