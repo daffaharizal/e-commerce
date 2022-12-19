@@ -23,7 +23,7 @@ export type SkuType = {
   price: number;
   stock: number;
   features: string[];
-  varients: string[];
+  varients: [{ name: string; _id: string }];
   images: IProductImages[];
 };
 

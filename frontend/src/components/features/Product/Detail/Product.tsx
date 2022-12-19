@@ -93,8 +93,10 @@ export default function ProductDetailPage() {
                           <Col md={6}>
                             <Form.Label htmlFor="size">Varients</Form.Label>
                             <Form.Select id="size" name="size">
-                              {sku.varients.map((varient, index) => (
-                                <option key={index}>{varient}</option>
+                              {sku.varients.map(({ name, _id }) => (
+                                <option key={_id} id={_id}>
+                                  {name}
+                                </option>
                               ))}
                             </Form.Select>
                           </Col>
