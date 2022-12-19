@@ -30,7 +30,12 @@ const ProductSkuSchema = new mongoose.Schema(
       }
     },
     features: [{ type: String }],
-    varients: [{ type: String }],
+    // varients: [{ type: String }],
+    varients: [
+      new mongoose.Schema({
+        name: { type: String, required: [true, 'Please provide varient name'] }
+      })
+    ],
     images: [ImageSchema]
   },
   {
