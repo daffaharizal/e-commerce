@@ -3,6 +3,7 @@ const enum ROUTES {
   ADMIN = '/admin',
   ADMINDASH = '/admin/dash',
   LOGIN = '/login',
+  VERIFYUSER = '/verify-user/:userId/:code',
   REGISTER = '/register',
   FORGOTPASSWORD = '/forgot-password',
   PASSWORDRESET = '/password-reset/:userId/:code',

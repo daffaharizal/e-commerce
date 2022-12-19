@@ -140,7 +140,6 @@ export const AdminSidebar = () => {
   const [activeItem, setActiveItem] = useState<string>('');
 
   const handleClick = (item: string) => {
-    console.log('activeItem', activeItem);
     setActiveItem(item !== activeItem ? item : '');
   };
 

@@ -10,6 +10,7 @@ import {
   ProductPage,
   ProfilePage,
   RegisterPage,
+  UserVerificationPage,
   WishlistPage
 } from 'components/features';
 import AdminLayout from 'components/layouts/Admin';
@@ -33,6 +34,14 @@ export default function Router() {
           element={
             <PreventedRoute>
               <LoginPage />
+            </PreventedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.VERIFYUSER}
+          element={
+            <PreventedRoute>
+              <UserVerificationPage />
             </PreventedRoute>
           }
         />

@@ -3,7 +3,8 @@ export {
   LoginPage,
   LogoutPage,
   PasswordResetPage,
-  RegisterPage
+  RegisterPage,
+  UserVerificationPage
 } from './Auth';
 export { default as CartPage } from './Cart';
 export { default as NoMatch } from './NoMatch';
