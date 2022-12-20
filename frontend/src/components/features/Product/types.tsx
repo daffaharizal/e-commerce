@@ -59,11 +59,17 @@ export interface IProductResponse {
   product: IProduct;
 }
 
+export type HandleAddToCartType = {
+  product: IProduct;
+  sku: SkuType;
+  varient?: { _id: string; name: string };
+};
+
 export interface ProductCardPropsType {
   product: IProduct;
   sku: SkuType;
   serverUrl: string;
-  handleAddToCart: (product: IProduct, sku: SkuType) => void;
+  handleAddToCart: ({ product, sku, varient }: HandleAddToCartType) => void;
 }
 
 export type ProductReviewsResponseTypes = {

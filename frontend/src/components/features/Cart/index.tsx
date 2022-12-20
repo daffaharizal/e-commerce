@@ -3,34 +3,36 @@ import React from 'react';
 import { FaLongArrowAltLeft, FaMinus, FaPlus, FaTimes } from 'react-icons/fa';
 import { NavLink } from 'react-router-dom';
 
-import { SkuType } from 'components/features/Product/types';
-
 import ROUTES from 'constant/routes';
 
 import { CartConsumer } from 'context';
 
+import { ILineItem, ILineItemSku } from 'reducer/cart/types';
+
 import NoImage from 'assets/images/noproductimage.png';
 
-type updateSkuQtyTypes = {
+interface UpdateSkuQtyType extends ILineItem {
   count: number;
-  productId: string;
-  productName: string;
-  productCategory: string;
-  sku: SkuType;
-  quantity: number;
-};
+}
 
 export default function CartPage() {
   const [{ lineItems, subTotal, netAmount }, cartDispatch] = CartConsumer();
 
   const serverUrl: string = process.env.REACT_APP_API_ENDPOINT || '';
 
-  const removeItem = (productId: string, skuId: string) => {
+  const removeItem = ({
+    productId,
+    sku: { skuId, varient }
+  }: {
+    productId: string;
+    sku: ILineItemSku;
+  }) => {
     cartDispatch({
       type: 'REMOVE_LINE_ITEM',
       payload: {
         productId,
-        skuId
+        skuId,
+        varientId: varient?.varientId
       }
     });
   };
@@ -40,9 +42,9 @@ export default function CartPage() {
     productId,
     productName,
     productCategory,
-    sku,
-    quantity
-  }: updateSkuQtyTypes) => {
+    quantity,
+    sku
+  }: UpdateSkuQtyType) => {
     if (count < 0 && quantity === 1) {
       return;
     }
@@ -53,11 +55,8 @@ export default function CartPage() {
         productId,
         productName,
         productCategory,
-        skuId: sku.id,
-        sku,
-        price: sku.price,
         quantity: count < 0 ? quantity - 1 : quantity + 1,
-        discount: 0
+        sku
       }
     });
   };
@@ -83,28 +82,30 @@ export default function CartPage() {
                       <hr className="my-4" />
                       {lineItems.length > 0 &&
                         lineItems.map(
-                          ({
-                            productId,
-                            productName,
-                            productCategory,
-                            sku,
-                            quantity,
-                            price
-                          }) => (
-                            <React.Fragment key={sku.id}>
+                          (
+                            {
+                              productId,
+                              productName,
+                              productCategory,
+                              sku,
+                              quantity
+                            },
+                            index
+                          ) => (
+                            <React.Fragment key={index}>
                               <div className="row mb-4 d-flex justify-content-between align-items-center">
                                 <div className="col-md-2 col-lg-2 col-xl-2">
                                   <NavLink
                                     to={`${ROUTES.PRODUCTS}/${productId}`}>
-                                    {sku.images.length > 0 ? (
+                                    {sku.image ? (
                                       <img
                                         src={
-                                          sku.images[0].isPublicUrl
-                                            ? sku.images[0].url
-                                            : `${serverUrl}${sku.images[0].url}`
+                                          sku.image.isPublicUrl
+                                            ? sku.image.url
+                                            : `${serverUrl}${sku.image.url}`
                                         }
                                         className="img-fluid rounded-3 text-black text-decoration-none"
-                                        alt={sku.images[0].name}
+                                        alt={sku.image.name}
                                       />
                                     ) : (
                                       <img
@@ -121,9 +122,10 @@ export default function CartPage() {
                                   </h6>
                                   <h6 className="text-black mb-0 text-capitalize">
                                     <NavLink
-                                      to={`${ROUTES.PRODUCTS}/${productId}/sku/${sku.id}`}
+                                      to={`${ROUTES.PRODUCTS}/${productId}/sku/${sku.skuId}`}
                                       className="text-black text-decoration-none">
-                                      {productName} - {sku.sku}
+                                      {productName} - {sku.skuName} -{' '}
+                                      {sku.varient?.varientName}
                                     </NavLink>
                                   </h6>
                                 </div>
@@ -136,8 +138,8 @@ export default function CartPage() {
                                         productId,
                                         productName,
                                         productCategory,
-                                        sku,
-                                        quantity
+                                        quantity,
+                                        sku
                                       })
                                     }>
                                     <FaMinus size={13} />
@@ -160,21 +162,21 @@ export default function CartPage() {
                                         productId,
                                         productName,
                                         productCategory,
-                                        sku,
-                                        quantity
+                                        quantity,
+                                        sku
                                       })
                                     }>
                                     <FaPlus size={13} />
                                   </button>
                                 </div>
                                 <div className="col-md-3 col-lg-2 col-xl-2 offset-lg-1">
-                                  <h6 className="mb-0">€ {price}</h6>
+                                  <h6 className="mb-0">€ {sku.price}</h6>
                                 </div>
                                 <div className="col-md-1 col-lg-1 col-xl-1 text-end">
                                   <a
                                     className="text-muted"
                                     onClick={() =>
-                                      removeItem(productId, sku.id)
+                                      removeItem({ productId, sku })
                                     }>
                                     <FaTimes size={13} />
                                   </a>

@@ -21,7 +21,7 @@ import { axiosCreate, axiosError } from 'helpers';
 
 import { IErrorResponse } from 'types';
 
-import { IProduct, IProductsResponse, SkuType } from '../types';
+import { HandleAddToCartType, IProductsResponse } from '../types';
 import ProductCard from './ProductCard';
 
 export default function ProductListPage() {
@@ -37,10 +37,12 @@ export default function ProductListPage() {
 
   const [cart, cartDispatch] = CartConsumer();
 
-  const handleAddToCart = (product: IProduct, sku: SkuType) => {
+  const handleAddToCart = ({ product, sku, varient }: HandleAddToCartType) => {
     const lineItemExist = cart.lineItems.some(
       (lineItem) =>
-        lineItem.productId === product.id && lineItem.skuId === sku.id
+        lineItem.productId === product.id &&
+        lineItem.sku.skuId === sku.id &&
+        lineItem.sku.varient?.varientId === varient?._id
     );
 
     const actionType = lineItemExist ? 'UPDATE_LINE_ITEM' : 'ADD_LINE_ITEM';
@@ -48,7 +50,9 @@ export default function ProductListPage() {
       ? cart.lineItems
           .filter(
             (lineItem) =>
-              lineItem.productId === product.id && lineItem.skuId === sku.id
+              lineItem.productId === product.id &&
+              lineItem.sku.skuId === sku.id &&
+              lineItem.sku.varient?.varientId === varient?._id
           )
           .reduce((accumulator, lineItem) => accumulator + lineItem.quantity, 1)
       : 1;
@@ -59,11 +63,17 @@ export default function ProductListPage() {
         productId: product.id,
         productName: product.name,
         productCategory: product.category.name,
-        skuId: sku.id,
-        sku,
-        price: sku.price,
         quantity,
-        discount: 0
+        sku: {
+          skuId: sku.id,
+          skuName: sku.sku,
+          ...(sku.images.length > 0 && { image: sku.images[0] }),
+          ...(varient && {
+            varient: { varientId: varient._id, varientName: varient.name }
+          }),
+          price: sku.price,
+          discount: 0
+        }
       }
     });
   };

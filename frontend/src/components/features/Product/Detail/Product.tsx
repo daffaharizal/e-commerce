@@ -29,6 +29,18 @@ export default function ProductDetailPage() {
     skuId: string;
   };
 
+  const [varient, setVarient] = React.useState<
+    { _id: string; name: string } | undefined
+  >();
+
+  const handleVarientChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
+    setVarient({
+      name: e.target.selectedOptions[0].text,
+      _id: e.target.value
+      // name: e.target[e.target.selectedIndex].text
+    });
+  };
+
   const { isAuth, user } = AuthConsumer();
 
   const fetchProduct = async () => {
@@ -54,69 +66,75 @@ export default function ProductDetailPage() {
     refetchOnWindowFocus: false
   });
 
+  const sku = product && product.skus.find((sku) => sku.id === skuId);
+
+  React.useEffect(() => {
+    if (product) {
+      const skuItem = product.skus.find((sku) => sku.id === skuId);
+      if (skuItem && skuItem.varients) {
+        setVarient(skuItem.varients[0]);
+      }
+    }
+  }, [product, sku]);
+
   if (isLoading) return <Spinner />;
   if (isError) return <span>An Error Occured!</span>;
 
   return (
     <>
-      {!!product && (
+      {sku && (
         <Container>
-          <>
-            {product.skus
-              .filter((sku) => sku.id === skuId)
-              .map((sku, index) => (
-                <React.Fragment key={index}>
-                  <div className={styles['heading-section']}>
-                    <h2>
-                      {product.name} - {sku.sku}
-                    </h2>
+          <div className={styles['heading-section']}>
+            <h2>
+              {product.name} - {sku.sku}
+            </h2>
+          </div>
+          <Row key={skuId}>
+            <Col md={6}>
+              <PureCarousel images={sku.images} />
+            </Col>
+            <Col md={6}>
+              <div className={styles['product-dtl']}>
+                <div className={styles['product-info']}>
+                  <div className={styles['product-name']}>
+                    {product.category.name}
                   </div>
-                  <Row key={skuId}>
-                    <Col md={6}>
-                      <PureCarousel images={sku.images} />
-                    </Col>
-                    <Col md={6}>
-                      <div className={styles['product-dtl']}>
-                        <div className={styles['product-info']}>
-                          <div className={styles['product-name']}>
-                            {product.category.name}
-                          </div>
-                          <UserRating rate={product.averageRating} />
-                          <span>{product.numOfReviews} Reviews</span>
-                          <div className={styles['product-price-discount']}>
-                            <span>${sku.price}</span>
-                            <span className={styles['line-through']}></span>
-                          </div>
-                        </div>
-                        <p>{product.description}</p>
-                        <Row>
-                          <Col md={6}>
-                            <Form.Label htmlFor="size">Varients</Form.Label>
-                            <Form.Select id="size" name="size">
-                              {sku.varients.map(({ name, _id }) => (
-                                <option key={_id} id={_id}>
-                                  {name}
-                                </option>
-                              ))}
-                            </Form.Select>
-                          </Col>
-                        </Row>
-                        <div className={styles['product-count']}>
-                          <AddToCart product={product} sku={sku} />
-                          {isAuth && user?.role === ROLES.USER && (
-                            <WishlistPopup productId={productId} />
-                          )}
-                        </div>
-                      </div>
-                    </Col>
-                  </Row>
-                </React.Fragment>
-              ))}
+                  <UserRating rate={product.averageRating} />
+                  <span>{product.numOfReviews} Reviews</span>
+                  <div className={styles['product-price-discount']}>
+                    <span>${sku.price}</span>
+                    <span className={styles['line-through']}></span>
+                  </div>
+                </div>
+                <p>{product.description}</p>
+                <Row>
+                  <Col md={6}>
+                    <Form.Label htmlFor="size">Varients</Form.Label>
+                    <Form.Select
+                      id="size"
+                      name="size"
+                      onChange={handleVarientChange}>
+                      {sku.varients.map(({ name, _id }) => (
+                        <option key={_id} value={_id}>
+                          {name}
+                        </option>
+                      ))}
+                    </Form.Select>
+                  </Col>
+                </Row>
+                <div className={styles['product-count']}>
+                  <AddToCart product={product} sku={sku} varient={varient} />
+                  {isAuth && user?.role === ROLES.USER && (
+                    <WishlistPopup productId={productId} />
+                  )}
+                </div>
+              </div>
+            </Col>
+          </Row>
 
-            <ProductSkus product={product} />
+          <ProductSkus product={product} />
 
-            <ProductInfo product={product} />
-          </>
+          <ProductInfo product={product} />
         </Container>
       )}
     </>
