@@ -1,16 +1,20 @@
-import { SkuType } from 'components/features/Product/types';
+import { IProductImages } from 'components/features/Product/types';
 
-export interface ILineItemId {
-  productId: string;
+export interface ILineItemSku {
   skuId: string;
+  skuName: string;
+  image?: IProductImages;
+  varient?: { varientId: string; varientName: string };
+  price: number;
+  discount: number;
 }
-export interface ILineItem extends ILineItemId {
+
+export interface ILineItem {
+  productId: string;
   productName: string;
   productCategory: string;
-  sku: SkuType;
-  price: number;
   quantity: number;
-  discount: number;
+  sku: ILineItemSku;
 }
 
 export interface ICart {
@@ -21,7 +25,13 @@ export interface ICart {
   netAmount: number;
 }
 
+export type RemoveLineItemType = {
+  productId: string;
+  skuId: string;
+  varientId?: string;
+};
+
 export type ACTIONTYPE = {
   type: 'ADD_LINE_ITEM' | 'UPDATE_LINE_ITEM' | 'REMOVE_LINE_ITEM';
-  payload: ILineItem | ILineItemId;
+  payload: ILineItem | RemoveLineItemType;
 };

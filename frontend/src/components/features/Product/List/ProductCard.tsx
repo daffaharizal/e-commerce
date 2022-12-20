@@ -69,7 +69,13 @@ const ProductCard: React.FC<ProductCardPropsType> = ({
           <Card.Text as="div" className="buttons text-end">
             <StyledButton
               className="btn btn-dark text-uppercase px-4 py-2"
-              onClick={() => handleAddToCart(product, sku)}>
+              onClick={() =>
+                handleAddToCart({
+                  product,
+                  sku,
+                  ...(sku.varients.length > 0 && { varient: sku.varients[0] })
+                })
+              }>
               Add to Cart
             </StyledButton>
           </Card.Text>

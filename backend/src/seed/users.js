@@ -12,7 +12,6 @@ const createRandomUsers = async () => {
       password: 'abc12345',
       // password: faker.internet.password(),
       role: 'user',
-      // role: faker.helpers.arrayElement(['admin', 'user'])
       isAccountVerified: true,
       avatar: {
         name: faker.word.adjective(),

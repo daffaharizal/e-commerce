@@ -22,15 +22,15 @@ const createRandomProducts = async () => {
   const user = await User.findOne({ role: 'admin' });
   const category = await Category.findOne();
   user &&
-    Array.from({ length: 10 }).forEach(() => {
+    Array.from({ length: 50 }).forEach(() => {
       PRODUCTS.push({
         name: faker.commerce.productName(),
         description: faker.commerce.productDescription(),
         category: category.id,
+        skuType: 'Color',
         skus: [
           {
             sku: faker.color.human(),
-            type: 'color',
             price: faker.commerce.price(200, 2000, 0),
             stock: faker.random.numeric(),
             features: [
@@ -39,8 +39,8 @@ const createRandomProducts = async () => {
               faker.commerce.productMaterial()
             ],
             varients: [
-              faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL']),
-              faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL'])
+              { name: faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL']) },
+              { name: faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL']) }
             ],
             images: [
               {
@@ -71,8 +71,8 @@ const createRandomProducts = async () => {
               faker.commerce.productMaterial()
             ],
             varients: [
-              faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL']),
-              faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL'])
+              { name: faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL']) },
+              { name: faker.helpers.arrayElement(['XS', 'S', 'M', 'L', 'XL']) }
             ],
             images: [
               {
