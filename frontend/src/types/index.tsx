@@ -6,6 +6,7 @@ export interface IErrorResponse {
   code: string;
   message?: string;
   response: {
+    status: number;
     data: {
       msg?: string;
     };

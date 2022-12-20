@@ -1,0 +1,16 @@
+[{
+  "_id": {
+    "$oid": "63a0166deb3bdde513526341"
+  },
+  "name": "living"
+},{
+  "_id": {
+    "$oid": "63a0166deb3bdde513526342"
+  },
+  "name": "office"
+},{
+  "_id": {
+    "$oid": "63a01aa8b798ade046bc4bb0"
+  },
+  "name": "electronics"
+}]

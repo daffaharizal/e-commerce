@@ -67,7 +67,6 @@ const withAuth =
           toast('🚀 Login Sucessfully!');
         },
         onError: (error) => {
-          console.error(error);
           if (axios.isAxiosError(error) && error.response) {
             axiosError(error as IErrorResponse);
           }

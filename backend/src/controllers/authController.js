@@ -44,9 +44,9 @@ const register = async (req, res) => {
   // const payload = { email, id: user._id, role: user.role };
   // attachCookiesToResponse({ res, payload });
 
-  res
-    .status(StatusCodes.OK)
-    .json({ msg: 'Verification Email sent Successfully.' });
+  res.status(StatusCodes.UNAUTHORIZED).json({
+    msg: 'Verify your account. Verification Email sent Successfully.'
+  });
 };
 
 const verifyUserAccount = async (req, res) => {
@@ -100,9 +100,9 @@ const login = async (req, res) => {
       }
     }).sendMails();
 
-    throw new CustomError.UnAuthenticatedError(
-      'Account is not verified. Please check your mail.'
-    );
+    res.status(StatusCodes.UNAUTHORIZED).json({
+      msg: 'Account not yet Verified. Verification Email sent Successfully.'
+    });
   }
 
   const payload = { email, id: user._id, role: user.role };

@@ -42,7 +42,6 @@ export default function UserVerificationPage() {
             if (axios.isAxiosError(error) && error.response) {
               axiosError(error as IErrorResponse);
             }
-            toast('Some error occurred! Try again');
             navigate(ROUTES.LOGIN);
           },
           onSuccess: () => {
