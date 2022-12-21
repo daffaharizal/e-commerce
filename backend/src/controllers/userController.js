@@ -30,6 +30,9 @@ const updateUser = async (req, res) => {
   const { email, fullName, dateOfBirth } = req.body;
   const { avatar } = req.files || {};
 
+  console.log('***AVATAR***', avatar);
+  console.log('***AVATAR Location***', avatar.tempFilePath);
+
   if (!(email || fullName)) {
     throw new CustomError.BadRequestError('Please provide Email & Full Name');
   }
