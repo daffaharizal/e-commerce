@@ -30,9 +30,6 @@ const updateUser = async (req, res) => {
   const { email, fullName, dateOfBirth } = req.body;
   const { avatar } = req.files || {};
 
-  console.log('***AVATAR***', avatar);
-  console.log('***AVATAR Location***', avatar.tempFilePath);
-
   if (!(email || fullName)) {
     throw new CustomError.BadRequestError('Please provide Email & Full Name');
   }
@@ -49,10 +46,11 @@ const updateUser = async (req, res) => {
   if (avatar) {
     // call below func after passing all validation
     cloudFile = await uploadToCloudinary({
-      file: avatar.tempFilePath,
+      file: avatar,
       path: 'avatar'
     });
   }
+
   const user = await User.findOneAndUpdate(
     { _id: req.user.id },
     {
@@ -60,7 +58,11 @@ const updateUser = async (req, res) => {
       fullName,
       dateOfBirth,
       ...(avatar && {
-        avatar: { name: avatar.name, url: cloudFile.url, isPublicUrl: true }
+        avatar: {
+          name: avatar.name,
+          url: cloudFile?.secure_url,
+          isPublicUrl: true
+        }
       })
     },
     {

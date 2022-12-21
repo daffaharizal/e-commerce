@@ -9,16 +9,22 @@ Cloudinary.config({
 });
 
 const uploadToCloudinary = async ({ file, path }) => {
-  return await Cloudinary.v2.uploader.upload(
-    file,
-    {
-      folder: `uploads/${path}`,
-      use_filename: true,
-      unique_filename: true,
-      resource_type: 'auto'
-    },
-    (result, error) => console.log(result, error)
-  );
+  return new Promise((resolve, reject) => {
+    Cloudinary.v2.uploader
+      .upload_stream(
+        {
+          folder: `uploads/${path}`
+        },
+        (error, result) => {
+          if (error) {
+            reject(error);
+          } else {
+            resolve(result);
+          }
+        }
+      )
+      .end(file.data);
+  });
 };
 
 export { uploadToCloudinary };
