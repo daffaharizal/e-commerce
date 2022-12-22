@@ -5,7 +5,9 @@ import Product from '../models/Product.js';
 
 import * as CustomError from '../errors/index.js';
 
-import { uploadFile } from '../utils/helpers.js';
+import { uploadToCloudinary } from '../utils/cloudinary.js';
+
+// import { uploadFile } from '../utils/helpers.js';
 
 const createProduct = async (req, res) => {
   // any other values in the body not needed
@@ -141,11 +143,23 @@ const uploadProductImage = async (req, res) => {
   });
 
   productImages.map(async (image) => {
-    const url = await uploadFile(image, 'products/');
+    // const url = await uploadFile(image, 'products/');
+    const cloudFile = await uploadToCloudinary({
+      file: image,
+      path: 'products'
+    });
 
     await Product.findOneAndUpdate(
       { _id: req.params.productId, 'skus._id': req.params.skuId },
-      { $push: { 'skus.$[elem].images': { name: image.name, url } } },
+      {
+        $push: {
+          'skus.$[elem].images': {
+            name: image.name,
+            url: cloudFile.secure_url,
+            isPublicUrl: true
+          }
+        }
+      },
       {
         arrayFilters: [{ 'elem._id': req.params.skuId }],
         new: true,
