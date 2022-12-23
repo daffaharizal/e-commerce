@@ -5,13 +5,22 @@ const WishlistItemSchema = new mongoose.Schema({
     type: mongoose.Types.ObjectId,
     ref: 'Product',
     required: true
+  },
+  sku: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Product.skus',
+    required: true
   }
 });
+
+// unique together
+WishlistItemSchema.index({ product: 1, sku: 1 }, { unique: true });
 
 const WishlistFolderSchema = new mongoose.Schema({
   name: {
     type: String,
-    required: true
+    required: true,
+    trim: true
   },
   items: [WishlistItemSchema]
 });

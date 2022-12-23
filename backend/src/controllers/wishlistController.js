@@ -7,20 +7,24 @@ import Wishlist from '../models/Wishlist.js';
 import * as CustomError from '../errors/index.js';
 
 const addItem = async (req, res) => {
-  const { folderName, folderId, productId } = req.body;
+  const { folderName, folderId, productId, skuId } = req.body;
 
-  const product = await Product.findById(productId);
+  const product = await Product.findOne({
+    _id: productId,
+    'skus._id': skuId
+  });
+
   if (!product) {
     throw new CustomError.BadRequestError('No such Product');
   }
-
   let msg = `${product.name} added to ${folderName}`;
 
   if (folderId) {
     const wishlist = await Wishlist.findOne({
       user: req.user.id,
-      folders: { $elemMatch: { id: folderId } }
+      folders: { $elemMatch: { _id: folderId } }
     });
+
     if (!wishlist) {
       throw new CustomError.BadRequestError('Wishlist not found');
     }
@@ -30,21 +34,25 @@ const addItem = async (req, res) => {
       throw new CustomError.BadRequestError('No such folder!');
     }
     const itemAlreadyExist = folder.items.some(
-      (item) => item.product.toString() === productId
+      (item) =>
+        item.product.toString() === productId && item.sku.toString() === skuId
     );
 
     if (itemAlreadyExist) {
       throw new CustomError.BadRequestError(
-        'This item was already in the wishlist'
+        'This product was already in the wishlist'
       );
     }
-    folder.items.unshift({ product: productId });
+
+    folder.items.unshift({ product: productId, sku: skuId });
     wishlist.save();
+
     msg = `${product.name} added to ${folder.name}`;
   } else {
     if (!folderName.trim()) {
       throw new CustomError.BadRequestError('Please provide a folder name');
     }
+
     const wishlist = await Wishlist.findOneAndUpdate(
       {
         user: req.user.id
@@ -62,7 +70,7 @@ const addItem = async (req, res) => {
 
     wishlist.folders.unshift({
       name: folderName.trim(),
-      items: [{ product: productId }]
+      items: [{ product: productId, sku: skuId }]
     });
     wishlist.save();
   }
@@ -71,7 +79,7 @@ const addItem = async (req, res) => {
 };
 
 const removeItem = async (req, res) => {
-  const { folderId, productId } = req.body;
+  const { folderId, productId, skuId } = req.body;
 
   const wishlist = await Wishlist.findOne({
     user: req.user.id
@@ -88,13 +96,14 @@ const removeItem = async (req, res) => {
   }
 
   const item = folder.items.some(
-    (item) => item.product.toString() === productId
+    (item) =>
+      item.product.toString() === productId && item.sku.toString() === skuId
   );
   if (!item) {
-    throw new CustomError.BadRequestError('No such Item');
+    throw new CustomError.BadRequestError('No such Product');
   }
 
-  folder.items.remove({ product: productId });
+  folder.items.pull({ product: productId, sku: skuId });
   wishlist.save();
 
   res.status(StatusCodes.OK).json({ msg: 'Item removed successfully' });
@@ -117,7 +126,7 @@ const removeFolder = async (req, res) => {
     throw new CustomError.BadRequestError('No such Folder');
   }
 
-  wishlist.folders.remove({ _id: mongoose.Types.ObjectId(folderId) });
+  wishlist.folders.pull({ _id: mongoose.Types.ObjectId(folderId) });
   wishlist.save();
 
   res.status(StatusCodes.OK).json({ msg: 'Folder removed successfully' });
@@ -134,7 +143,7 @@ const showFolders = async (req, res) => {
         populate: {
           path: 'product',
           select:
-            'id name price category company featured freeShipping inventory averageRating numOfReviews images'
+            'id name category featured freeShipping inventory averageRating numOfReviews'
         }
       }
     })) || {};
@@ -153,7 +162,7 @@ const showFolderItems = async (req, res) => {
       populate: {
         path: 'product',
         select:
-          'id name price category company featured freeShipping inventory averageRating numOfReviews images'
+          'id name category featured freeShipping inventory averageRating numOfReviews'
       }
     }
   });
