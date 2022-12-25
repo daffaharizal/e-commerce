@@ -125,7 +125,7 @@ export default function ProductDetailPage() {
                 <div className={styles['product-count']}>
                   <AddToCart product={product} sku={sku} varient={varient} />
                   {isAuth && user?.role === ROLES.USER && (
-                    <WishlistPopup productId={productId} />
+                    <WishlistPopup productId={productId} skuId={skuId} />
                   )}
                 </div>
               </div>

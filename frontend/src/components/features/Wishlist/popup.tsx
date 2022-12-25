@@ -21,9 +21,12 @@ type AddItemDataType = {
   folderId: string;
   folderName: string;
   productId: string;
+  skuId: string;
 };
 
-export default function WishlistPopup({ productId }: { productId: string }) {
+type WishlistPropsType = { productId: string; skuId: string };
+
+export default function WishlistPopup({ productId, skuId }: WishlistPropsType) {
   const [modalShow, setModalShow] = React.useState(false);
 
   // Access the client
@@ -78,7 +81,8 @@ export default function WishlistPopup({ productId }: { productId: string }) {
       mutation.mutate({
         folderId: option?.value || '',
         folderName: option?.label || '',
-        productId
+        productId,
+        skuId
       });
       setModalShow(false);
     }
