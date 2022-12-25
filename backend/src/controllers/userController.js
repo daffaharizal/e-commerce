@@ -44,6 +44,18 @@ const updateUser = async (req, res) => {
 
   let cloudFile;
   if (avatar) {
+    if (!avatar.mimetype.startsWith('image')) {
+      throw new CustomError.BadRequestError('Please Upload Image');
+    }
+
+    const maxSize = 1024 * 1024;
+
+    if (avatar.size > maxSize) {
+      throw new CustomError.BadRequestError(
+        'Please upload image smaller than 1MB'
+      );
+    }
+
     // call below func after passing all validation
     cloudFile = await uploadToCloudinary({
       file: avatar,
