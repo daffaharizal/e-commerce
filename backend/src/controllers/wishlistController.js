@@ -143,7 +143,7 @@ const showFolders = async (req, res) => {
         populate: {
           path: 'product',
           select:
-            'id name category featured freeShipping inventory averageRating numOfReviews'
+            'id name category featured freeShipping inventory averageRating numOfReviews skuType skus'
         }
       }
     })) || {};
@@ -162,7 +162,7 @@ const showFolderItems = async (req, res) => {
       populate: {
         path: 'product',
         select:
-          'id name category featured freeShipping inventory averageRating numOfReviews'
+          'id name category featured freeShipping inventory averageRating numOfReviews skuType skus'
       }
     }
   });

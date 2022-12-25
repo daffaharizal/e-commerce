@@ -9,6 +9,7 @@ export type WishlistResponseType = {
         items: [
           {
             product: IProduct;
+            sku: string;
           }
         ];
       }

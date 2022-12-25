@@ -71,18 +71,24 @@ export default function WishlistPage() {
                 wishlist.folders.map((folder) => (
                   <Tab.Pane eventKey={folder.id} key={folder.id}>
                     {folder.items.map((item) => (
-                      <Card key={item.product.id} className="mb-3">
+                      <Card
+                        key={`${item.product.id}-${item.sku}`}
+                        className="mb-3">
                         <Card.Body>
-                          <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
-                            <Link
-                              to={`${ROUTES.PRODUCTS}/${item.product.id}`}
-                              className="text-success text-decoration-none">
-                              {item.product.name}
-                            </Link>
-                            <span className="fw-bold text-danger">
-                              {/* ${item.product.price} */}
-                            </span>
-                          </Card.Title>
+                          {item.product.skus
+                            .filter((sku) => sku.id === item.sku)
+                            .map((sku) => (
+                              <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
+                                <Link
+                                  to={`${ROUTES.PRODUCTS}/${item.product.id}/sku/${item.sku}`}
+                                  className="text-success text-decoration-none">
+                                  {item.product.name} - {sku.sku}
+                                </Link>
+                                <span className="fw-bold text-danger">
+                                  ${sku.price}
+                                </span>
+                              </Card.Title>
+                            ))}
                           <ListGroup as="ul" variant="flush">
                             <ListGroup.Item
                               as="li"
