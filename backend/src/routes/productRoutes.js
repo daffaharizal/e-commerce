@@ -34,7 +34,8 @@ router.get('/:id', productController.getSingleProduct);
 
 router.get(
   '/:id/reviews',
-  [authenticateUser, offsetPagination],
+  // [authenticateUser, offsetPagination],
+  [offsetPagination],
   reviewController.getSingleProductReviews
 );
 
