@@ -7,6 +7,9 @@ const __filename = fileURLToPath(import.meta.url);
 
 const rand = () => Math.random().toString(36).substring(2, 12);
 
+const calculateOrderAmount = ({ subTotal, shippingFee, tax }) =>
+  subTotal + tax + shippingFee;
+
 const modifyFileName = (fileName) => {
   const strOfArray = fileName.split('.');
   strOfArray.splice(strOfArray.length - 1, 0, ...[rand(), '.']);
@@ -36,4 +39,4 @@ const uploadFile = async (file, fileDir = '') => {
   return `/static/uploads/${fileDir}${fileName}`;
 };
 
-export { rand, modifyFileName, uploadFile };
+export { calculateOrderAmount, modifyFileName, rand, uploadFile };

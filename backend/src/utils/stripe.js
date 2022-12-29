@@ -1,8 +1,8 @@
-import stripe from 'stripe';
+import Stripe from 'stripe';
 
 import ENV from './constants.js';
 
-stripe(ENV.STRIPE_SECRET_KEY); // Check import later
+const stripe = new Stripe(ENV.STRIPE_SECRET_KEY);
 
 // Create a PaymentIntent with the order amount and currency
 const createPaymentIntent = async ({

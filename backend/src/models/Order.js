@@ -1,15 +1,28 @@
 import mongoose from 'mongoose';
 
+import AddressSchema from './Address.js';
+import ImageSchema from './Image.js';
+
 const OrderItemSchema = new mongoose.Schema({
   product: {
     type: mongoose.Types.ObjectId,
     ref: 'Product',
     required: true
   },
+  sku: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Product.skus',
+    required: true
+  },
+  varient: {
+    type: mongoose.Types.ObjectId,
+    ref: 'Product.skus.varients'
+  },
   name: {
     type: String,
     required: true
   },
+  image: ImageSchema,
   quantity: {
     type: Number,
     required: true,
@@ -43,6 +56,8 @@ const OrderSchema = new mongoose.Schema(
       default: 'pending'
     },
     orderItems: [OrderItemSchema],
+    billingAddress: AddressSchema,
+    shippingAddress: AddressSchema,
     shippingFee: {
       type: Number,
       required: true
