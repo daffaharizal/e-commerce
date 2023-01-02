@@ -51,6 +51,7 @@ const getAllProducts = async (req, res) => {
     .populate('skus')
     .skip((currentPage - 1) * limit)
     .limit(limit);
+
   const totalItems = await Product.find(queryParam).count();
   const totalPages = Math.ceil(totalItems / limit);
 

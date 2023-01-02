@@ -8,7 +8,7 @@ const WishlistItemSchema = new mongoose.Schema({
   },
   sku: {
     type: mongoose.Types.ObjectId,
-    ref: 'Product.skus',
+    ref: 'ProductSku',
     required: true
   }
 });

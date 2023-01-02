@@ -42,7 +42,7 @@ export default function AddToCart({
         quantity,
         sku: {
           skuId: sku.id,
-          skuName: sku.sku,
+          skuName: sku.name,
           ...(sku.images.length > 0 && { image: sku.images[0] }),
           ...(varient && {
             varient: { varientId: varient._id, varientName: varient.name }

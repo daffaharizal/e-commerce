@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 import mongoose from 'mongoose';
 
 import Product from '../models/Product.js';
+import ProductSku from '../models/ProductSku.js';
 import Wishlist from '../models/Wishlist.js';
 
 import * as CustomError from '../errors/index.js';
@@ -10,13 +11,18 @@ const addItem = async (req, res) => {
   const { folderName, folderId, productId, skuId } = req.body;
 
   const product = await Product.findOne({
-    _id: productId,
-    'skus._id': skuId
+    _id: productId
   });
 
-  if (!product) {
+  const sku = await ProductSku.findOne({
+    _id: skuId,
+    product: productId
+  });
+
+  if (!product || !sku) {
     throw new CustomError.BadRequestError('No such Product');
   }
+
   let msg = `${product.name} added to ${folderName}`;
 
   if (folderId) {
@@ -140,11 +146,17 @@ const showFolders = async (req, res) => {
       path: 'folders',
       populate: {
         path: 'items',
-        populate: {
-          path: 'product',
-          select:
-            'id name category featured freeShipping inventory averageRating numOfReviews skuType skus'
-        }
+        populate: [
+          {
+            path: 'product',
+            select:
+              'id name description category skuType featured freeShipping averageRating numOfReviews'
+          },
+          {
+            path: 'sku',
+            select: 'id name price stock features varients images'
+          }
+        ]
       }
     })) || {};
 
@@ -159,11 +171,17 @@ const showFolderItems = async (req, res) => {
     path: 'folders',
     populate: {
       path: 'items',
-      populate: {
-        path: 'product',
-        select:
-          'id name category featured freeShipping inventory averageRating numOfReviews skuType skus'
-      }
+      populate: [
+        {
+          path: 'product',
+          select:
+            'id name description category skuType featured freeShipping averageRating numOfReviews'
+        },
+        {
+          path: 'sku',
+          select: 'id name price stock features varients images'
+        }
+      ]
     }
   });
 
