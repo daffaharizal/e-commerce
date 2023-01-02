@@ -49,7 +49,8 @@ const ProductSchema = new mongoose.Schema(
   }
 );
 
-// ProductSchema.index({ name: 'text', category: 'text' });
+// full text search
+ProductSchema.index({ name: 'text', 'category.name': 'text' });
 
 // ProductSchema.methods.toJSON = function () {
 //   const obj = this.toObject();
