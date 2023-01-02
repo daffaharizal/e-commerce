@@ -11,12 +11,12 @@ const OrderItemSchema = new mongoose.Schema({
   },
   sku: {
     type: mongoose.Types.ObjectId,
-    ref: 'Product.skus',
+    ref: 'ProductSku',
     required: true
   },
   varient: {
     type: mongoose.Types.ObjectId,
-    ref: 'Product.skus.varients'
+    ref: 'ProductSku.varients'
   },
   name: {
     type: String,
@@ -92,6 +92,32 @@ const OrderSchema = new mongoose.Schema(
     toJSON: { virtuals: true },
     toObject: { virtuals: true },
     versionKey: false
+  }
+);
+
+OrderSchema.pre(
+  ['find', 'findById', 'findOne', 'findOneAndUpdate'],
+  function () {
+    this.populate([
+      {
+        path: 'user',
+        select: 'fullName'
+      },
+      {
+        path: 'orderItems',
+        populate: [
+          {
+            path: 'product',
+            select:
+              'id name description category skuType featured freeShipping averageRating numOfReviews'
+          },
+          {
+            path: 'sku',
+            select: 'id name price stock features images'
+          }
+        ]
+      }
+    ]);
   }
 );
 

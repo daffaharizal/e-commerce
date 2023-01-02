@@ -62,11 +62,33 @@ WishlistSchema.set('toJSON', {
   }
 });
 
-WishlistSchema.pre(['find', 'findOne', 'findOneAndUpdate'], function () {
-  this.populate({
-    path: 'user',
-    select: 'fullName'
-  });
-});
+WishlistSchema.pre(
+  ['find', 'findOne', 'findById', 'findOneAndUpdate'],
+  function () {
+    this.populate([
+      {
+        path: 'user',
+        select: 'fullName'
+      },
+      {
+        path: 'folders',
+        populate: {
+          path: 'items',
+          populate: [
+            {
+              path: 'product',
+              select:
+                'id name description category skuType featured freeShipping averageRating numOfReviews'
+            },
+            {
+              path: 'sku',
+              select: 'id name price stock features varients images'
+            }
+          ]
+        }
+      }
+    ]);
+  }
+);
 
 export default mongoose.model('Wishlist', WishlistSchema);

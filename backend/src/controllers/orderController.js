@@ -3,6 +3,7 @@ import mongoose from 'mongoose';
 
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
+import ProductSku from '../models/ProductSku.js';
 import User from '../models/User.js';
 
 import * as CustomError from '../errors/index.js';
@@ -30,7 +31,7 @@ const createOrder = async (req, res) => {
     (address) => address.id === shippingAddressId
   );
 
-  if (!(billingAddress || shippingAddress)) {
+  if (!billingAddress || !shippingAddress) {
     throw new CustomError.BadRequestError(
       'Please provide billing and shipping addresses'
     );
@@ -40,7 +41,7 @@ const createOrder = async (req, res) => {
     throw new CustomError.BadRequestError('No line items found');
   }
 
-  if (!(tax || shippingFee)) {
+  if (!tax || !shippingFee) {
     throw new CustomError.BadRequestError(
       'Please provide tax and shipping fee'
     );
@@ -52,7 +53,7 @@ const createOrder = async (req, res) => {
   for (const item of cartItems) {
     const { productId, skuId, varientId, quantity } = item;
 
-    if (!(productId || skuId || quantity)) {
+    if (!productId || !skuId || !quantity) {
       throw new CustomError.BadRequestError('Please add valid line items');
     }
 
@@ -62,7 +63,7 @@ const createOrder = async (req, res) => {
 
     const product = await Product.findById(productId);
 
-    const sku = product.skus.find((sku) => sku.id === skuId);
+    const sku = await ProductSku.findOne({ _id: skuId, product: productId });
 
     if (!product || !sku) {
       throw new CustomError.BadRequestError(`Please add valid line items`);
@@ -75,8 +76,8 @@ const createOrder = async (req, res) => {
       throw new CustomError.BadRequestError(`Please add valid line items`);
     }
     const orderName = varient
-      ? `${product.name} - ${sku.sku} - ${varient.name}`
-      : `${product.name} - ${sku.sku}`;
+      ? `${product.name} - ${sku.name} - ${varient.name}`
+      : `${product.name} - ${sku.name}`;
 
     // add item to order
     orderItems = [
@@ -136,19 +137,15 @@ const createOrder = async (req, res) => {
 };
 
 const getAllOrder = async (req, res) => {
-  const orders = await Order.find().populate({
-    path: 'user',
-    select: 'fullName role'
-  });
+  const orders = await Order.find();
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
 
 const getSingleOrder = async (req, res) => {
   const { id: OrderID } = req.params;
-  const order = await Order.findOne({ _id: OrderID }).populate({
-    path: 'user',
-    select: 'fullName role'
-  });
+
+  const order = await Order.findOne({ _id: OrderID });
+
   if (!order) {
     throw new CustomError.NotFoundError(`No Order with ID: ${OrderID}`);
   }
@@ -160,12 +157,7 @@ const getSingleOrder = async (req, res) => {
 };
 
 const getCurrentUserOrders = async (req, res) => {
-  const orders = await Order.find({
-    user: req.user.id
-  }).populate({
-    path: 'user',
-    select: 'fullName role'
-  });
+  const orders = await Order.find({ user: req.user.id });
   res.status(StatusCodes.OK).json({ count: orders.length, orders });
 };
 
