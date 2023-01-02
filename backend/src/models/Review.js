@@ -19,7 +19,8 @@ const ReviewSchema = new mongoose.Schema(
     product: {
       type: mongoose.Types.ObjectId,
       role: 'Product',
-      required: true
+      required: true,
+      index: true
     },
     user: {
       type: mongoose.Types.ObjectId,
