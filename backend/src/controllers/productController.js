@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes';
 
 import Category from '../models/Category.js';
 import Product from '../models/Product.js';
+import ProductSku from '../models/ProductSku.js';
 
 import * as CustomError from '../errors/index.js';
 
@@ -28,12 +29,18 @@ const createProduct = async (req, res) => {
     description,
     category,
     skuType,
-    skus,
     featured,
     freeShipping,
     user: req.user.id
   });
-  res.status(StatusCodes.CREATED).json({ product });
+
+  skus.map(async (sku) => {
+    await ProductSku.create({ ...sku, product: product._id });
+  });
+
+  res
+    .status(StatusCodes.CREATED)
+    .json({ product: await Product.findById(product._id).populate('skus') });
 };
 
 const getAllProducts = async (req, res) => {
@@ -41,8 +48,10 @@ const getAllProducts = async (req, res) => {
   const queryParam = search ? { $text: { $search: search } } : {};
 
   const products = await Product.find(queryParam)
+    .populate('skus')
     .skip((currentPage - 1) * limit)
     .limit(limit);
+
   const totalItems = await Product.find(queryParam).count();
   const totalPages = Math.ceil(totalItems / limit);
 
@@ -59,7 +68,9 @@ const getAllProducts = async (req, res) => {
 };
 
 const getSingleProduct = async (req, res) => {
-  const product = await Product.findOne({ _id: req.params.id });
+  const product = await Product.findOne({ _id: req.params.id }).populate(
+    'skus'
+  );
 
   if (!product) {
     throw new CustomError.NotFoundError('No Product with given ID found');
@@ -114,6 +125,8 @@ const updateProduct = async (req, res) => {
 };
 
 const uploadProductImage = async (req, res) => {
+  const { productId, skuId } = req.params;
+
   if (!req.files) {
     throw new CustomError.BadRequestError('No File Uploaded');
   }
@@ -121,12 +134,12 @@ const uploadProductImage = async (req, res) => {
 
   const maxSize = 1024 * 1024;
 
-  const product = await Product.findOne({
-    _id: req.params.productId,
-    'skus._id': req.params.skuId
+  const productsku = await ProductSku.findOne({
+    _id: skuId,
+    product: productId
   });
 
-  if (!product) {
+  if (!productsku) {
     throw new CustomError.NotFoundError('No Product with given ID found');
   }
 
@@ -149,11 +162,11 @@ const uploadProductImage = async (req, res) => {
       path: 'products'
     });
 
-    await Product.findOneAndUpdate(
-      { _id: req.params.productId, 'skus._id': req.params.skuId },
+    await ProductSku.findOneAndUpdate(
+      { _id: skuId, product: productId },
       {
         $push: {
-          'skus.$[elem].images': {
+          images: {
             name: image.name,
             url: cloudFile.secure_url,
             isPublicUrl: true
@@ -161,7 +174,6 @@ const uploadProductImage = async (req, res) => {
         }
       },
       {
-        arrayFilters: [{ 'elem._id': req.params.skuId }],
         new: true,
         runValidators: true
       }

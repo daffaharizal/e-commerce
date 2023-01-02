@@ -72,23 +72,20 @@ export default function WishlistPage() {
                   <Tab.Pane eventKey={folder.id} key={folder.id}>
                     {folder.items.map((item) => (
                       <Card
-                        key={`${item.product.id}-${item.sku}`}
+                        key={`${item.product.id}-${item.sku.id}`}
                         className="mb-3">
                         <Card.Body>
-                          {item.product.skus
-                            .filter((sku) => sku.id === item.sku)
-                            .map((sku) => (
-                              <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
-                                <Link
-                                  to={`${ROUTES.PRODUCTS}/${item.product.id}/sku/${item.sku}`}
-                                  className="text-success text-decoration-none">
-                                  {item.product.name} - {sku.sku}
-                                </Link>
-                                <span className="fw-bold text-danger">
-                                  ${sku.price}
-                                </span>
-                              </Card.Title>
-                            ))}
+                          <Card.Title className="d-flex justify-content-between text-capitalize mb-3">
+                            <Link
+                              to={`${ROUTES.PRODUCTS}/${item.product.id}/sku/${item.sku.id}`}
+                              className="text-success text-decoration-none">
+                              {item.product.name} - {item.sku.name}
+                            </Link>
+                            <span className="fw-bold text-danger">
+                              ${item.sku.price}
+                            </span>
+                          </Card.Title>
+                          <Card.Text>{item.product.description}</Card.Text>
                           <ListGroup as="ul" variant="flush">
                             <ListGroup.Item
                               as="li"

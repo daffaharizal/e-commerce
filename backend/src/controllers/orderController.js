@@ -1,21 +1,43 @@
 import { StatusCodes } from 'http-status-codes';
+import mongoose from 'mongoose';
 
 import Order from '../models/Order.js';
 import Product from '../models/Product.js';
+import User from '../models/User.js';
 
 import * as CustomError from '../errors/index.js';
 
+import { calculateOrderAmount } from '../utils/helpers.js';
 import checkPermission from '../utils/permissions.js';
 import * as stripe from '../utils/stripe.js';
 
-const calculateOrderAmount = ({ subTotal, shippingFee, tax }) =>
-  subTotal + tax + shippingFee;
-
 const createOrder = async (req, res) => {
-  const { items: cartItems, shippingFee, tax } = req.body;
+  const {
+    items: cartItems,
+    billingAddressId,
+    shippingAddressId,
+    shippingFee,
+    tax
+  } = req.body;
+
+  const user = await User.findById(req.user.id);
+
+  const billingAddress = user.billingAddress.find(
+    (address) => address.id === billingAddressId
+  );
+
+  const shippingAddress = user.shippingAddress.find(
+    (address) => address.id === shippingAddressId
+  );
+
+  if (!(billingAddress || shippingAddress)) {
+    throw new CustomError.BadRequestError(
+      'Please provide billing and shipping addresses'
+    );
+  }
 
   if (!cartItems || cartItems.length < 1) {
-    throw new CustomError.NotFoundError('No Products Found');
+    throw new CustomError.BadRequestError('No line items found');
   }
 
   if (!(tax || shippingFee)) {
@@ -28,39 +50,52 @@ const createOrder = async (req, res) => {
   let subTotal = 0;
 
   for (const item of cartItems) {
-    const { productId, quantity } = item;
+    const { productId, skuId, varientId, quantity } = item;
 
-    if (!(productId || quantity)) {
-      throw new CustomError.BadRequestError('Please add valid products');
+    if (!(productId || skuId || quantity)) {
+      throw new CustomError.BadRequestError('Please add valid line items');
     }
 
-    const product = await Product.findOne({ _id: productId });
-    if (!product) {
-      throw new CustomError.NotFoundError(`No Product with ID - ${productId}`);
+    if (isNaN(quantity)) {
+      throw new CustomError.BadRequestError(`Invalid line item quantity`);
+    }
+
+    const product = await Product.findById(productId);
+
+    const sku = product.skus.find((sku) => sku.id === skuId);
+
+    if (!product || !sku) {
+      throw new CustomError.BadRequestError(`Please add valid line items`);
     }
     // TODO - Check duplicate products in orderItems
 
-    if (isNaN(quantity)) {
-      throw new CustomError.BadRequestError(
-        `Invalid Quantity for item name - ${product.name}`
-      );
+    const varient = sku.varients.find((varient) => varient.id === varientId);
+
+    if (sku.varients.length !== 0 && !varient) {
+      throw new CustomError.BadRequestError(`Please add valid line items`);
     }
+    const orderName = varient
+      ? `${product.name} - ${sku.sku} - ${varient.name}`
+      : `${product.name} - ${sku.sku}`;
 
     // add item to order
     orderItems = [
       ...orderItems,
       {
         product,
-        name: product.name,
-        price: product.price,
+        sku,
+        ...(varient && { varient }),
+        name: orderName,
+        ...(sku.images.length !== 0 && { image: sku.images[0] }),
         quantity: +quantity,
-        // TODO: Discount
-        subTotal: +quantity * product.price
+        price: sku.price,
+        discount: 0,
+        subTotal: +quantity * sku.price
       }
     ];
 
     // calculate subtotal
-    subTotal += +quantity * product.price;
+    subTotal += +quantity * sku.price;
   }
 
   if (orderItems.length < 1) {
@@ -78,9 +113,12 @@ const createOrder = async (req, res) => {
 
   const order = await Order.create({
     orderItems,
+    billingAddress,
+    shippingAddress,
     shippingFee,
     tax,
     subTotal,
+    discount: 0,
     total: amount,
     user: req.user.id,
     clientSecret,

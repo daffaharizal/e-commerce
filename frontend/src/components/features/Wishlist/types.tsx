@@ -1,4 +1,4 @@
-import { IProduct } from 'components/features/Product/types';
+import { IProduct, SkuType } from 'components/features/Product/types';
 
 export type WishlistResponseType = {
   wishlist: {
@@ -9,7 +9,7 @@ export type WishlistResponseType = {
         items: [
           {
             product: IProduct;
-            sku: string;
+            sku: SkuType;
           }
         ];
       }

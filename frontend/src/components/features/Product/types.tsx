@@ -19,7 +19,7 @@ export type IProductReviews = {
 
 export type SkuType = {
   id: string;
-  sku: string;
+  name: string;
   price: number;
   stock: number;
   features: string[];

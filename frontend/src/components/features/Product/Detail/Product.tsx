@@ -86,7 +86,7 @@ export default function ProductDetailPage() {
         <Container>
           <div className={styles['heading-section']}>
             <h2>
-              {product.name} - {sku.sku}
+              {product.name} - {sku.name}
             </h2>
           </div>
           <Row key={skuId}>

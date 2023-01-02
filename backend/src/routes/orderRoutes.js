@@ -11,13 +11,21 @@ const router = express.Router();
 
 router
   .route('/')
-  .post(authenticateUser, orderController.createOrder)
+  .post(
+    [authenticateUser, authorizePermissions('user')],
+    orderController.createOrder
+  )
   .get(
     [authenticateUser, authorizePermissions('admin')],
     orderController.getAllOrder
   );
 
-router.route('/me').get(authenticateUser, orderController.getCurrentUserOrders);
+router
+  .route('/me')
+  .get(
+    [authenticateUser, authorizePermissions('user')],
+    orderController.getCurrentUserOrders
+  );
 
 router.route('/:id').get(authenticateUser, orderController.getSingleOrder);
 
