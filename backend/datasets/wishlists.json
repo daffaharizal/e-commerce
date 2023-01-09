@@ -1,0 +1,59 @@
+[{
+  "_id": {
+    "$oid": "63b3bd10af91c6c72753d164"
+  },
+  "user": {
+    "$oid": "63b2f5c00b88e694b0f1154d"
+  },
+  "folders": [
+    {
+      "name": "Sofa Set",
+      "items": [
+        {
+          "product": {
+            "$oid": "63b3bb47e48f8f22a1a61d16"
+          },
+          "sku": {
+            "$oid": "63b3bb47e48f8f22a1a61d1d"
+          },
+          "_id": {
+            "$oid": "63b3bd23e7c60de2af37b538"
+          }
+        },
+        {
+          "product": {
+            "$oid": "63b3bb18e48f8f22a1a61cfd"
+          },
+          "sku": {
+            "$oid": "63b3bb18e48f8f22a1a61d04"
+          },
+          "_id": {
+            "$oid": "63b3bd1ae7c60de2af37b4db"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "63b3bd1ae7c60de2af37b4da"
+      }
+    },
+    {
+      "name": "Chair",
+      "items": [
+        {
+          "product": {
+            "$oid": "63b3bb18e48f8f22a1a61cfd"
+          },
+          "sku": {
+            "$oid": "63b3bb18e48f8f22a1a61cff"
+          },
+          "_id": {
+            "$oid": "63b3bd10e7c60de2af37b4b1"
+          }
+        }
+      ],
+      "_id": {
+        "$oid": "63b3bd10e7c60de2af37b4b0"
+      }
+    }
+  ]
+}]

@@ -1,6 +1,10 @@
 import { ACTIONTYPE, ICart, ILineItem, RemoveLineItemType } from './types';
 
 export const initialCart: ICart = {
+  tax: 0,
+  shippingFee: 0,
+  billingAddressId: '',
+  shippingAddressId: '',
   currency: 'dollar',
   lineItems: [],
   subTotal: 0,

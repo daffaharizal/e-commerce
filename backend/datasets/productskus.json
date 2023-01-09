@@ -1,0 +1,173 @@
+[{
+  "_id": {
+    "$oid": "63b3bb18e48f8f22a1a61cff"
+  },
+  "product": {
+    "$oid": "63b3bb18e48f8f22a1a61cfd"
+  },
+  "name": "Red",
+  "price": 50,
+  "stock": 100,
+  "features": [
+    "Strong",
+    "Durable",
+    "Flexible"
+  ],
+  "varients": [
+    {
+      "name": "M",
+      "_id": {
+        "$oid": "63b3bb18e48f8f22a1a61d00"
+      }
+    },
+    {
+      "name": "L",
+      "_id": {
+        "$oid": "63b3bb18e48f8f22a1a61d01"
+      }
+    },
+    {
+      "name": "XL",
+      "_id": {
+        "$oid": "63b3bb18e48f8f22a1a61d02"
+      }
+    },
+    {
+      "name": "XXL",
+      "_id": {
+        "$oid": "63b3bb18e48f8f22a1a61d03"
+      }
+    }
+  ],
+  "images": [
+    {
+      "name": "example.jpeg",
+      "url": "https://res.cloudinary.com/denk3rkt5/image/upload/v1672723394/uploads/products/dezsghihwpbrzaqnxkk0.jpg",
+      "isPublicUrl": true
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "63b3bb18e48f8f22a1a61d04"
+  },
+  "product": {
+    "$oid": "63b3bb18e48f8f22a1a61cfd"
+  },
+  "name": "Blue",
+  "price": 100,
+  "stock": 10,
+  "features": [
+    "Durable",
+    "Flexible"
+  ],
+  "varients": [
+    {
+      "name": "XS",
+      "_id": {
+        "$oid": "63b3bb18e48f8f22a1a61d05"
+      }
+    },
+    {
+      "name": "S",
+      "_id": {
+        "$oid": "63b3bb18e48f8f22a1a61d06"
+      }
+    },
+    {
+      "name": "M",
+      "_id": {
+        "$oid": "63b3bb18e48f8f22a1a61d07"
+      }
+    }
+  ],
+  "images": [
+    {
+      "name": "2.jpeg",
+      "url": "https://res.cloudinary.com/denk3rkt5/image/upload/v1672723426/uploads/products/l4zaweinfuffqvpvmfxt.jpg",
+      "isPublicUrl": true
+    },
+    {
+      "name": "3.jpeg",
+      "url": "https://res.cloudinary.com/denk3rkt5/image/upload/v1672723426/uploads/products/veqb0qppbimjihvxofpm.jpg",
+      "isPublicUrl": true
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "63b3bb47e48f8f22a1a61d1c"
+  },
+  "product": {
+    "$oid": "63b3bb47e48f8f22a1a61d16"
+  },
+  "name": "Pink",
+  "price": 800,
+  "stock": 500,
+  "features": [
+    "Durable",
+    "Flexible"
+  ],
+  "varients": [],
+  "images": [
+    {
+      "name": "1.jpeg",
+      "url": "https://res.cloudinary.com/denk3rkt5/image/upload/v1672723649/uploads/products/qdjebohjrwcy7uw9fin5.jpg",
+      "isPublicUrl": true
+    },
+    {
+      "name": "4.jpeg",
+      "url": "https://res.cloudinary.com/denk3rkt5/image/upload/v1672723649/uploads/products/ugd6ek1jbcyixpzk4nbi.jpg",
+      "isPublicUrl": true
+    }
+  ]
+},{
+  "_id": {
+    "$oid": "63b3bb47e48f8f22a1a61d1d"
+  },
+  "product": {
+    "$oid": "63b3bb47e48f8f22a1a61d16"
+  },
+  "name": "Dark Black",
+  "price": 400,
+  "stock": 200,
+  "features": [
+    "Durable"
+  ],
+  "varients": [],
+  "images": []
+},{
+  "_id": {
+    "$oid": "63b3bb47e48f8f22a1a61d18"
+  },
+  "product": {
+    "$oid": "63b3bb47e48f8f22a1a61d16"
+  },
+  "name": "Orange",
+  "price": 700,
+  "stock": 150,
+  "features": [
+    "Strong",
+    "Durable",
+    "Flexible"
+  ],
+  "varients": [
+    {
+      "name": "XS",
+      "_id": {
+        "$oid": "63b3bb47e48f8f22a1a61d19"
+      }
+    },
+    {
+      "name": "S",
+      "_id": {
+        "$oid": "63b3bb47e48f8f22a1a61d1a"
+      }
+    },
+    {
+      "name": "M",
+      "_id": {
+        "$oid": "63b3bb47e48f8f22a1a61d1b"
+      }
+    }
+  ],
+  "images": []
+}]
