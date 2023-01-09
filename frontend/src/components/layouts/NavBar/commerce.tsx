@@ -7,6 +7,7 @@ import {
 import { BiUser } from 'react-icons/bi';
 import { BsBootstrap } from 'react-icons/bs';
 import { CgProfile } from 'react-icons/cg';
+import { FaRegAddressCard } from 'react-icons/fa';
 import { FiSettings } from 'react-icons/fi';
 import { MdAccountBalance } from 'react-icons/md';
 import { NavLink, useLocation, useNavigate } from 'react-router-dom';
@@ -93,6 +94,10 @@ export default function CommerceNavbar() {
                   <NavLink to={ROUTES.PROFILE} className="dropdown-item">
                     <CgProfile size={20} />
                     <span className="ps-2">Profile</span>
+                  </NavLink>
+                  <NavLink to={ROUTES.ADDRESSES} className="dropdown-item">
+                    <FaRegAddressCard size={20} />
+                    <span className="ps-2">Address</span>
                   </NavLink>
                   <NavLink to={ROUTES.WISHLIST} className="dropdown-item">
                     <AiOutlineUnorderedList size={20} />

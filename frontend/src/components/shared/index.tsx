@@ -1,12 +1,13 @@
 export { default as Avatar } from './Avatar';
 export { default as StyledButton } from './Button';
 export { default as PureCarousel } from './Carousel';
+export { default as LoadingSpinner } from './Loading';
+export { default as ModalPopup } from './Modal';
+export { OffsetPagination, StyledPaginationButton } from './Pagination';
 export { default as UserRating } from './Rating';
 export { default as UserReviewCard } from './ReviewCard';
 export { default as UserReviewForm } from './ReviewForm';
 export { default as SelectInput } from './SelectInput';
+export { default as Spinner } from './Spinner';
 export { default as SearchInput } from './SearchInput';
 export { default as ToastAlert } from './ToastAlert';
-export { default as LoadingSpinner } from './Loading';
-export { default as Spinner } from './Spinner';
-export { OffsetPagination, StyledPaginationButton } from './Pagination';

@@ -18,6 +18,10 @@ export interface ILineItem {
 }
 
 export interface ICart {
+  tax: number;
+  shippingFee: number;
+  billingAddressId: string;
+  shippingAddressId: string;
   currency: string;
   lineItems: ILineItem[];
   subTotal: number;

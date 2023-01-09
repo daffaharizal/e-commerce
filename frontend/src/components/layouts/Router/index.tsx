@@ -1,6 +1,7 @@
 import { Navigate, Route, Routes } from 'react-router-dom';
 
 import {
+  AddressPage,
   AdminDash,
   CartPage,
   ForgotPasswordPage,
@@ -103,6 +104,16 @@ export default function Router() {
             <ProtectedRoute>
               <CommerceRoute>
                 <ProfilePage />
+              </CommerceRoute>
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path={ROUTES.ADDRESSES}
+          element={
+            <ProtectedRoute>
+              <CommerceRoute>
+                <AddressPage />
               </CommerceRoute>
             </ProtectedRoute>
           }

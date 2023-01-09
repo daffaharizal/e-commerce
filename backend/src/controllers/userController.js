@@ -122,6 +122,7 @@ const updatePassword = async (req, res) => {
 // Address API's
 const createAddress = async (req, res) => {
   const {
+    fullName,
     country,
     province,
     city,
@@ -142,7 +143,15 @@ const createAddress = async (req, res) => {
       { _id: req.user.id },
       {
         $push: {
-          billingAddress: { country, province, city, street1, street2, zip }
+          billingAddress: {
+            fullName,
+            country,
+            province,
+            city,
+            street1,
+            street2,
+            zip
+          }
         }
       },
       {
@@ -157,7 +166,15 @@ const createAddress = async (req, res) => {
       { _id: req.user.id },
       {
         $push: {
-          shippingAddress: { country, province, city, street1, street2, zip }
+          shippingAddress: {
+            fullName,
+            country,
+            province,
+            city,
+            street1,
+            street2,
+            zip
+          }
         }
       },
       {
